@@ -1,33 +1,37 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, Image } from 'react-native';
+import { AsyncStorageService } from '../../storage/asyncStorageService';
+import { useUser } from '../../storage/userContext';
 import styles from "./styles";
-import colors from "../../variables";
 
-const NomeScreen = ({ navigation }) => {
+const Login = () => {
   const [nome, setNome] = useState('');
+  const userContext = useUser();
+  const storageService = AsyncStorageService();
 
-  const onPress = () => {
-    
-    navigation.navigate('ProximaTela', { nome });
+  const salvarNome = () => {
+    storageService.salvarNomeFantasia(nome).then(() => {
+      userContext.setNome(nome);
+    }).catch(err => console.log(err));
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: "#0e201e" }}>
-  <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-  <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-          <Image source={require('../../assets/logomeiajuda.png')} style={{ width: 50, height: 50, resizeMode: 'contain' }} />
+    <View style={styles.container}>
+      <View style={styles.containerTudo}>
+        <View style={styles.containerImagem}>
+          <Image source={require('../../assets/logomeiajuda.png')} style={styles.imgLogo} />
         </View>
-    <TextInput
-      placeholder="Insira seu nome aqui"
-      placeholderTextColor="#666" 
-      style={{ backgroundColor: '#FFF', color: '#000', width: '100%', marginBottom: 20, paddingHorizontal: 10, borderRadius: 2 }} 
-      onChangeText={setNome}
-      value={nome}
-    />
-    <Button title="Próximo" onPress={onPress} style={{ width: '100%' }} />
-  </View>
-</View>
+        <TextInput
+          placeholder="Insira seu nome aqui"
+          placeholderTextColor="#666"
+          style={styles.txtInput} 
+          onChangeText={setNome}
+          value={nome}
+        />
+        <Button title="Próximo" onPress={() => salvarNome()} style={styles.botao} />
+      </View>
+    </View>
   );
 };
 
-export default NomeScreen;
+export default Login;

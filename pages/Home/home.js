@@ -3,11 +3,20 @@ import { Button, Text, View } from "react-native";
 import { Ionicons, FontAwesome5, Octicons } from '@expo/vector-icons';
 import styles from "./styles";
 import colors from "../../variables";
+import { AsyncStorageService } from "../../storage/asyncStorageService";
+import { useUser } from "../../storage/userContext";
 
 export default function Home({navigation}){
-    const [nome, setNome] = useState("Ohata");
+    const {nome, setNome} = useUser();
     const [semanal, setSemanal] = useState(-10.00);
     const [mensal, setMensal] = useState(0.00);
+    
+    //teste
+    const storageService = AsyncStorageService();
+    const removeNome = async () =>{
+        await storageService.removerNomeFantasia();
+        setNome(null);
+    }
 
     return (
         <View style={styles.container}>
@@ -71,6 +80,9 @@ export default function Home({navigation}){
                     <Text>Histórico de lucros</Text>
                 </View>
             </View>
+
+                {/*botão apenas para testes*/}
+                <Button onPress={removeNome} title="remover nome" />
         </View>
     );
 }
