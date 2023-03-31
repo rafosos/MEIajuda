@@ -5,8 +5,16 @@ import colors from './variables';
 import { UserProvider, useUser } from './storage/userContext';
 import { AuthStack, TabStack } from './navigation/stacks';
 import Loading from './components/loading';
+import { useEffect } from 'react';
+import DatabaseInit from './database/databaseInit';
 
 export default function App() {
+  const db = DatabaseInit();
+
+  useEffect(() => {
+    db.openAndInitDb();
+  }, []);
+
   return (
     <NavigationContainer>
       <UserProvider>
@@ -25,7 +33,6 @@ const Routes = () => {
   if(loadingAuth) {
       return <Loading />
   } else {
-    console.log(nome)
       return nome ? <TabStack /> : <AuthStack />
   }
 }
