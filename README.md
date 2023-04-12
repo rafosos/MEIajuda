@@ -25,10 +25,16 @@ Ainda não há versão disponível para teste.
 Versão do Android: testado para Android 11 e 12.
 SDK: 30 ou superiores;
 Aparelho utilizado para testes: Moto G9 Play e Poco M3 Pro
-- Liste todas as dependencias e libs que o usuário deve ter instalado na máquina antes de rodar a aplicação, para rodar o projeto.
+Para rodar o projeto, é necessário ter npm e expo instalados na máquina, e o aplicativo Expo Go no aparelho;
 
 ## Como rodar a aplicação 
-Explicação de como se deve utilizar o projeto.
+1 - Clone o projeto;
+
+2 - No prompt de comando, entra na pasta do projeto e digite o comando "npm install";
+
+3 - Após conclusão, digite o comando "expo start" para rodar a aplicação;
+
+4 - No dispositivo, abra o app Expo Go e escaneie o QRCode que apareceu no prompt após rodar o comando anterior.
 
 ## Testes realizados
 Todos os componentes e telas foram testados em dispositivos com Android com versão 11 e 12, por isso, o mal funcionamento em dispositivos com Android em versões diferentes pode vir a acontecer.
