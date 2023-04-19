@@ -53,15 +53,16 @@ export default function DatabaseService() {
     }
 
     const getAll = (table, where = ";") => {
-        return new Promise((resolve, reject) => db.transaction(tx => {
-            console.log(`select * from ${table} ${where}`)
-            tx.executeSql(`select * from ${table} ${where}`, [], (_, { rows }) => {
-                resolve(rows)
-            }), (sqlError) => {
-                console.log(sqlError);
-            }}, (txError) => {
-                console.log(txError);
-        }))
+        return new Promise((resolve, reject) => 
+            db.transaction(tx => {
+                    console.log(`select * from ${table} ${where}`)
+                    tx.executeSql(`select * from ${table} ${where}`, [], 
+                        (_, { rows }) => {
+                        resolve(rows._array)
+                    })
+                    , (sqlError) => {console.log(sqlError);}
+                }, (txError) => {console.log(txError);}
+            ))
     }
 
     return{

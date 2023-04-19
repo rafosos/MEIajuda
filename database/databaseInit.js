@@ -23,7 +23,7 @@ export default function DatabaseInit(){
 
             `CREATE TABLE IF NOT EXISTS vendas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                data DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP, 'localtime')),
+                data DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP)),
                 valor INTEGER NOT NULL,
                 desconto INTEGER
             );`,
@@ -32,7 +32,7 @@ export default function DatabaseInit(){
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 valor INTEGER NOT NULL,
                 descricao TEXT,
-                data INTEGER DEFAULT (UNIXEPOCH(CURRENT_TIMESTAMP, 'localtime'))
+                data INTEGER DEFAULT (STRFTIME('%s',CURRENT_TIMESTAMP))
             );`,
 
             `CREATE TABLE IF NOT EXISTS produtos (
