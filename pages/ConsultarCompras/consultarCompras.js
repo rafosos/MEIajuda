@@ -111,10 +111,15 @@ export default function ConsultarCompras({navigation}){
 
     const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
 
+    const adicionarCompra = () => navigation.navigate("AdicionarCompra");
+
     return (
         <ScrollView style={styles.scrollview}>
             <View style={styles.cabecalho}>
-                <Text style={styles.title}>Consultar compras</Text>
+                <View style={styles.containerTitle}>
+                    <Text style={styles.title}>Consultar compras</Text>
+                    <MaterialIcons name="add-box" style={styles.iconeAdd} onPress={adicionarCompra} />
+                </View>
 
                 {/* botão de teste para adicionar compra no banco! */}
                 {/* <Button onPress={() => next()} title="add"/> */}

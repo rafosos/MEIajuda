@@ -18,6 +18,10 @@ export default function Home({navigation}){
         setNome(null);
     }
 
+    const irParaAlterarNome = () => {
+        navigation.navigate('AlterarNome');
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.headerBemVindo}>
@@ -82,7 +86,8 @@ export default function Home({navigation}){
             </View>
 
                 {/*botão apenas para testes*/}
-                <Button onPress={removeNome} title="remover nome" />
+                {/* <Button onPress={removeNome} title="remover nome" /> */}
+                <Button title="Alterar nome" onPress={irParaAlterarNome} />
         </View>
     );
 }

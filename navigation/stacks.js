@@ -3,10 +3,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../pages/Home/home';
-import BemVindo from '../pages/BemVindo/bemVindo';
 import Login from '../pages/Login/login';
 import ConsultarCompras from '../pages/ConsultarCompras/consultarCompras';
 import colors from '../variables';
+import AdicionarCompra from '../pages/AdicionarCompra/adicionarCompra';
+import AlterarNome from '../pages/AlterarNome/alterarNome';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,7 +20,7 @@ function MainStack(){
         >
             {/* todas as telas vão entrar aqui também */}
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="BemVindo" component={BemVindo} />
+            <Stack.Screen name="AlterarNome" component={AlterarNome} />
         </Stack.Navigator>
     </>)
 }
@@ -31,6 +32,19 @@ function ConsultarStack(){
             screenOptions={{headerShown: false}}
         >
             <Stack.Screen name="ConsultarCompras" component={ConsultarCompras} />
+            <Stack.Screen 
+                name="AdicionarCompra" 
+                component={AdicionarCompra} 
+                options={{
+                    headerShown: true,
+                    title: "Adicionar compra",
+                    headerStyle: {
+                        backgroundColor: colors.darkGreen,
+                    },
+                    headerTintColor: colors.white,
+                    headerShadowVisible: false
+                }}
+            />
         </Stack.Navigator>
     </>)
 }

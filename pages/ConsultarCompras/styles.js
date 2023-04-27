@@ -11,6 +11,16 @@ const styles = StyleSheet.create({
         height: 150, 
         justifyContent:"space-around"
     },
+    containerTitle:{
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginHorizontal: 20,
+        alignItems: 'center'
+    },
+    iconeAdd:{
+        color: colors.white,
+        fontSize: 24
+    },
     title: {
         color: "#fff", 
         fontSize: 25, 
