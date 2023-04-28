@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
         marginVertical: 15
     },
     textoBemVindo:{
-        color: '#fff',
+        color: colors.white,
         fontSize: 25
     },
     containerLucro:{
-        backgroundColor: colors.grey,
+        backgroundColor: colors.white,
         borderRadius: 15,
         padding: 10
     },
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     botao:{
-        backgroundColor: colors.grey,
+        backgroundColor: colors.white,
         borderRadius: 15,
         flex: 1,
         marginHorizontal: 5,

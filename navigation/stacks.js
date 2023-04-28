@@ -12,6 +12,16 @@ import AlterarNome from '../pages/AlterarNome/alterarNome';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const headerOptionsPadrao = {
+    headerShown: true,
+    headerStyle: {
+        backgroundColor: colors.darkGreen,
+    },
+    headerTintColor: colors.white,
+    headerShadowVisible: false
+}
+
+
 function MainStack(){
     return(<>
         <Stack.Navigator
@@ -20,7 +30,20 @@ function MainStack(){
         >
             {/* todas as telas vão entrar aqui também */}
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="AlterarNome" component={AlterarNome} />
+            <Stack.Screen 
+                name="AlterarNome" 
+                component={AlterarNome}
+                options={{...headerOptionsPadrao,
+                    title: "Configurações"
+                }}
+            />
+            <Stack.Screen 
+                name="AdicionarCompra" 
+                component={AdicionarCompra} 
+                options={{...headerOptionsPadrao,
+                    title: "Adicionar compra"
+                }}
+            />
         </Stack.Navigator>
     </>)
 }
@@ -35,14 +58,8 @@ function ConsultarStack(){
             <Stack.Screen 
                 name="AdicionarCompra" 
                 component={AdicionarCompra} 
-                options={{
-                    headerShown: true,
-                    title: "Adicionar compra",
-                    headerStyle: {
-                        backgroundColor: colors.darkGreen,
-                    },
-                    headerTintColor: colors.white,
-                    headerShadowVisible: false
+                options={{...headerOptionsPadrao,
+                    title: "Adicionar compra"
                 }}
             />
         </Stack.Navigator>

@@ -4,10 +4,15 @@ import Compra from "../classes/compra";
 export default function CompraService(){
     const db = DatabaseService();
 
-    const add = (valor, descricao = null) => {
-        const sql = `INSERT INTO compras (valor${descricao ?? ", descricao"})
-        values ((?)${descricao ?? ", (?)"});`;
-        return db.addData(sql, descricao ? [valor, descricao] : [valor]);
+    const add = (valor, descricao, data) => {
+        const sql = `INSERT INTO compras (valor${descricao ? ", descricao" : ""}${data ? ", data": ""})
+        values ((?)${descricao ? ", (?)" : ""}${data ? ", (?)": ""});`;
+
+        var values = [valor*100];
+        if (descricao) values.push(descricao);
+        if (data) values.push(data.getTime() / 1000);
+
+        return db.addData(sql, values);
     }
 
     const getAll = async () => {

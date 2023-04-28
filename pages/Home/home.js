@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Pressable, Text, View } from "react-native";
 import { Ionicons, FontAwesome5, Octicons } from '@expo/vector-icons';
 import styles from "./styles";
 import colors from "../../variables";
@@ -22,11 +22,15 @@ export default function Home({navigation}){
         navigation.navigate('AlterarNome');
     };
 
+    const irParaAdicionarCompra = () => {
+        navigation.navigate("AdicionarCompra");
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.headerBemVindo}>
                 <Text style={styles.textoBemVindo}>Bem vindo(a), {nome}</Text>
-                <Ionicons onPress={() => {}} name="settings-outline" size={24} color="#fff" />
+                <Ionicons onPress={() => irParaAlterarNome()} name="settings-outline" size={24} color="#fff" />
             </View>
 
             <View style={styles.containerLucro}>
@@ -35,7 +39,7 @@ export default function Home({navigation}){
                     fontSize: 25, 
                     color: 
                         semanal > 0 ? colors.green : 
-                        semanal < 0 ? colors.red : "#000"
+                        semanal < 0 ? colors.red : colors.black
                     }}>R$ {semanal}</Text>
                 <Text>Seu lucro mensal é de R$ {mensal}</Text>
             </View>
@@ -43,7 +47,7 @@ export default function Home({navigation}){
             <View style={{marginVertical: 50}}>
                 <View style={{
                     height: 100,
-                    backgroundColor: colors.grey,
+                    backgroundColor: colors.white,
                     borderRadius: 15
                 }}>
                 </View>
@@ -68,13 +72,13 @@ export default function Home({navigation}){
             </View>
 
             <View style={styles.linhaBotao}>
-                <View
-                    onPress={() => {}}
+                <Pressable
+                    onPress={() => irParaAdicionarCompra()}
                     style={styles.botao}
                 >
                     <FontAwesome5 name="shopping-cart" style={styles.iconeBotao} />
                     <Text>Adicionar compra</Text>
-                </View>
+                </Pressable>
 
                 <View
                     onPress={() => {}}
@@ -86,8 +90,7 @@ export default function Home({navigation}){
             </View>
 
                 {/*botão apenas para testes*/}
-                {/* <Button onPress={removeNome} title="remover nome" /> */}
-                <Button title="Alterar nome" onPress={irParaAlterarNome} />
+                <Button onPress={removeNome} title="remover nome" />
         </View>
     );
 }

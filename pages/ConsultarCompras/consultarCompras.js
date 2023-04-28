@@ -15,14 +15,6 @@ export default function ConsultarCompras({navigation}){
     const [loading, setLoading] = useState(false);
     
     const comprasService = CompraService();
-
-    const next = () => {
-        // adiciona valor no banco (apenas para teste)
-        comprasService.add(valor).then(res => {
-            console.log("res: " + res);
-            setValor(valor + res);
-        }) .catch(err => console.log(err));
-    }
     
     const get = () =>{
         // get no banco
@@ -120,9 +112,6 @@ export default function ConsultarCompras({navigation}){
                     <Text style={styles.title}>Consultar compras</Text>
                     <MaterialIcons name="add-box" style={styles.iconeAdd} onPress={adicionarCompra} />
                 </View>
-
-                {/* botão de teste para adicionar compra no banco! */}
-                {/* <Button onPress={() => next()} title="add"/> */}
 
                 <View style={styles.filtroDatas}>
 
