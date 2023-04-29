@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import CurrencyInput from "react-native-currency-input";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import styles from "./styles";
@@ -19,7 +19,7 @@ const AdicionarCompra = ({navigation}) =>{
 
         compraService.add(preco, descricao, dataHora)
             .then(res => {
-                navigation.navigate("Home");
+                navigation.pop();
             })
             .catch(err => console.log(err));
     }

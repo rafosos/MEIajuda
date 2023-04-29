@@ -3,18 +3,16 @@ import colors from "../../variables";
 
 const styles = StyleSheet.create({
     scrollview:{
-        backgroundColor: colors.darkGreen, 
-        paddingVertical: 20,
-        paddingBottom: 50
+        backgroundColor: colors.darkGreen
     },
     cabecalho:{
-        height: 150, 
         justifyContent:"space-around"
     },
     containerTitle:{
         justifyContent: 'space-between',
         flexDirection: 'row',
         marginHorizontal: 20,
+        marginVertical: 10,
         alignItems: 'center'
     },
     iconeAdd:{
@@ -22,52 +20,75 @@ const styles = StyleSheet.create({
         fontSize: 24
     },
     title: {
-        color: "#fff", 
+        color: colors.white,
         fontSize: 25, 
         textAlign: 'center'
     },
-    filtroDatas: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
+    containerDataLabel:{
+        marginHorizontal: 5
     },
-    containerFiltroData:{
-        flex:1,
+    labelFiltro:{
+        fontSize: 15,
+        color: colors.white  
+    },
+    linhaDataHora:{
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 2
+    },
+    filtroDatas: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        flex:1
     },
     iconeCalendario:{
         fontSize: 24,
         color: colors.white
     },
     datas:{
-        backgroundColor: '#fff', 
+        backgroundColor: colors.white, 
         marginVertical: 5,
         marginHorizontal: 5,
         height: 35, 
-        justifyContent: 'space-evenly', 
         alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 10,
-        flex: 1,
-        flexDirection: 'row'
+        paddingHorizontal: 20,
+        flex: 1
     },
-    placeholderData: {
-        color: colors.grey
+    textoDataHora:{
+        fontSize: 17
+    },
+    grafico:{
+        borderRadius: 20
+    },
+    labelResultados:{
+        color: colors.white,
+        fontSize: 15,
+        marginHorizontal: 10
     },
     itemCompra:{
-        backgroundColor: "#fff", 
+        backgroundColor: colors.white,
         margin: 10,
         borderRadius: 15,
         padding: 10
     },
-    iconeLimpar:{
-        fontSize: 24,
-        color: "#f00"
+    containerBotaoConsultar: {
+        alignItems: "center"
     },
     botaoConsultar: {
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: colors.green,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderRadius: 10,
+        marginVertical: 10
+    },
+    textConsultar:{
+        color: colors.white,
+        fontSize: 20
     },
     naoHaResultados: {
         color: colors.white,

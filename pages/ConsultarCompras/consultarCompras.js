@@ -1,57 +1,71 @@
 import { useState } from "react";
-import { ActivityIndicator, Button, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Dimensions, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { LineChart } from "react-native-chart-kit";
+import { MaterialIcons } from '@expo/vector-icons';
 import styles from "./styles";
 import CompraService from "../../services/compraService";
+import colors from "../../variables";
 
 export default function ConsultarCompras({navigation}){
-    const [dataInicio, setDataInicio] = useState();
-    const [horaInicio, setHoraInicio] = useState();
-    const [dataFim, setDataFim] = useState();
-    const [horaFim, setHoraFim] = useState();
+    const [dataInicio, setDataInicio] = useState(new Date());
+    const [dataFim, setDataFim] = useState(new Date());
     const [compras, setCompras] = useState(null);
-    const [valor, setValor] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [data, setData] = useState()
     
     const comprasService = CompraService();
     
     const get = () =>{
-        // get no banco
-        var secInicial = dataSec(dataInicio, horaInicio);
-        var secFinal = dataSec(dataFim, horaFim);
+        var secInicial = (dataInicio.getTime() / 1000) | 0;
+        var secFinal = (dataFim.getTime() / 1000) | 0;
 
         setLoading(true);
-        comprasService.getDatas(secInicial, secFinal).then(res => {
-            console.log("res: " + res);
+        comprasService.getDatas(secInicial, secFinal).then((res) => {
             setCompras(res);
+            
+            if(res.length){
+                let somas = {};
+                let calendario = {};
+                res.forEach(compra => {
+                    const mes = compra.data.toLocaleString('default', { month: 'long' })
+                    if(somas[mes])
+                        somas[mes] += compra.valor;
+                    else{
+                        somas[mes] = compra.valor;
+                        calendario[mes] = compra.data.getMonth();
+                    }
+                });
+
+                let meses = Object.keys(somas);
+                meses.sort((a, b) => calendario[a] - calendario[b]);
+
+                setData({
+                    labels: meses,
+                    datasets:[{data: Object.values(somas)}],
+                    legend: ["Mêses com compras registradas no período selecionado"]
+                });
+            }
         }) 
         .catch(err => console.log(err))
         .finally(() => setLoading(false));
     }
 
-    const dataSec = (data, hora) => {
-        if(!data || !hora) return null;
-
-        var dataNova = new Date(data);
-        dataNova.setHours(hora.getHours());
-        dataNova.setMinutes(hora.getMinutes());
-        return (dataNova.getTime() / 1000) | 0;
-    }
-
     const onChangeDataInicio = (event, selectedDate) => {
         if(event.type != "set") return;
-        setDataInicio(selectedDate);
-        abrirHoraInicio();
+        var data = new Date(dataInicio);
+        data.setDate(selectedDate.getDate());
+        data.setMonth(selectedDate.getMonth());
+        data.setFullYear(selectedDate.getFullYear());
+        setDataInicio(data);
     }
 
     const onChangeHoraInicio = (event, selectedTime) => {
-        if(event.type != "set"){
-            if(!horaInicio) limparInicio();
-            return;
-        }
-
-        setHoraInicio(selectedTime);
+        if(event.type != "set") return;
+        var data = new Date(dataInicio);
+        data.setHours(selectedTime.getHours());
+        data.setMinutes(selectedTime.getMinutes());
+        setDataInicio(data);
     }
 
     const abrirDataInicio = () => {
@@ -59,23 +73,25 @@ export default function ConsultarCompras({navigation}){
     }
 
     const abrirHoraInicio = () => {
-        modalDataHora("time", onChangeHoraInicio, horaInicio, false);
-    }
-
-    const limparInicio = () => {
-        setDataInicio(null);
-        setHoraInicio(null);
+        modalDataHora("time", onChangeHoraInicio, dataInicio, false);
     }
 
     //fim
     const onChangeDataFim = (event, selectedDate) => {
         if(event.type != "set") return;
-        setDataFim(selectedDate);
-        abrirHoraFim();
+        var data = new Date(dataFim);
+        data.setDate(selectedDate.getDate());
+        data.setMonth(selectedDate.getMonth());
+        data.setFullYear(selectedDate.getFullYear());
+        setDataFim(data);
     }
 
     const onChangeHoraFim = (event, selectedTime) => {
-        setHoraFim(selectedTime);
+        if(event.type != "set") return;
+        var data = new Date(dataFim);
+        data.setHours(selectedTime.getHours());
+        data.setMinutes(selectedTime.getMinutes());
+        setDataFim(data);
     }
 
     const abrirDataFim = () => {
@@ -83,12 +99,7 @@ export default function ConsultarCompras({navigation}){
     }
 
     const abrirHoraFim = () => {
-        modalDataHora("time", onChangeHoraFim, horaFim, true);
-    }
-
-    const limparFim = () => {
-        setDataFim(null);
-        setHoraFim(null);
+        modalDataHora("time", onChangeHoraFim, dataFim, true);
     }
 
     const modalDataHora = (modo, onChange, value, fim) =>{
@@ -107,64 +118,89 @@ export default function ConsultarCompras({navigation}){
 
     return (
         <ScrollView style={styles.scrollview}>
+        <View style={{paddingBottom: 10}}>
             <View style={styles.cabecalho}>
                 <View style={styles.containerTitle}>
                     <Text style={styles.title}>Consultar compras</Text>
                     <MaterialIcons name="add-box" style={styles.iconeAdd} onPress={adicionarCompra} />
                 </View>
 
-                <View style={styles.filtroDatas}>
-
-                    <View style={styles.containerFiltroData}>
-                        <MaterialIcons name="date-range" onPress={abrirDataInicio} style={styles.iconeCalendario}/>
-                        <View style={styles.datas}>
-                            <Pressable onPress={abrirDataInicio} style={styles.filtroData}>
-                                {dataInicio && horaInicio ?
-                                <Text>
-                                    {dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}
-                                    {formataDezena(horaInicio.getHours())}:{formataDezena(horaInicio.getMinutes())}
-                                </Text>
-                                : <Text style={styles.placeholderData}>Data inicial</Text> }
+                <View style={styles.containerDataLabel}>
+                    <Text style={styles.labelFiltro}>Data inicial:</Text>
+                    <View style={styles.linhaDataHora}>
+                        <View style={styles.filtroDatas}>
+                            <MaterialIcons name="date-range" onPress={abrirDataInicio} style={styles.iconeCalendario}/>
+                            <Pressable onPress={abrirDataInicio} style={styles.datas}>
+                                <Text style={styles.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
                             </Pressable>
-                            {dataInicio && horaInicio ? 
-                                <Pressable onPress={limparInicio}>
-                                    <AntDesign name="closecircle" style={styles.iconeLimpar}/>
-                                </Pressable>
-                            :null}
+                        </View>
+
+                        <View style={styles.filtroDatas}>
+                            <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={styles.iconeCalendario}/>
+                            <Pressable onPress={abrirHoraInicio} style={styles.datas}>
+                                <Text style={styles.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
+                            </Pressable>
                         </View>
                     </View>
-
-                    <View style={styles.containerFiltroData}>
-                        <MaterialIcons name="date-range" onPress={abrirDataInicio} style={styles.iconeCalendario}/>
-                        <View style={styles.datas}>
-                            <Pressable onPress={abrirDataFim}>
-                                {dataFim && horaFim ?
-                                <Text>
-                                    {dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}
-                                    {formataDezena(horaFim.getHours())}:{formataDezena(horaFim.getMinutes())}
-                                </Text>
-                                : <Text style={styles.placeholderData}>Data final</Text> }
-                            </Pressable>
-                            {dataFim && horaFim ? 
-                                <Pressable onPress={limparFim}>
-                                    <AntDesign name="closecircle" style={styles.iconeLimpar}/>
-                                </Pressable>
-                            :null}
-                        </View>
-                    </View>
-
                 </View>
 
-                <View style={styles.botaoConsultar}>
-                    <Button 
-                        onPress={() => get()}
-                        title="Consultar"
-                    />
+                <View style={styles.containerDataLabel}>
+                    <Text style={styles.labelFiltro}>Data final:</Text>
+                    <View style={styles.linhaDataHora}>
+                        <View style={styles.filtroDatas}>
+                            <MaterialIcons name="date-range" onPress={abrirDataFim} style={styles.iconeCalendario}/>
+                            <Pressable onPress={abrirDataFim} style={styles.datas}>
+                                <Text style={styles.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
+                            </Pressable>
+                        </View>
+
+                        <View style={styles.filtroDatas}>
+                            <MaterialIcons name="alarm" onPress={abrirHoraFim} style={styles.iconeCalendario}/>
+                            <Pressable onPress={abrirHoraFim} style={styles.datas}>
+                                <Text style={styles.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={styles.containerBotaoConsultar}>
+                    <Pressable onPress={() => get()} style={styles.botaoConsultar}>
+                        <Text style={styles.textConsultar}>Consultar</Text>
+                    </Pressable>
                 </View>
             </View>
+
+            {data ? 
+                <View style={{alignItems: 'center', marginVertical: 5}}>
+                    <LineChart
+                        data={data}
+                        yAxisLabel="R$ "
+                        width={Dimensions.get("window").width * 0.95}
+                        height={256}
+                        verticalLabelRotation={30}
+                        style={styles.grafico}
+                        chartConfig={{
+                            backgroundColor: colors.white,
+                            backgroundGradientFrom: colors.white,
+                            backgroundGradientTo: colors.white,
+                            decimalPlaces: 2,
+                            color: colors.charts.green,
+                            labelColor: colors.charts.black,
+                            propsForDots: {
+                                r: "6",
+                                strokeWidth: "2",
+                                stroke: colors.charts.darkGreen
+                            }
+                        }}
+                        bezier
+                    />
+                </View>
+            :null}
+
             {compras ? 
-                compras.length ? 
-                    compras.map(compra => {
+                compras.length ? <>
+                    <Text style={styles.labelResultados}>Compras no período selecionado:</Text>
+                    {compras.map(compra => {
                         return (
                             <View key={compra.id} style={styles.itemCompra}>
                                 <Text>Id da compra: {compra.id}</Text>
@@ -178,12 +214,13 @@ export default function ConsultarCompras({navigation}){
                                 </Text>
                             </View>
                         )
-                    }):
+                    })}
+                    </>:
                     <Text style={styles.naoHaResultados}>Não há compras para o período pesquisado.</Text>
             : null}
 
             {loading ? <ActivityIndicator size={"large"} color={"#fff"}/> : null}
-
+            </View>
         </ScrollView>
     );
 }

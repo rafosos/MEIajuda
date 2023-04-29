@@ -28,7 +28,12 @@ export default function CompraService(){
             sql += `>= ${dataInicio}`;
         else if(dataFim)
             sql += `<= ${dataFim}`;
-        else sql = "";
+        else {
+            const ano = new Date().getFullYear();
+            const comecoAno = new Date(`${ano}-01-01T00:00:00Z`).getTime()/1000;
+            const fimAno = new Date(`${ano}-12-10T23:59:00Z`).getTime()/1000;
+            sql += `BETWEEN ${comecoAno} AND ${fimAno}`;
+        }
 
         const data = await db.getAll("compras", sql);
         console.log(data)
@@ -36,7 +41,7 @@ export default function CompraService(){
     }
 
     const mapearCompras = (compras) => 
-        compras.map(compra => new Compra(compra.id, compra.valor, compra.descricao, compra.data));
+        compras.map(compra => new Compra(compra.id, compra.valor/100, compra.descricao, compra.data));
 
     return {add, getAll, getDatas}
 }
