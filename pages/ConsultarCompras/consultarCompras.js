@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActivityIndicator, Dimensions, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -12,6 +12,8 @@ export default function ConsultarCompras({navigation}){
     const [dataFim, setDataFim] = useState(new Date());
     const [compras, setCompras] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [modalVisivel, setModalVisivel] = useState(false);
+    const [selectedId, setSelectedId] = useState();
     const [data, setData] = useState()
     
     const comprasService = CompraService();
@@ -47,7 +49,10 @@ export default function ConsultarCompras({navigation}){
                 });
             }
         }) 
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err);
+            Alert.alert("Não foi possível buscar os registros devido a um erro.");
+        })
         .finally(() => setLoading(false));
     }
 
@@ -115,6 +120,22 @@ export default function ConsultarCompras({navigation}){
     const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
 
     const adicionarCompra = () => navigation.navigate("AdicionarCompra");
+
+    const abrirModal = (id) => {
+        setSelectedId(id);
+        setModalVisivel(true);
+    }
+
+    const deletarRegistro = () => {
+        setModalVisivel(false);
+        comprasService.deleteById(selectedId).then(res => {
+            console.log("Registro deletado com sucesso.");
+            get();
+        }).catch(err => {
+            console.log(err);
+            Alert.alert("Não foi possível deletar o registro devido a um erro.");
+        });
+    }
 
     return (
         <ScrollView style={styles.scrollview}>
@@ -203,9 +224,14 @@ export default function ConsultarCompras({navigation}){
                     {compras.map(compra => {
                         return (
                             <View key={compra.id} style={styles.itemCompra}>
-                                <Text>Id da compra: {compra.id}</Text>
-                                <Text>Valor: R$ {compra.valor/100}</Text>
-                                <Text>Descrição: {compra.descricao}</Text>
+                                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                                    <View>
+                                        <Text>Id da compra: {compra.id}</Text>
+                                        <Text>Valor: R$ {compra.valor/100}</Text>
+                                        <Text>Descrição: {compra.descricao}</Text>
+                                    </View>
+                                    <MaterialIcons name="delete" size={20} color={"#f00"} onPress={() => abrirModal(compra.id)}/>
+                                </View>
                                 <Text>
                                     Data: {compra.data.getDate()}/
                                     {compra.data.getMonth()+1}/
@@ -218,6 +244,34 @@ export default function ConsultarCompras({navigation}){
                     </>:
                     <Text style={styles.naoHaResultados}>Não há compras para o período pesquisado.</Text>
             : null}
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisivel}
+                onRequestClose={() => {setModalVisivel(false);}}>
+                <View style={styles.centeredView}>
+                    <Pressable onPress={() => setModalVisivel(false)}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.headingModal}>Tem certeza que deseja apagar o registro permanentemente?</Text>
+                        <Text style={styles.subHeadingModal}>Esta ação não poderá ser desfeita.</Text>
+
+                        <View style={styles.botoesModal}>
+                            <Pressable onPress={() => setModalVisivel(false)}>
+                                <Text style={styles.textCancelarModal}>Não, cancelar</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={styles.botaoDeletarModal}
+                                onPress={deletarRegistro}
+                                >
+                                <Text style={styles.textBotaoModal}>Sim, deletar</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                    </Pressable>
+                </View>
+            </Modal>
 
             {loading ? <ActivityIndicator size={"large"} color={"#fff"}/> : null}
             </View>

@@ -43,5 +43,9 @@ export default function CompraService(){
     const mapearCompras = (compras) => 
         compras.map(compra => new Compra(compra.id, compra.valor/100, compra.descricao, compra.data));
 
-    return {add, getAll, getDatas}
+    const deleteById = async (id) => {
+        return await db.deleteById("compras", id);
+    }
+
+    return {add, getAll, getDatas, deleteById}
 }

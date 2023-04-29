@@ -93,6 +93,53 @@ const styles = StyleSheet.create({
     naoHaResultados: {
         color: colors.white,
         textAlign:'center'
+    },
+    centeredView:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.black7
+    },
+    modalView: {
+        width: '90%',
+        backgroundColor: colors.white,
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: colors.black,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    headingModal:{
+        fontWeight: 'bold',
+        fontSize: 17,
+        textAlign: 'center'
+    },
+    subHeadingModal:{
+    },
+    botoesModal:{
+        marginTop: 15,
+        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '60%'
+    },
+    botaoDeletarModal:{
+        backgroundColor: colors.red,
+        padding: 5,
+        paddingHorizontal: 7,
+        borderRadius: 5
+    },
+    textBotaoModal:{
+        color: colors.white
+    },
+    textCancelarModal:{
+        color: colors.green
     }
 });
 

@@ -20,14 +20,15 @@ export default function DatabaseService() {
     }
 
     const deleteById = (table, id) => {
-        db.transaction(
+        return new  Promise((resolve, reject) => db.transaction(
             tx => {
                 tx.executeSql(`delete from ${table} where id = ?;`, [id], (_, { rows }) => {
+                    resolve(true);
                 }), (sqlError) => {
                     console.log(sqlError);
                 }}, (txError) => {
                 console.log(txError);
-            });
+            }));
     }
 
 
