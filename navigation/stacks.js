@@ -8,6 +8,8 @@ import ConsultarCompras from '../pages/ConsultarCompras/consultarCompras';
 import colors from '../variables';
 import AdicionarCompra from '../pages/AdicionarCompra/adicionarCompra';
 import AlterarNome from '../pages/AlterarNome/alterarNome';
+import AdicionarProduto from '../pages/AdicionarProduto/adicionarProduto';
+import MeusProdutos from '../pages/MeusProdutos/meusProdutos';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,14 +23,12 @@ const headerOptionsPadrao = {
     headerShadowVisible: false
 }
 
-
 function MainStack(){
     return(<>
         <Stack.Navigator
             initialRouteName="Home"
             screenOptions={{headerShown: false}}
         >
-            {/* todas as telas vão entrar aqui também */}
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen 
                 name="AlterarNome" 
@@ -37,16 +37,12 @@ function MainStack(){
                     title: "Configurações"
                 }}
             />
-            <Stack.Screen 
-                name="AdicionarCompra" 
-                component={AdicionarCompra} 
-                options={{...headerOptionsPadrao,
-                    title: "Adicionar compra"
-                }}
-            />
+            {telasProdutosStack()}
+            {telasConsultarStack()}
         </Stack.Navigator>
     </>)
 }
+
 
 function ConsultarStack(){
     return(<>
@@ -54,17 +50,41 @@ function ConsultarStack(){
             initialRouteName='ConsultarCompras'
             screenOptions={{headerShown: false}}
         >
-            <Stack.Screen name="ConsultarCompras" component={ConsultarCompras} />
-            <Stack.Screen 
-                name="AdicionarCompra" 
-                component={AdicionarCompra} 
-                options={{...headerOptionsPadrao,
-                    title: "Adicionar compra"
-                }}
-            />
+            {telasConsultarStack()}
         </Stack.Navigator>
     </>)
 }
+const telasConsultarStack = () => <>
+    <Stack.Screen name="ConsultarCompras" component={ConsultarCompras} />
+    <Stack.Screen name="AdicionarCompra" 
+        component={AdicionarCompra} 
+        options={{...headerOptionsPadrao,
+            title: "Adicionar compra"
+        }}
+    />
+</>
+
+
+function ProdutosStack(){
+    return(<>
+        <Stack.Navigator 
+            initialRouteName='MeusProdutos'
+            screenOptions={{headerShown: false}}
+        >
+            {telasProdutosStack()}
+        </Stack.Navigator>
+    </>)
+}
+const telasProdutosStack = () =><>
+    <Stack.Screen name="MeusProdutos" component={MeusProdutos} />
+    <Stack.Screen name="AdicionarProduto"
+        component={AdicionarProduto} 
+        options={{...headerOptionsPadrao,
+            title: "Adicionar produto"
+        }}
+    />
+</>
+
 
 export function AuthStack(){
     return (
@@ -76,6 +96,7 @@ export function AuthStack(){
     </Stack.Navigator>
     );
 }
+
 
 export function TabStack(){
     return (
@@ -91,21 +112,26 @@ export function TabStack(){
                 }
             }}
         >
-            <Tab.Screen
-                name="app"
+            <Tab.Screen name="app"
                 options={{
                     tabBarShowLabel: false,
                     tabBarIcon: () => <AntDesign name="home" size={24} color={colors.white}/>,
                 }}
                 component={MainStack}
             />
-            <Tab.Screen
-                name="consulta"
+            <Tab.Screen name="consulta"
                 options={{
                     tabBarShowLabel: false,
                     tabBarIcon: () => <Entypo name="magnifying-glass" size={24} color={colors.white}/>
                 }}
                 component={ConsultarStack}
+            />
+            <Tab.Screen name="produtos"
+                options={{
+                    tabBarShowLabel: false,
+                    tabBarIcon: () => <Entypo name="menu" size={24} color={colors.white}/>
+                }}
+                component={ProdutosStack}
             />
         </Tab.Navigator>
     )

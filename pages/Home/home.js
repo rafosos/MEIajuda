@@ -26,6 +26,10 @@ export default function Home({navigation}){
         navigation.navigate("AdicionarCompra");
     };
 
+    const irParaMeusProdutos = () => {
+        navigation.navigate("MeusProdutos");
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.headerBemVindo}>
@@ -54,13 +58,13 @@ export default function Home({navigation}){
             </View>
 
             <View style={styles.linhaBotao}>
-                <View
-                    onPress={() => {}}
+                <Pressable
+                    onPress={() => irParaMeusProdutos()}
                     style={styles.botao}
                 >
                     <Ionicons name="menu-outline" style={styles.iconeBotao} />
-                    <Text>Meu cardápio</Text>
-                </View>
+                    <Text>Meus produtos</Text>
+                </Pressable>
 
                 <View
                     onPress={() => {}}
