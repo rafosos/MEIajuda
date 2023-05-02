@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { ActivityIndicator, Alert, Dimensions, Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from "./styles";
 import CompraService from "../../services/compraService";
 import colors from "../../variables";
+import ModalSimples from "../../components/modalSimples";
 
 export default function ConsultarCompras({navigation}){
     const [dataInicio, setDataInicio] = useState(new Date());
@@ -245,34 +246,12 @@ export default function ConsultarCompras({navigation}){
                     <Text style={styles.naoHaResultados}>Não há compras para o período pesquisado.</Text>
             : null}
 
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisivel}
-                onRequestClose={() => {setModalVisivel(false);}}>
-                <View style={styles.centeredView}>
-                    <Pressable onPress={() => setModalVisivel(false)}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.headingModal}>Tem certeza que deseja apagar o registro permanentemente?</Text>
-                        <Text style={styles.subHeadingModal}>Esta ação não poderá ser desfeita.</Text>
-
-                        <View style={styles.botoesModal}>
-                            <Pressable onPress={() => setModalVisivel(false)}>
-                                <Text style={styles.textCancelarModal}>Não, cancelar</Text>
-                            </Pressable>
-
-                            <Pressable
-                                style={styles.botaoDeletarModal}
-                                onPress={deletarRegistro}
-                                >
-                                <Text style={styles.textBotaoModal}>Sim, deletar</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                    </Pressable>
-                </View>
-            </Modal>
-
+            <ModalSimples
+                modalVisivel={modalVisivel}
+                setModalVisivel={setModalVisivel}
+                onPressConfirmar={() => deletarRegistro()}
+            />
+               
             {loading ? <ActivityIndicator size={"large"} color={"#fff"}/> : null}
             </View>
         </ScrollView>

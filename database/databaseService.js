@@ -32,9 +32,24 @@ export default function DatabaseService() {
     }
 
 
-    const updateById = (query, param) => {
+    const updateById = (table, id, columns, params) => {
+        if(columns.length != params.length){
+            console.log("Erro ao atualizar: número de valores diferente do número de colunas.");
+        }
+
+        let colVal = "";
+        for(var i = 0; i < columns.length; i++){
+            colVal += `${columns[i]} = ?`;
+            if((i+1) < columns.length) colVal += ", ";
+        }
+
+        const sql = `UPDATE ${table}
+        SET ${colVal}
+        WHERE id = ${id};`;
+
         return new Promise((resolve, reject) =>db.transaction(tx => {
-                tx.executeSql(query, param, () => {
+                tx.executeSql(sql, params, () => {
+                    resolve(true);
                 }), (sqlError) => {
                     console.log(sqlError);
                 }}, (txError) => {

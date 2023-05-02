@@ -33,17 +33,30 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10
     },
-    botaoSalvar:{
-        backgroundColor: colors.green,
-        marginVertical: 20,
+    botoesContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    botoes:{
+        flex:1,
+        margin: 20,
         borderRadius: 10,
         height: 40,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexDirection: "row"
     },
-    textSalvar:{
+    botaoSalvar:{
+        backgroundColor: colors.green
+    },
+    botaoExcluir:{
+        backgroundColor: colors.red
+    },
+    textBotao:{
         fontSize: 20,
-        color: colors.white
+        color: colors.white,
+        marginLeft: 15
     }
 });
 

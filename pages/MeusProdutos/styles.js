@@ -24,7 +24,13 @@ const styles = StyleSheet.create({
         fontSize: 25, 
         textAlign: 'center'
     },
-
+    produto:{
+        backgroundColor: colors.white,
+        justifyContent: 'center',
+        margin: 15,
+        borderRadius: 15,
+        padding: 10
+    }
 });
 
 export default styles;
