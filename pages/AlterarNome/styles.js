@@ -30,11 +30,21 @@ const styles = StyleSheet.create({
     color: '#000', 
     width: '100%', 
     marginBottom: 20, 
-    paddingHorizontal: 10, 
+    paddingHorizontal: 10,  
     borderRadius: 2 
   },
   botao: { 
-    width: '100%' 
+    width: '100%'
+  },
+  aviso: {
+    backgroundColor: '#FFF',
+    color: '#f00', 
+    fontSize: 16, 
+    marginTop: 10, 
+    textAlign: 'center',
+    marginBottom: 20, 
+    paddingHorizontal: 10, 
+    borderRadius: 2
   }
 });
 

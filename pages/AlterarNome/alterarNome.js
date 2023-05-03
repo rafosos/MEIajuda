@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Image } from 'react-native';
+import { View, TextInput, Text, Button, Image } from 'react-native';
 import { AsyncStorageService } from '../../storage/asyncStorageService';
 import { useUser } from '../../storage/userContext';
 import styles from './styles';
 
-const AlterarNome = ({navigation}) => {
-  const [nome, setNome] = useState('');
+const RemoverDados = ({navigation}) => {
   const userContext = useUser();
   const storageService = AsyncStorageService();
+  const [textoConfirmacao, setTextoConfirmacao] = useState('');
 
-  const salvarNome = () => {
-    storageService.salvarNomeFantasia(nome).then(() => {
-      userContext.setNome(nome);
-      navigation.navigate("Home");
-    }).catch(err => console.log(err));
+  const removerDados = () => {
+    if(textoConfirmacao === 'remover') {
+      storageService.removerDados().then(() => {
+        userContext.setNome('');
+        navigation.navigate("Home");
+      }).catch(err => console.log(err));
+    } else {
+      alert('Digite "remover" para confirmar a exclusão dos dados');
+    }
   };
 
   return (
@@ -22,17 +26,18 @@ const AlterarNome = ({navigation}) => {
         <View style={styles.containerImagem}>
           <Image source={require('../../assets/logomeiajuda.png')} style={styles.imgLogo} />
         </View>
+        <Text style={styles.aviso}>ATENÇÃO: Ao remover os dados, todas as informações armazenadas serão apagadas e não poderão ser recuperadas.</Text>
         <TextInput
-          placeholder="Insira seu novo nome aqui"
+          placeholder="Digite 'remover' para confirmar"
           placeholderTextColor="#666"
           style={styles.txtInput} 
-          onChangeText={setNome}
-          value={nome}
+          onChangeText={setTextoConfirmacao}
+          value={textoConfirmacao}
         />
-        <Button title="Salvar" onPress={() => salvarNome()} style={styles.botao} />
+        <Button title="Remover dados" onPress={() => removerDados()} style={styles.botao} />
       </View>
     </View>
   );
 };
 
-export default AlterarNome;
+export default RemoverDados;
