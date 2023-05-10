@@ -21,31 +21,39 @@ const styles = StyleSheet.create({
     marginBottom: 20 
   },
   imgLogo: { 
-    width: 50, 
-    height: 50, 
+    width: 120, 
+    height: 120, 
     resizeMode: 'contain'
   },
   txtInput: { 
-    backgroundColor: '#FFF', 
-    color: '#000', 
-    width: '100%', 
-    marginBottom: 20, 
-    paddingHorizontal: 10,  
-    borderRadius: 2 
-  },
-  botao: { 
-    width: '100%'
+    backgroundColor: colors.white,
+    color: colors.black,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginBottom: 20,
+    textAlignVertical: "top",
+    width: 350
   },
   aviso: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.white,
     color: '#f00', 
     fontSize: 16, 
-    marginTop: 10, 
     textAlign: 'center',
     marginBottom: 20, 
     paddingHorizontal: 10, 
     borderRadius: 2
-  }
+  },
+  botao: {
+    backgroundColor: colors.green, 
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  botaoTexto: {
+    color: colors.white, 
+  },
 });
 
 export default styles;
