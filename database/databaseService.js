@@ -31,6 +31,17 @@ export default function DatabaseService() {
             }));
     }
 
+    const deleteByColumn = (table, column, value) => {
+        return new  Promise((resolve, reject) => db.transaction(
+            tx => {
+                tx.executeSql(`delete from ${table} where ${column} = ?;`, [value], (_, { rows }) => {
+                    resolve(true);
+                }), (sqlError) => {
+                    console.log(sqlError);
+                }}, (txError) => {
+                console.log(txError);
+            }));
+    }
 
     const updateById = (table, id, columns, params) => {
         if(columns.length != params.length){
@@ -81,11 +92,25 @@ export default function DatabaseService() {
             ))
     }
 
+    const getCustom = (sql) => {
+        return new Promise((resolve, reject) => 
+            db.transaction(tx => {
+                    console.log(sql);
+                    tx.executeSql(sql, [], (_, { rows }) => {
+                        resolve(rows._array);
+                    }),
+                    (sqlError) => {console.log(sqlError)}
+                }, (txError) => {console.log(txError)}
+            ))
+    }
+
     return{
         addData,
         deleteById,
+        deleteByColumn,
         updateById,
         getById,
-        getAll
+        getAll,
+        getCustom
     }
 }

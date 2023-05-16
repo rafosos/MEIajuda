@@ -29,6 +29,13 @@ export default function ProdutoService(){
         return mapearProdutos(await db.getAll("produtos"));
     }
 
+    const get = async (termo, escolhidos) => {
+        return mapearProdutos(await db.getAll("produtos", 
+            `WHERE id NOT IN (${escolhidos}) AND
+                (nome LIKE '%${termo}%' OR 
+                descricao LIKE '%${termo}%');`));
+    }
+
     const deleteById = (id) => db.deleteById("produtos", id);
 
     const mapearProdutos = (produtos) => 
@@ -36,6 +43,7 @@ export default function ProdutoService(){
 
     return{
         add,
+        get,
         getAll,
         updateById,
         deleteById

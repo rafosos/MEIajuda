@@ -1,38 +1,39 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Dimensions, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, Pressable, RefreshControl, ScrollView, Text, ToastAndroid, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
-import styles from "./styles";
-import CompraService from "../../services/compraService";
+import s from "./styles";
 import colors from "../../variables";
 import ModalSimples from "../../components/modalSimples";
+import VendaService from "../../services/vendaService";
 
-export default function ConsultarCompras({navigation}){
+export default function ConsultarVendas({navigation}){
     const [dataInicio, setDataInicio] = useState(new Date());
     const [dataFim, setDataFim] = useState(new Date());
-    const [compras, setCompras] = useState(null);
+    const [refreshing, setRefreshing] = useState(false);
+    const [vendas, setVendas] = useState(null);
     const [loading, setLoading] = useState(false);
     const [modalVisivel, setModalVisivel] = useState(false);
-    const [selectedId, setSelectedId] = useState();
-    const [data, setData] = useState()
+    const [selectedVenda, setSelectedVenda] = useState();
+    const [data, setData] = useState();
     
-    const comprasService = CompraService();
-
+    const vendaService = VendaService();
+    
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
           get();
         });
         return unsubscribe;
     }, [navigation]);
-    
+
     const get = () =>{
         var secInicial = (dataInicio.getTime() / 1000) | 0;
         var secFinal = (dataFim.getTime() / 1000) | 0;
 
         setLoading(true);
-        comprasService.getDatas(secInicial, secFinal).then((res) => {
-            setCompras(res);
+        vendaService.getDatas(secInicial, secFinal).then((res) => {
+            setVendas(res);
             
             if(res.length){
                 let somas = {};
@@ -53,15 +54,20 @@ export default function ConsultarCompras({navigation}){
                 setData({
                     labels: meses,
                     datasets:[{data: Object.values(somas)}],
-                    legend: ["Mêses com compras registradas no período selecionado"]
+                    legend: ["Mêses com vendas registradas no período selecionado"]
                 });
+            }else{
+                setData(null);
             }
         }) 
         .catch(err => {
             console.log(err);
             Alert.alert("Não foi possível buscar os registros devido a um erro.");
         })
-        .finally(() => setLoading(false));
+        .finally(() => {
+            setLoading(false);
+            setRefreshing(false);
+        });
     }
 
     const onChangeDataInicio = (event, selectedDate) => {
@@ -127,17 +133,18 @@ export default function ConsultarCompras({navigation}){
 
     const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
 
-    const adicionarCompra = () => navigation.navigate("AdicionarCompra");
+    const adicionarVenda = () => navigation.navigate("AdicionarVenda");
 
-    const abrirModal = (id) => {
-        setSelectedId(id);
+    const abrirModal = (venda) => {
+        setSelectedVenda(venda);
         setModalVisivel(true);
     }
 
     const deletarRegistro = () => {
         setModalVisivel(false);
-        comprasService.deleteById(selectedId).then(res => {
+        vendaService.deleteByVenda(selectedVenda).then(res => {
             console.log("Registro deletado com sucesso.");
+            ToastAndroid.show("Resgitro deletado com sucesso.", ToastAndroid.SHORT);
             get();
         }).catch(err => {
             console.log(err);
@@ -145,56 +152,64 @@ export default function ConsultarCompras({navigation}){
         });
     }
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        get();
+    }
+
     return (
-        <ScrollView style={styles.scrollview}>
+        <ScrollView 
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+            style={s.scrollview}
+        >
         <View style={{paddingBottom: 10}}>
-            <View style={styles.cabecalho}>
-                <View style={styles.containerTitle}>
-                    <Text style={styles.title}>Consultar compras</Text>
-                    <MaterialIcons name="add-box" style={styles.iconeAdd} onPress={adicionarCompra} />
+            <View style={s.cabecalho}>
+                <View style={s.containerTitle}>
+                    <Text style={s.title}>Consultar vendas</Text>
+                    <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarVenda} />
                 </View>
 
-                <View style={styles.containerDataLabel}>
-                    <Text style={styles.labelFiltro}>Data inicial:</Text>
-                    <View style={styles.linhaDataHora}>
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataInicio} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirDataInicio} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
+                <View style={s.containerDataLabel}>
+                    <Text style={s.labelFiltro}>Data inicial:</Text>
+                    <View style={s.linhaDataHora}>
+                        <View style={s.filtroDatas}>
+                            <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
+                            <Pressable onPress={abrirDataInicio} style={s.datas}>
+                                <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
                             </Pressable>
                         </View>
 
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraInicio} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
+                        <View style={s.filtroDatas}>
+                            <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
+                            <Pressable onPress={abrirHoraInicio} style={s.datas}>
+                                <Text style={s.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
                             </Pressable>
                         </View>
                     </View>
                 </View>
 
-                <View style={styles.containerDataLabel}>
-                    <Text style={styles.labelFiltro}>Data final:</Text>
-                    <View style={styles.linhaDataHora}>
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataFim} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirDataFim} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
+                <View style={s.containerDataLabel}>
+                    <Text style={s.labelFiltro}>Data final:</Text>
+                    <View style={s.linhaDataHora}>
+                        <View style={s.filtroDatas}>
+                            <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
+                            <Pressable onPress={abrirDataFim} style={s.datas}>
+                                <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
                             </Pressable>
                         </View>
 
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraFim} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraFim} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
+                        <View style={s.filtroDatas}>
+                            <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
+                            <Pressable onPress={abrirHoraFim} style={s.datas}>
+                                <Text style={s.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
                             </Pressable>
                         </View>
                     </View>
                 </View>
 
-                <View style={styles.containerBotaoConsultar}>
-                    <Pressable onPress={() => get()} style={styles.botaoConsultar}>
-                        <Text style={styles.textConsultar}>Consultar</Text>
+                <View style={s.containerBotaoConsultar}>
+                    <Pressable onPress={() => get()} style={s.botaoConsultar}>
+                        <Text style={s.textConsultar}>Consultar</Text>
                     </Pressable>
                 </View>
             </View>
@@ -207,7 +222,7 @@ export default function ConsultarCompras({navigation}){
                         width={Dimensions.get("window").width * 0.95}
                         height={256}
                         verticalLabelRotation={30}
-                        style={styles.grafico}
+                        style={s.grafico}
                         chartConfig={{
                             backgroundColor: colors.white,
                             backgroundGradientFrom: colors.white,
@@ -226,31 +241,32 @@ export default function ConsultarCompras({navigation}){
                 </View>
             :null}
 
-            {compras ? 
-                compras.length ? <>
-                    <Text style={styles.labelResultados}>Compras no período selecionado:</Text>
-                    {compras.map(compra => {
+            {vendas ? 
+                vendas.length ? <>
+                    <Text style={s.labelResultados}>Compras no período selecionado:</Text>
+                    {vendas.map(venda => {
                         return (
-                            <View key={compra.id} style={styles.itemCompra}>
+                            <View key={venda.id} style={s.itemCompra}>
                                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                     <View>
-                                        <Text>Id da compra: {compra.id}</Text>
-                                        <Text>Valor: R$ {compra.valor/100}</Text>
-                                        <Text>Descrição: {compra.descricao}</Text>
+                                        <Text>Id da venda: {venda.id}</Text>
+                                        <Text>Valor: R$ {venda.valor}</Text>
+                                        <Text>Observações: {venda.observacoes}</Text>
                                     </View>
-                                    <MaterialIcons name="delete" size={20} color={colors.red} onPress={() => abrirModal(compra.id)}/>
+                                    <MaterialIcons name="delete" size={20} color={colors.red} onPress={() => abrirModal(venda)}/>
                                 </View>
                                 <Text>
-                                    Data: {compra.data.getDate()}/
-                                    {compra.data.getMonth()+1}/
-                                    {compra.data.getFullYear() + " "}
-                                    {compra.data.getHours()}:{compra.data.getMinutes()}
+                                    Data: {venda.data.getDate()}/
+                                    {venda.data.getMonth()+1}/
+                                    {venda.data.getFullYear() + " "}
+                                    {venda.data.getHours()}:{venda.data.getMinutes()}
                                 </Text>
+                                <Text>Produtos: {venda.produtos.map((produto, index) => `${produto.nome} `)}</Text>
                             </View>
                         )
                     })}
                     </>:
-                    <Text style={styles.naoHaResultados}>Não há compras para o período pesquisado.</Text>
+                    <Text style={s.naoHaResultados}>Não há vendas para o período pesquisado.</Text>
             : null}
 
             <ModalSimples

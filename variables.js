@@ -3,6 +3,8 @@ const colors = {
     green: '#3c9c03',
     darkGreen: "#0e201e",
     red: '#f00',
+    lighterGrey: '#efefef',
+    lightGrey: '#dfdfdf',
     grey: '#cfcfcf',
     darkGrey: '#555',
     black: "#000",

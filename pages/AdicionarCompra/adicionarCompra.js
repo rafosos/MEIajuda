@@ -42,7 +42,7 @@ const AdicionarCompra = ({navigation}) =>{
         modalDataHora("time", onChangeHora, hora);
     }
 
-    const modalDataHora = (modo, onChange, value, fim) =>{
+    const modalDataHora = (modo, onChange, value) =>{
         DateTimePickerAndroid.open({
             value: value ?? new Date(),
             onChange,

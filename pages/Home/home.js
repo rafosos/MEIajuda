@@ -30,6 +30,10 @@ export default function Home({navigation}){
         navigation.navigate("MeusProdutos");
     };
 
+    const irParaAdicionarVenda = () => {
+        navigation.navigate("AdicionarVenda");
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.headerBemVindo}>
@@ -66,13 +70,13 @@ export default function Home({navigation}){
                     <Text>Meus produtos</Text>
                 </Pressable>
 
-                <View
-                    onPress={() => {}}
+                <Pressable
+                    onPress={() => irParaAdicionarVenda()}
                     style={styles.botao}
                 >
                     <FontAwesome5 name="hand-holding-usd" style={styles.iconeBotao} />
                     <Text>Adicionar venda</Text>
-                </View>
+                </Pressable>
             </View>
 
             <View style={styles.linhaBotao}>

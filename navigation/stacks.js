@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../pages/Home/home';
 import Login from '../pages/Login/login';
@@ -10,6 +9,8 @@ import AdicionarCompra from '../pages/AdicionarCompra/adicionarCompra';
 import AlterarNome from '../pages/AlterarNome/alterarNome';
 import AdicionarProduto from '../pages/AdicionarProduto/adicionarProduto';
 import MeusProdutos from '../pages/MeusProdutos/meusProdutos';
+import AdicionarVenda from '../pages/AdicionarVenda/adicionarVenda';
+import ConsultarVendas from '../pages/ConsultarVenda/consultarVenda';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,6 +40,7 @@ function MainStack(){
             />
             {telasProdutosStack()}
             {telasConsultarStack()}
+            {telasVendasStack()}
         </Stack.Navigator>
     </>)
 }
@@ -85,6 +87,25 @@ const telasProdutosStack = () =><>
     />
 </>
 
+function VendasStack(){
+    return(
+        <Stack.Navigator
+            initialRouteName='ConsultarVendas'
+            screenOptions={{headerShown: false}}
+        >
+            {telasVendasStack()}
+        </Stack.Navigator>
+    )
+}
+const telasVendasStack = () => <>
+    <Stack.Screen name="ConsultarVendas" component={ConsultarVendas}/>
+    <Stack.Screen name="AdicionarVenda"
+        component={AdicionarVenda}
+        options={{...headerOptionsPadrao,
+            title: "Adicionar venda"
+        }}
+    />
+</>
 
 export function AuthStack(){
     return (
@@ -122,17 +143,29 @@ export function TabStack(){
             <Tab.Screen name="consulta"
                 options={{
                     tabBarShowLabel: false,
-                    tabBarIcon: () => <Entypo name="magnifying-glass" size={24} color={colors.white}/>
+                    tabBarIcon: () => <Entypo name="magnifying-glass" size={24} color={colors.white}/>,
+                    unmountOnBlur: true
                 }}
                 component={ConsultarStack}
             />
             <Tab.Screen name="produtos"
                 options={{
                     tabBarShowLabel: false,
-                    tabBarIcon: () => <Entypo name="menu" size={24} color={colors.white}/>
+                    tabBarIcon: () => <Entypo name="menu" size={24} color={colors.white}/>,
+                    unmountOnBlur: true
                 }}
                 component={ProdutosStack}
             />
+
+            <Tab.Screen name="vendas"
+                options={{
+                    tabBarShowLabel: false,
+                    tabBarIcon: () => <FontAwesome5 name="hand-holding-usd" size={24} color={colors.white} />,
+                    unmountOnBlur: true
+                }}
+                component={VendasStack}
+            />
+
         </Tab.Navigator>
     )
 }

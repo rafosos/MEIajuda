@@ -23,9 +23,10 @@ export default function DatabaseInit(){
 
             `CREATE TABLE IF NOT EXISTS vendas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                data DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP)),
+                data INTEGER DEFAULT (STRFTIME('%s',CURRENT_TIMESTAMP)),
                 valor INTEGER NOT NULL,
-                desconto INTEGER
+                desconto INTEGER,
+                observacoes TEXT
             );`,
             
             `CREATE TABLE IF NOT EXISTS compras (
@@ -46,6 +47,7 @@ export default function DatabaseInit(){
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_venda INTEGER,
                 id_produto INTEGER,
+                quantidade INTEGER,
                 FOREIGN KEY (id_venda) REFERENCES vendas(id),
                 FOREIGN KEY (id_produto) REFERENCES produtos(id)
             );`
