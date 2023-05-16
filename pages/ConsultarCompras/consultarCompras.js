@@ -56,6 +56,9 @@ export default function ConsultarCompras({navigation}){
                     legend: ["Mêses com compras registradas no período selecionado"]
                 });
             }
+            else{
+                setData(null);
+            }
         }) 
         .catch(err => {
             console.log(err);

@@ -1,38 +1,53 @@
-import { useState } from "react";
-import { Button, Pressable, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Pressable, Text, View } from "react-native";
 import { Ionicons, FontAwesome5, Octicons } from '@expo/vector-icons';
 import styles from "./styles";
 import colors from "../../variables";
-import { AsyncStorageService } from "../../storage/asyncStorageService";
 import { useUser } from "../../storage/userContext";
+import LucroService from "../../services/lucroService";
 
 export default function Home({navigation}){
-    const {nome, setNome} = useUser();
-    const [semanal, setSemanal] = useState(-10.00);
+    const {nome} = useUser();
+    const [total, setTotal] = useState(0);
     const [mensal, setMensal] = useState(0.00);
     
-    //teste
-    const storageService = AsyncStorageService();
-    const removeNome = async () =>{
-        await storageService.removerNomeFantasia();
-        setNome(null);
+    const lucroService = LucroService();
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getTotal();
+            getMensal();
+        });
+        return unsubscribe;
+    }, [navigation]);
+
+    const getTotal = () => {
+        lucroService.getTotal().then(res => {
+            setTotal(res[0].lucro / 100);
+        }).catch(err => {
+            Alert.alert("Erro", "Não foi possível retornar o lucro total devido a um erro.");
+            console.log(err)
+        });
     }
 
-    const irParaAlterarNome = () => {
-        navigation.navigate('AlterarNome');
-    };
+    const getMensal = () => {
+        const inicio = new Date();
+        inicio.setDate(1);
+        const fim = new Date();
+        lucroService.getDatas(inicio.getTime()/1000, fim.getTime()/1000).then(res => {
+            setMensal(res[0].lucro/100);
+        }).catch(err => {
+            Alert.alert("Erro", "Não foi possivel retornar o lucro mensal devido a um erro.");
+            console.log(err);
+        })
+    }
+    
+    const irParaAlterarNome     = () => navigation.navigate('AlterarNome');
+    const irParaAdicionarCompra = () => navigation.navigate("AdicionarCompra");
+    const irParaMeusProdutos    = () => navigation.navigate("MeusProdutos");
+    const irParaAdicionarVenda  = () => navigation.navigate("AdicionarVenda");
 
-    const irParaAdicionarCompra = () => {
-        navigation.navigate("AdicionarCompra");
-    };
-
-    const irParaMeusProdutos = () => {
-        navigation.navigate("MeusProdutos");
-    };
-
-    const irParaAdicionarVenda = () => {
-        navigation.navigate("AdicionarVenda");
-    };
+    const formataNumero = (num) => num.toLocaleString("pt-BR", {maximumFractionDigits:2});
 
     return (
         <View style={styles.container}>
@@ -42,14 +57,14 @@ export default function Home({navigation}){
             </View>
 
             <View style={styles.containerLucro}>
-                <Text style={{fontSize: 18}}>Seu lucro semanal é de:</Text>
+                <Text style={{fontSize: 18}}>Seu lucro total é de:</Text>
                 <Text style={{
-                    fontSize: 25, 
+                    fontSize: 25,
                     color: 
-                        semanal > 0 ? colors.green : 
-                        semanal < 0 ? colors.red : colors.black
-                    }}>R$ {semanal}</Text>
-                <Text>Seu lucro mensal é de R$ {mensal}</Text>
+                        total > 0 ? colors.green : 
+                        total < 0 ? colors.red : colors.black
+                    }}>R$ {formataNumero(total)}</Text>
+                <Text>Seu lucro mensal é de R$ {formataNumero(mensal)}</Text>
             </View>
 
             <View style={{marginVertical: 50}}>
@@ -96,9 +111,6 @@ export default function Home({navigation}){
                     <Text>Histórico de lucros</Text>
                 </View>
             </View>
-
-                {/*botão apenas para testes*/}
-                <Button onPress={removeNome} title="remover nome" />
         </View>
     );
 }

@@ -8,7 +8,7 @@ export default function ProdutoService(){
         const sql = `INSERT INTO produtos (nome, valor${descricao? ", descricao" : null})
         values ((?), (?)${descricao? ", (?)" : null});`;
 
-        let values = [nome, valor];
+        let values = [nome, (valor*100)];
         if(descricao) values.push(descricao);
         
         return db.addData(sql, values);
