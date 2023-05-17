@@ -30,11 +30,12 @@ export default function VendaService(){
         const id = await db.addData(sql, values);
 
         values = []
-        sql = `INSERT INTO produto_venda (id_venda, id_produto) values `;
+        sql = `INSERT INTO produto_venda (id_venda, id_produto, quantidade) values `;
         produtos.forEach((produto, i) => {
-            sql += `((?), (?))`;
+            sql += `((?), (?), (?))`;
             values.push(id);
             values.push(produto.id);
+            values.push(produto.quantidade);
             if((i+1) < produtos.length) sql += ",";
         });
 
@@ -86,9 +87,25 @@ export default function VendaService(){
             sql += `BETWEEN ${comecoAno} AND ${fimAno}`;
         }
 
-        const data = await db.getCustom(sql);
-        console.log(data)
-        return mapearVenda(data);
+        return mapearVenda(await db.getCustom(sql));
+    }
+
+    const getById = async (id) => {
+        const sql = `SELECT 
+            vendas.*,
+            produto_venda.id AS prodVendaId,
+            produto_venda.quantidade,
+            produtos.id AS idProduto,
+            produtos.valor as valorProd,
+            produtos.nome as nomeProd,
+            produtos.descricao
+        FROM vendas
+        JOIN produto_venda
+            ON produto_venda.id_venda = vendas.id
+        JOIN produtos
+            ON produto_venda.id_produto = produtos.id
+        WHERE vendas.id = ${id}`;
+        return mapearVenda(await db.getCustom(sql))[0];
     }
 
     const deleteByVenda = async (venda) => {
@@ -112,6 +129,7 @@ export default function VendaService(){
         getAll,
         updateById,
         deleteByVenda,
-        getDatas
+        getDatas,
+        getById
     }
 }

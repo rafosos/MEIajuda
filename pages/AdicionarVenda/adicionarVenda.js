@@ -22,18 +22,14 @@ const AdicionarVenda = ({route, navigation}) =>{
     const [modalExcluirVisible, setModalExcluirVisible] = useState(false);
     const [modalProdutoVisivel, setModalProdutoVisivel] = useState(false);
     const [loadingProduto, setLoadingProduto] = useState(false);
-    const venda = useRef(route?.params?.venda).current;
+    const id = useRef(route?.params?.id).current;
     const produtoService = ProdutoService();
     const vendaService = VendaService();
 
     useEffect(() => {
-        if(venda){
+        if(id){
             navigation.setOptions({title: "Editar venda"});
-            setProdutos(venda.produtos);
-            setData(venda.data);
-            setValorFinal(venda.preco);
-            setDesconto(venda.desconto);
-            setObservacoes(venda.observacoes);
+            getById();
         }
     },[])
 
@@ -45,9 +41,20 @@ const AdicionarVenda = ({route, navigation}) =>{
         calcularDesconto();
     }, [valorFinal])
 
+    const getById = () => {
+        vendaService.getById(id).then(res => {
+            console.log(res)
+            setProdutos(res.produtos);
+            setData(res.data);
+            setValorFinal(res.valor);
+            setDesconto(res.desconto);
+            setObservacoes(res.observacoes);
+        })
+    }
+
     const salvar = () => {
-        if(venda){
-            vendaService.updateById(venda.id, data, valorFinal, desconto, observacoes, produtos)
+        if(id){
+            vendaService.updateById(id, data, valorFinal, desconto, observacoes, produtos)
             .then(res => {
                 ToastAndroid.show("Venda editada com sucesso!", ToastAndroid.SHORT);
                 navigation.pop();
@@ -70,8 +77,9 @@ const AdicionarVenda = ({route, navigation}) =>{
 
     const pesquisarProdutos = (termo = "") => {
         setLoadingProduto(true);
-        produtoService.get(termo, produtos.map(produto => produto.id)).then(res => {
-            console.log(res);
+        let ids = [];
+        if(produtos.length) produtos.map(produto => ids.push(produto.id));
+        produtoService.get(termo, ids).then(res => {
             setPesquisa(res);
         }).catch(err => {
             Alert.alert("Erro ao buscar os produtos;")
@@ -80,7 +88,7 @@ const AdicionarVenda = ({route, navigation}) =>{
     }
 
     const excluir = () => {
-        vendaService.deleteById(venda.id)
+        vendaService.deleteById(id)
             .then(res => {
                 ToastAndroid.show("Venda excluida com sucesso.", ToastAndroid.SHORT);
                 navigation.pop();
@@ -118,12 +126,16 @@ const AdicionarVenda = ({route, navigation}) =>{
     const copiaArrayProdutos = () => JSON.parse(JSON.stringify(produtos)).map(item => new ProdutoVenda(item.id, item.nome, item.precoProduto*100, item.descricao, item.quantidade));
 
     const calcularValor = () => {
-        const valorProd = produtos.reduce((total, current) => total + current.calcularPrecoFinal(), 0);
+        let valorProd = 0;
+        if(produtos?.length)
+            valorProd = produtos.reduce((total, current) => total + current.calcularPrecoFinal(), 0);
         setValorFinal(valorProd - desconto);
     }
 
     const calcularDesconto = () => {
-        const valorProd = produtos.reduce((total, current) => total + current.calcularPrecoFinal(), 0);
+        let valorProd = 0;
+        if(produtos?.length)
+            valorProd = produtos.reduce((total, current) => total + current.calcularPrecoFinal(), 0);
         setDesconto(valorProd - valorFinal);
     }
 
@@ -172,22 +184,24 @@ const AdicionarVenda = ({route, navigation}) =>{
 
         <Text style={s.labels}>Produtos</Text>
         <View style={s.containerProdutos}>
-            {produtos.map(produto => 
-                <View key={produto.id} style={s.itemProduto}>
-                    <View>
-                        <Text style={s.nomeProduto}>{produto.nome}</Text>
-                        <Text>Valor (un): R${produto.precoProduto}</Text>
-                        <Text>Total: R${produto.precoFinal}</Text>
-                    </View>
-                    <View style={s.quantidade}>
-                        <Text onPress={() => menosUm(produto.id)} style={s.maisMenos}>-</Text>
+            {produtos?.length? 
+                produtos.map(produto => 
+                    <View key={produto.id} style={s.itemProduto}>
+                        <View>
+                            <Text style={s.nomeProduto}>{produto.nome}</Text>
+                            <Text>Valor (un): R${produto.precoProduto}</Text>
+                            <Text>Total: R${produto.precoFinal}</Text>
+                        </View>
+                        <View style={s.quantidade}>
+                            <Text onPress={() => menosUm(produto.id)} style={s.maisMenos}>-</Text>
 
-                        <Text>{produto.quantidade}</Text>
+                            <Text>{produto.quantidade}</Text>
                         
-                        <Text onPress={() => maisUm(produto.id)} style={s.maisMenos}>+</Text>
+                            <Text onPress={() => maisUm(produto.id)} style={s.maisMenos}>+</Text>
+                        </View>
                     </View>
-                </View>
-            )}
+                )
+            :null}
 
             <View style={s.containerBotaoAdd}>
                 <Pressable style={s.botaoAddProduto} onPress={abrirModalProduto}>
@@ -260,7 +274,7 @@ const AdicionarVenda = ({route, navigation}) =>{
         </View>
 
         <View style={s.botoesContainer}>
-            {venda?
+            {id?
                 <Pressable 
                     style={[s.botoes, s.botaoExcluir]}
                     onPress={() => setModalExcluirVisible(true)}

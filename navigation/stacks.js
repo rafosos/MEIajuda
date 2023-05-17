@@ -124,6 +124,7 @@ export function TabStack(){
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
+                tabBarActiveBackgroundColor: colors.notSoDarkGreen,
                 tabBarStyle: {
                     backgroundColor: colors.darkGreen,
                 },
@@ -136,14 +137,14 @@ export function TabStack(){
             <Tab.Screen name="app"
                 options={{
                     tabBarShowLabel: false,
-                    tabBarIcon: () => <AntDesign name="home" size={24} color={colors.white}/>,
+                    tabBarIcon: () => <FontAwesome5 name="home" size={24} color={colors.white}/>,
                 }}
                 component={MainStack}
             />
-            <Tab.Screen name="consulta"
+            <Tab.Screen name="compra"
                 options={{
                     tabBarShowLabel: false,
-                    tabBarIcon: () => <Entypo name="magnifying-glass" size={24} color={colors.white}/>,
+                    tabBarIcon: () => <FontAwesome5 name="shopping-cart" size={24} color={colors.white} />,
                     unmountOnBlur: true
                 }}
                 component={ConsultarStack}
@@ -151,7 +152,7 @@ export function TabStack(){
             <Tab.Screen name="produtos"
                 options={{
                     tabBarShowLabel: false,
-                    tabBarIcon: () => <Entypo name="menu" size={24} color={colors.white}/>,
+                    tabBarIcon: () => <AntDesign name="tags" size={28} color={colors.white}/>,
                     unmountOnBlur: true
                 }}
                 component={ProdutosStack}

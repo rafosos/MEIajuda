@@ -157,6 +157,8 @@ export default function ConsultarVendas({navigation}){
         get();
     }
 
+    const editarVenda = (venda) => navigation.navigate("AdicionarVenda", {id: venda.id});
+
     return (
         <ScrollView 
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
@@ -246,7 +248,7 @@ export default function ConsultarVendas({navigation}){
                     <Text style={s.labelResultados}>Compras no período selecionado:</Text>
                     {vendas.map(venda => {
                         return (
-                            <View key={venda.id} style={s.itemCompra}>
+                            <Pressable key={venda.id} style={s.itemCompra} onPress={() => editarVenda(venda)}>
                                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                     <View>
                                         <Text>Id da venda: {venda.id}</Text>
@@ -262,7 +264,7 @@ export default function ConsultarVendas({navigation}){
                                     {venda.data.getHours()}:{venda.data.getMinutes()}
                                 </Text>
                                 <Text>Produtos: {venda.produtos.map((produto, index) => `${produto.nome} `)}</Text>
-                            </View>
+                            </Pressable>
                         )
                     })}
                     </>:
