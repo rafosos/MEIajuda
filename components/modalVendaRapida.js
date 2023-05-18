@@ -25,9 +25,9 @@ export default function ModalVendaRapida({
         visible={modalVisivel}
         onRequestClose={() => {setModalVisivel(false)}}
     >
-        <View style={s.centeredView}>
-            <Pressable onPress={() => setModalVisivel(false)}>
+        <Pressable onPress={() => setModalVisivel(false)} style={s.centeredView}>
             <View style={s.modalView}>
+            <Pressable onPress={() => {}}>
                 <Text style={s.headingModal}>Venda rápida</Text>
 
                 <Text style={s.labelProdutos}>Produtos</Text>
@@ -98,9 +98,9 @@ export default function ModalVendaRapida({
                         <Text style={s.textBotaoModal}>FINALIZAR VENDA</Text>
                     </Pressable>
                 </View>
-            </View>
             </Pressable>
-        </View>
+            </View>
+        </Pressable>
     </Modal>
     )
 }

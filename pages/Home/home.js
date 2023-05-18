@@ -218,7 +218,6 @@ export default function Home({navigation}){
                 modalVisivel={modalVendaRapida}
                 setModalVisivel={setModalVendaRapida}
                 onPressConfirmar={salvarVenda}
-                botaoCancelar={() => setModalVendaRapida(false)}
                 maisUm={maisUm}
                 menosUm={menosUm}
                 produtos={produtos.filter((produto) => produto.quantidade > 0)}

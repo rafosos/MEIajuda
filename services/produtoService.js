@@ -38,12 +38,16 @@ export default function ProdutoService(){
     }
 
     const getMaisVendidos = async (quantidade) => {
-        const sql = `SELECT * FROM produtos 
-        WHERE id IN (SELECT id_produto
-            FROM produto_venda 
-            GROUP BY id_produto 
-            ORDER BY COUNT(id_produto) DESC
-            LIMIT ${quantidade});`;
+        const sql = `SELECT produtos.id,
+            produtos.nome,
+            produtos.descricao,
+            produtos.valor,
+            COUNT(produto_venda.id_produto) AS counts
+        FROM produtos
+        LEFT JOIN produto_venda ON produtos.id = produto_venda.id_produto
+        GROUP BY produtos.id
+        ORDER BY counts DESC
+        LIMIT ${quantidade};`;
         return mapearProdutoVenda(await db.getCustom(sql));
     }
 
