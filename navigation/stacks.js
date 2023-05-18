@@ -6,7 +6,7 @@ import Login from '../pages/Login/login';
 import ConsultarCompras from '../pages/ConsultarCompras/consultarCompras';
 import colors from '../variables';
 import AdicionarCompra from '../pages/AdicionarCompra/adicionarCompra';
-import AlterarNome from '../pages/AlterarNome/alterarNome';
+import Configuracoes from '../pages/Configuracoes/configuracoes';
 import AdicionarProduto from '../pages/AdicionarProduto/adicionarProduto';
 import MeusProdutos from '../pages/MeusProdutos/meusProdutos';
 import AdicionarVenda from '../pages/AdicionarVenda/adicionarVenda';
@@ -32,8 +32,8 @@ function MainStack(){
         >
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen 
-                name="AlterarNome" 
-                component={AlterarNome}
+                name="Configuracoes" 
+                component={Configuracoes}
                 options={{...headerOptionsPadrao,
                     title: "Configurações"
                 }}

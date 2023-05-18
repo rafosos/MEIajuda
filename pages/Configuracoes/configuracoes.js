@@ -4,7 +4,7 @@ import { AsyncStorageService } from '../../storage/asyncStorageService';
 import { useUser } from '../../storage/userContext';
 import styles from './styles';
 
-const RemoverDados = ({navigation}) => {
+const Configuracoes = ({navigation}) => {
   const userContext = useUser();
   const storageService = AsyncStorageService();
   const [nome, setNome] = useState('');
@@ -60,4 +60,4 @@ const RemoverDados = ({navigation}) => {
   );
 };
 
-export default RemoverDados;
+export default Configuracoes;

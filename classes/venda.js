@@ -9,6 +9,11 @@ export default class Venda{
     }
 
     adicionarProduto(prodVenda){
-        this.produtos.push(prodVenda);
+        const i = this.produtos.findIndex(produto => produto.id == prodVenda.id)
+        if(i > 0){
+            this.produtos[i].adicionarUm();
+        }else{
+            this.produtos.push(prodVenda);
+        }
     }
 }

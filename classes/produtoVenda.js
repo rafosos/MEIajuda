@@ -1,5 +1,5 @@
 export default class ProdutoVenda{
-    constructor(id, nome, preco, descricao, quantidade){
+    constructor(id, nome, preco, descricao, quantidade = 0){
         this.id = id;
         this.nome = nome;
         this.precoProduto = preco / 100;
@@ -14,6 +14,7 @@ export default class ProdutoVenda{
     }
 
     tirarUm(){
+        if(this.quantidade == 0) return;
         this.quantidade--;
         this.calcularPrecoFinal();
     }
