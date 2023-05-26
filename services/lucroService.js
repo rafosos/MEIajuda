@@ -1,3 +1,4 @@
+import Lucro from "../classes/lucro";
 import DatabaseService from "../database/databaseService";
 
 export default function LucroService(){
@@ -30,5 +31,19 @@ export default function LucroService(){
         return data;
     }
 
-    return {getTotal, getDatas}
+    const getTudoPorMes = async () => {
+        return mapearLucros(await db.getCustom(`SELECT 
+        (CASE WHEN sum(vendas.valor) IS null then 0 ELSE sum(vendas.valor) END - 
+         CASE WHEN sum(compras.valor) IS null THEN 0 ELSE sum(compras.valor) END) as lucro,
+         meses.mes AS mes
+       FROM (SELECT strftime('%m/%Y', datetime(vendas.data, 'unixepoch')) AS mes FROM vendas UNION SELECT strftime('%m/%Y', datetime(compras.data, 'unixepoch')) FROM compras) AS meses
+       LEFT JOIN vendas on strftime('%m/%Y', datetime(vendas.data, 'unixepoch')) = mes
+       LEFT JOIN compras on strftime('%m/%Y', datetime(compras.data, 'unixepoch')) = mes
+       GROUP BY mes;`));
+    }
+
+    const mapearLucros = (lucros) =>
+        lucros.map(lucro => new Lucro(lucro.lucro, lucro.mes));
+
+    return {getTotal, getDatas, getTudoPorMes}
 }

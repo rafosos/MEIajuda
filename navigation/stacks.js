@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign, FontAwesome5, Entypo } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, Octicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../pages/Home/home';
 import Login from '../pages/Login/login';
@@ -11,6 +11,7 @@ import AdicionarProduto from '../pages/AdicionarProduto/adicionarProduto';
 import MeusProdutos from '../pages/MeusProdutos/meusProdutos';
 import AdicionarVenda from '../pages/AdicionarVenda/adicionarVenda';
 import ConsultarVendas from '../pages/ConsultarVenda/consultarVenda';
+import ConsultarLucro from '../pages/ConsultarLucro/consultarLucro';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,12 +40,26 @@ function MainStack(){
                 }}
             />
             {telasProdutosStack()}
+            {telasLucroStack()}
             {telasConsultarStack()}
             {telasVendasStack()}
         </Stack.Navigator>
     </>)
 }
 
+function LucroStack(){
+    return(<>
+    <Stack.Navigator
+        initialRouteName='ConsultarLucro'
+        screenOptions={{headerShown: false}}
+    >
+        {telasLucroStack()}
+    </Stack.Navigator>
+    </>)
+}
+const telasLucroStack = () => <>
+    <Stack.Screen name="ConsultarLucro" component={ConsultarLucro} />
+</>
 
 function ConsultarStack(){
     return(<>
@@ -86,6 +101,7 @@ const telasProdutosStack = () =><>
         }}
     />
 </>
+
 
 function VendasStack(){
     return(
@@ -141,13 +157,12 @@ export function TabStack(){
                 }}
                 component={MainStack}
             />
-            <Tab.Screen name="compra"
+            <Tab.Screen name="lucro"
                 options={{
                     tabBarShowLabel: false,
-                    tabBarIcon: () => <FontAwesome5 name="shopping-cart" size={24} color={colors.white} />,
-                    unmountOnBlur: true
+                    tabBarIcon: () => <Octicons name="graph" size={24} color={colors.white} />,
                 }}
-                component={ConsultarStack}
+                component={LucroStack}
             />
             <Tab.Screen name="produtos"
                 options={{
@@ -157,7 +172,14 @@ export function TabStack(){
                 }}
                 component={ProdutosStack}
             />
-
+            <Tab.Screen name="compra"
+                options={{
+                    tabBarShowLabel: false,
+                    tabBarIcon: () => <FontAwesome5 name="shopping-cart" size={24} color={colors.white} />,
+                    unmountOnBlur: true
+                }}
+                component={ConsultarStack}
+            />
             <Tab.Screen name="vendas"
                 options={{
                     tabBarShowLabel: false,

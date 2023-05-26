@@ -11,7 +11,8 @@ const colors = {
     black: "#000",
 
     charts: {
-        black: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        noOpacityBlack: (opacity = 1) => `rgba(0, 0, 0, 1)`,
+        black: (opacity = 1) => `rgba(0, 0, 0, 0.4)`,
         green: (opacity = 1) => `rgba(0, 128 , 0, ${opacity})`,
         darkGreen: "#006400"
     },

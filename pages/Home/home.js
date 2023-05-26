@@ -110,8 +110,9 @@ export default function Home({navigation}){
     const copiaArrayProdutos = () => 
         JSON.parse(JSON.stringify(produtos)).map(item => new ProdutoVenda(item.id, item.nome, item.precoProduto*100, item.descricao, item.quantidade));
 
-    const irParaAlterarNome     = () => navigation.navigate('AlterarNome');
+    const irParaConfiguracoes   = () => navigation.navigate("Configuracoes");
     const irParaAdicionarCompra = () => navigation.navigate("AdicionarCompra");
+    const irParaConsultarLucro  = () => navigation.navigate("ConsultarLucro");
     const irParaMeusProdutos    = () => navigation.navigate("MeusProdutos");
     const irParaAdicionarVenda  = () => navigation.navigate("AdicionarVenda");
 
@@ -121,7 +122,7 @@ export default function Home({navigation}){
         <View style={s.container}>
             <View style={s.headerBemVindo}>
                 <Text style={s.textoBemVindo}>Bem vindo(a), {nome}</Text>
-                <Ionicons onPress={() => irParaAlterarNome()} name="settings-outline" size={24} color="#fff" />
+                <Ionicons onPress={() => irParaConfiguracoes()} name="settings-outline" size={24} color="#fff" />
             </View>
 
             <View style={s.containerLucro}>
@@ -205,13 +206,13 @@ export default function Home({navigation}){
                     <Text>Adicionar compra</Text>
                 </Pressable>
 
-                <View
-                    onPress={() => {}}
+                <Pressable
+                    onPress={() => irParaConsultarLucro()}
                     style={s.botao}
                 >
                     <Octicons name="graph" style={s.iconeBotao} />
                     <Text>Histórico de lucros</Text>
-                </View>
+                    </Pressable>
             </View>
 
             <ModalVendaRapida 
