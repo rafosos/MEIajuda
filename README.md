@@ -8,11 +8,9 @@ Aplicativo voltado para auxiliar vendedores autônomos (com ou sem MEI) a terem 
 Aplicativo desenvolvido para a disciplina de Fábrica de Projetos III, do curso de Análise e Desenvolvimento de Sistemas do Centro Universitário FACENS.
 
 ## Funcionalidades ⚙️
-✔️ Cadastrar compras;
+✔️ Cadastrar e gerenciar compras e vendas;
 
-✔️ Cadastrar vendas;
-
-✔️ Cadastrar cardápio;
+✔️ Cadastrar produtos;
 
 ✔️ Geração de gráficos de produtos mais vendidos por período de tempo;
 
@@ -24,8 +22,8 @@ Ainda não há versão disponível para teste.
 ## Pré-requisitos ⚠️    
 Versão do Android: testado para Android 11 e 12.
 SDK: 30 ou superiores;
-Aparelho utilizado para testes: Moto G9 Play e Poco M3 Pro
-Para rodar o projeto, é necessário ter npm e expo instalados na máquina, e o aplicativo Expo Go no aparelho;
+Aparelho utilizado para testes: Moto G9 Play e Poco M3 Pro;
+Para rodar o projeto, é necessário ter npm e expo instalados na máquina, e o aplicativo Expo Go no aparelho telefone;
 
 ## Como rodar a aplicação 
 1 - Clone o projeto;
