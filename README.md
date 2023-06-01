@@ -70,7 +70,7 @@ Na versão atual, o aplicativo não faz exportação de dados por nenhum meio, o
 
 ## Recursos de inseridos 🧰
 
-📝 No estágio atual do projeto, nenhuma das funções foram impementadas ainda.
+📝 No estágio atual do projeto, as funções listadas já foram implementadas, faltando apenas a impementação de estilização.
 
 ## Desenvolvedores/Contribuintes:
 [albertberger](https://github.com/albertberger)
