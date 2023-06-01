@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Dimensions, Pressable, RefreshControl, ScrollView, Text, ToastAndroid, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, Text, ToastAndroid, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
-import colors from "../../variables";
+import {colors, dimensions} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 import VendaService from "../../services/vendaService";
 
@@ -221,7 +221,7 @@ export default function ConsultarVendas({navigation}){
                     <LineChart
                         data={data}
                         yAxisLabel="R$ "
-                        width={Dimensions.get("window").width * 0.95}
+                        width={dimensions.width * 0.95}
                         height={256}
                         verticalLabelRotation={30}
                         style={s.grafico}

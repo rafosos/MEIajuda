@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import colors from "../../variables";
+import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
     scrollview:{

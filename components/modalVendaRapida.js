@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, StyleSheet, Modal, Pressable, Text, FlatList } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-import colors from "../variables";
+import {colors, formataNumero} from "../variables";
 
 export default function ModalVendaRapida({
   modalVisivel = false,
@@ -15,8 +15,6 @@ export default function ModalVendaRapida({
   }){
 
     const [data, setData] = useState(new Date());
-
-    const formataNumero = (num) => num.toLocaleString("pt-BR", {maximumFractionDigits:2});
 
     return (
     <Modal

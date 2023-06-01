@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Alert, Pressable, Text, View, FlatList, ToastAndroid } from "react-native";
 import CurrencyInput from "react-native-currency-input";
-import { Ionicons, FontAwesome5, Octicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Octicons, AntDesign } from '@expo/vector-icons';
 import s from "./styles";
-import colors from "../../variables";
+import {colors, formataNumero} from "../../variables";
 import { useUser } from "../../storage/userContext";
 import LucroService from "../../services/lucroService";
 import ProdutoService from "../../services/produtoService";
@@ -116,8 +116,6 @@ export default function Home({navigation}){
     const irParaMeusProdutos    = () => navigation.navigate("MeusProdutos");
     const irParaAdicionarVenda  = () => navigation.navigate("AdicionarVenda");
 
-    const formataNumero = (num) => num.toLocaleString("pt-BR", {maximumFractionDigits:2});
-
     return (
         <View style={s.container}>
             <View style={s.headerBemVindo}>
@@ -126,14 +124,12 @@ export default function Home({navigation}){
             </View>
 
             <View style={s.containerLucro}>
-                <Text style={{fontSize: 18}}>Seu lucro total é de:</Text>
-                <Text style={{
-                    fontSize: 25,
-                    color: 
-                        total > 0 ? colors.green : 
-                        total < 0 ? colors.red : colors.black
-                    }}>R$ {formataNumero(total)}</Text>
-                <Text>Seu lucro mensal é de R$ {formataNumero(mensal)}</Text>
+                <Text style={s.tituloLucro}>Seu lucro total é de:</Text>
+                <Text style={[s.valorLucro, {
+                    color: total > 0 ? colors.green : 
+                           total < 0 ? colors.red : colors.black
+                    }]}>R$ {formataNumero(total)}</Text>
+                <Text style={s.lucroMensal}>Seu lucro mensal é de R$ {formataNumero(mensal)}</Text>
             </View>
 
             <View style={{marginVertical: 40}}>
@@ -182,36 +178,40 @@ export default function Home({navigation}){
             <View style={s.linhaBotao}>
                 <Pressable
                     onPress={() => irParaMeusProdutos()}
-                    style={s.botao}
+                    style={[s.botao, s.botaoProdutos]}
                 >
-                    <Ionicons name="menu-outline" style={s.iconeBotao} />
-                    <Text>Meus produtos</Text>
+                    <AntDesign name="tags" style={s.iconeBotao} />
+                    <Text style={s.txtBotao}>Meus produtos</Text>
                 </Pressable>
+            </View>
 
+            <View style={s.linhaBotao}>
                 <Pressable
                     onPress={() => irParaAdicionarVenda()}
-                    style={s.botao}
-                >
+                    style={[s.botao, s.botaoVendas]}
+                    >
                     <FontAwesome5 name="hand-holding-usd" style={s.iconeBotao} />
-                    <Text>Adicionar venda</Text>
+                    <Text style={s.txtBotao}>Adicionar venda</Text>
                 </Pressable>
             </View>
 
             <View style={s.linhaBotao}>
                 <Pressable
                     onPress={() => irParaAdicionarCompra()}
-                    style={s.botao}
+                    style={[s.botao, s.botaoCompras]}
                 >
                     <FontAwesome5 name="shopping-cart" style={s.iconeBotao} />
-                    <Text>Adicionar compra</Text>
+                    <Text style={s.txtBotao}>Adicionar compra</Text>
                 </Pressable>
-
+            </View>
+            
+            <View style={s.linhaBotao}>
                 <Pressable
                     onPress={() => irParaConsultarLucro()}
-                    style={s.botao}
+                    style={[s.botao, s.botaoLucros]}
                 >
                     <Octicons name="graph" style={s.iconeBotao} />
-                    <Text>Histórico de lucros</Text>
+                    <Text style={s.txtBotao}>Histórico de lucros</Text>
                     </Pressable>
             </View>
 

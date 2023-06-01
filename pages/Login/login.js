@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Image } from 'react-native';
+import { View, TextInput, Button, Image, TouchableOpacity, Text } from 'react-native';
 import { AsyncStorageService } from '../../storage/asyncStorageService';
 import { useUser } from '../../storage/userContext';
-import styles from "./styles";
+import s from "./styles";
+import { colors } from '../../variables';
 
 const Login = () => {
   const [nome, setNome] = useState('');
@@ -16,19 +17,22 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerTudo}>
-        <View style={styles.containerImagem}>
-          <Image source={require('../../assets/logomeiajuda.png')} style={styles.imgLogo} />
+    <View style={s.container}>
+      <View style={s.containerTudo}>
+        <View style={s.containerImagem}>
+          <Image source={require('../../assets/logomeiajuda.png')} style={s.imgLogo} />
+          <Text style={s.txtBemVindo}>Boas vindas ao MEIajuda!</Text>
         </View>
         <TextInput
-          placeholder="Insira seu nome aqui"
-          placeholderTextColor="#666"
-          style={styles.txtInput} 
+          placeholder="Insira o nome fantasia..."
+          placeholderTextColor={colors.darkGrey}
+          style={s.txtInput} 
           onChangeText={setNome}
           value={nome}
         />
-        <Button title="Próximo" onPress={() => salvarNome()} style={styles.botao} />
+        <TouchableOpacity onPress={() => salvarNome()} style={s.botao}>
+          <Text style={s.txtBotao}>PRÓXIMO</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

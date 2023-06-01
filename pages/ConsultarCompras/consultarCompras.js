@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Dimensions, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from "./styles";
 import CompraService from "../../services/compraService";
-import colors from "../../variables";
+import {colors, dimensions} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 
 export default function ConsultarCompras({navigation}){
@@ -207,7 +207,7 @@ export default function ConsultarCompras({navigation}){
                     <LineChart
                         data={data}
                         yAxisLabel="R$ "
-                        width={Dimensions.get("window").width * 0.95}
+                        width={dimensions.width * 0.95}
                         height={256}
                         verticalLabelRotation={30}
                         style={styles.grafico}

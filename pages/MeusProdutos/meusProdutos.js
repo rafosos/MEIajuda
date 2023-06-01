@@ -1,8 +1,9 @@
-import { Alert, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
+import { Alert, FlatList, Pressable, RefreshControl, Text, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-import styles from "./styles";
+import s from "./styles";
 import { useEffect, useState } from "react";
 import ProdutoService from "../../services/produtoService";
+import { formataNumero } from "../../variables";
 
 export default function MeusProdutos({navigation}){
     const [produtos, setProdutos] = useState();
@@ -36,26 +37,31 @@ export default function MeusProdutos({navigation}){
     const editarProduto = (produto) => navigation.navigate("AdicionarProduto", {produto});
 
     return (
-        <ScrollView 
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
-        style={styles.scrollview}>
-        <View style={{paddingBottom: 10}}>
-            <View style={styles.cabecalho}>
-                <View style={styles.containerTitle}>
-                    <Text style={styles.title}>Meus produtos</Text>
-                    <MaterialIcons name="add-box" style={styles.iconeAdd} onPress={adicionarProduto} />
+        <View 
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+            style={s.scrollview}>
+            <View style={s.cabecalho}>
+                <View style={s.containerTitle}>
+                    <Text style={s.title}>Meus produtos</Text>
+                    <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarProduto} />
                 </View>
            </View>
 
-            {produtos? produtos.map(produto => 
-            <Pressable style={styles.produto} key={produto.id} onPress={() => editarProduto(produto)}>
-                <Text>Id: {produto.id}</Text>
-                <Text>Nome: {produto.nome}</Text>
-                <Text>Preço: R${produto.preco}</Text>
-                <Text>Descrição: {produto.descricao}</Text>
-            </Pressable>
-            ): null}   
+           <FlatList
+                data={produtos}
+                keyExtractor={(item) => item.id}
+                renderItem={({item}) =>
+                <Pressable style={s.produto} onPress={() => editarProduto(item)}>
+                    <Text style={s.nomeProduto}>{item.nome}</Text>
+                    <Text style={s.precoProduto}>R${formataNumero(item.preco)}</Text>
+                    {item.descricao ? <Text style={s.descricaoProduto}>{item.descricao}</Text> : null}
+                </Pressable>
+            }
+                ListEmptyComponent={() => <Pressable style={s.containerSemProduto} onPress={adicionarProduto} >
+                    <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione um produto novo clicando aqui</Text>
+                    <MaterialIcons name="add-box" style={[s.iconeAdd, s.iconeSemProdutos]}/>
+                </Pressable>}
+           />
         </View>
-        </ScrollView>
     );
 }

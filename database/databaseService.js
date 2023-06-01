@@ -104,6 +104,25 @@ export default function DatabaseService() {
             ))
     }
 
+    const arraySQL = (sql) => {
+        return new Promise((resolve, reject) => 
+        db.transaction(
+            tx => {
+                    for (var i = 0; i < sql.length; i++) {
+                        console.log("execute sql : " + sql[i]);
+                        tx.executeSql(sql[i]);
+                    }
+                    resolve(true);
+                }
+            , (error) => {
+                console.log("error callback : " + JSON.stringify(error));
+                console.log(error);
+            }, () => {
+                console.log("transaction complete");
+            }
+        ));
+    }
+
     return{
         addData,
         deleteById,
@@ -111,6 +130,7 @@ export default function DatabaseService() {
         updateById,
         getById,
         getAll,
-        getCustom
+        getCustom,
+        arraySQL
     }
 }

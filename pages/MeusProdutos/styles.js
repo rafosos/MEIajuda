@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
-import colors from "../../variables";
+import {colors, dimensions} from "../../variables";
 
 const styles = StyleSheet.create({
     scrollview:{
-        backgroundColor: colors.darkGreen
+        backgroundColor: colors.darkGreen,
+        flex:1
     },
     cabecalho:{
         justifyContent:"space-around"
@@ -27,8 +28,34 @@ const styles = StyleSheet.create({
     produto:{
         backgroundColor: colors.white,
         justifyContent: 'center',
-        margin: 15,
+        marginHorizontal: 15,
+        marginVertical: 5,
         borderRadius: 15,
+        padding: 10
+    },
+    nomeProduto:{
+        fontSize: 22,
+        fontWeight: 'bold'
+    },
+    precoProduto:{
+        fontFamily: 'geo-bold',
+    },
+    descricaoProduto:{
+        color: colors.darkGrey
+    },
+    containerSemProduto:{
+        marginTop: dimensions.height * 0.37,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    txtSemProdutos:{
+        color: colors.white,
+        textAlign: 'center',
+        fontSize: 17
+    },
+    iconeSemProdutos:{
+        fontSize: 40,
+        textAlign: 'center',
         padding: 10
     }
 });

@@ -1,5 +1,5 @@
 import { View, StyleSheet, Modal, Pressable, Text } from "react-native";
-import colors from "../variables";
+import {colors} from "../variables";
 
 export default function ModalSimples({
   modalVisivel = false,

@@ -15,12 +15,7 @@ export default function DatabaseInit(){
     };
 
     const initDb = () => {
-        // `DROP TABLE IF EXISTS produto_venda;`,
-        // `DROP TABLE IF EXISTS produtos;`,
-        // `DROP TABLE IF EXISTS vendas;`,
-        // `DROP TABLE IF EXISTS compras;`,
         var sql = [
-
             `CREATE TABLE IF NOT EXISTS vendas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 data INTEGER DEFAULT (STRFTIME('%s',CURRENT_TIMESTAMP)),

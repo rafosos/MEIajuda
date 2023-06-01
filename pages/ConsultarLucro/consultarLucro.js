@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Dimensions, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import s from "./styles";
-import colors from "../../variables";
+import {colors, dimensions} from "../../variables";
 import LucroService from "../../services/lucroService";
 import { Picker } from "@react-native-picker/picker";
 
@@ -230,8 +230,8 @@ export default function ConsultarLucro({navigation}){
                     <LineChart
                         data={data}
                         yAxisLabel="R$ "
-                        width={Dimensions.get("window").width * 0.87}
-                        height={Dimensions.get("window").width * 0.70}
+                        width={dimensions.width * 0.87}
+                        height={dimensions.width * 0.70}
                         verticalLabelRotation={30}
                         withShadow={true}
                         getDotColor={(dataPoint, index) => dataPoint == 0 ? colors.darkGrey 

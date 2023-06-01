@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../pages/Home/home';
 import Login from '../pages/Login/login';
 import ConsultarCompras from '../pages/ConsultarCompras/consultarCompras';
-import colors from '../variables';
+import {colors} from '../variables';
 import AdicionarCompra from '../pages/AdicionarCompra/adicionarCompra';
 import Configuracoes from '../pages/Configuracoes/configuracoes';
 import AdicionarProduto from '../pages/AdicionarProduto/adicionarProduto';

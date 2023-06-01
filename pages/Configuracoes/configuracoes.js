@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { AsyncStorageService } from '../../storage/asyncStorageService';
 import { useUser } from '../../storage/userContext';
 import styles from './styles';
+import TudoService from '../../services/tudoService';
 
 const Configuracoes = ({navigation}) => {
   const userContext = useUser();
   const storageService = AsyncStorageService();
+  const tudoService = TudoService();
   const [nome, setNome] = useState('');
   const [textoConfirmacao, setTextoConfirmacao] = useState('');
 
@@ -19,9 +22,9 @@ const Configuracoes = ({navigation}) => {
 
   const removerDados = () => {
     if (textoConfirmacao === 'remover') {
-      storageService.removerDados().then(() => {
-        userContext.setNome('');
-        navigation.navigate("Home");
+      tudoService.apagarDados().then(() => {
+        userContext.setNome(null);
+        storageService.removerNomeFantasia();
       }).catch(err => console.log(err));
     } else {
       alert('Digite "remover" para confirmar a exclusão dos dados');
@@ -34,27 +37,35 @@ const Configuracoes = ({navigation}) => {
         <View style={styles.containerImagem}>
           <Image source={require('../../assets/logomeiajuda.png')} style={styles.imgLogo} />
           <TextInput
-          placeholder="Insira seu nome aqui..."
-          placeholderTextColor="#666"
-          style={styles.txtInput} 
-          onChangeText={setNome}
-          value={nome}
-        />
-        <TouchableOpacity style={[styles.botao, { width: 350 }]} onPress={salvarNome}>
-          <Text style={styles.botaoTexto}>Salvar nome</Text>
-        </TouchableOpacity>
+            placeholder="Insira seu nome aqui..."
+            placeholderTextColor={colors.grey}
+            style={styles.txtInput}
+            onChangeText={setNome}
+            value={nome}
+          />
+          <TouchableOpacity style={[styles.botao, { width: 350 }]} onPress={salvarNome}>
+            <Text style={styles.botaoTexto}>Salvar nome</Text>
+          </TouchableOpacity>
         </View>
-        <TextInput
-          placeholder="Digite 'remover' para confirmar..."
-          placeholderTextColor="#666"
-          style={styles.txtInput} 
-          onChangeText={setTextoConfirmacao}
-          value={textoConfirmacao}
-        />
-        <Text style={styles.aviso}>ATENÇÃO: Ao remover os dados, todas as informações armazenadas serão apagadas e não poderão ser recuperadas.</Text>
-        <TouchableOpacity style={[styles.botao, { width: 350 }]} onPress={removerDados}>
-          <Text style={styles.botaoTexto}>Remover dados</Text>
-        </TouchableOpacity>
+
+        <View style={styles.aviso}>
+          <TextInput
+            placeholder="Digite 'remover' para confirmar..."
+            placeholderTextColor={colors.grey}
+            style={[styles.txtInput, styles.txtInputAviso]} 
+            onChangeText={setTextoConfirmacao}
+            value={textoConfirmacao}
+            />
+          
+          <Text style={styles.txtAviso}>
+          <FontAwesome name="warning" size={30} color="red" />
+          {"\n"}ATENÇÃO: Ao remover os dados, todas as informações armazenadas serão apagadas e não poderão ser recuperadas.
+          </Text>
+          
+          <TouchableOpacity style={[styles.botao, styles.botaoAlerta]} onPress={removerDados}>
+            <Text style={styles.botaoTexto}>Remover dados</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

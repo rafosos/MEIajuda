@@ -1,6 +1,6 @@
 import { View, StyleSheet, Modal, Pressable, Text, ActivityIndicator } from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import colors from "../variables";
+import {colors} from "../variables";
 import { useEffect, useState } from "react";
 import { TextInput } from "react-native";
 import { FlatList } from "react-native";

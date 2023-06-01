@@ -4,7 +4,7 @@ import CurrencyInput from "react-native-currency-input";
 import { FontAwesome5, AntDesign } from '@expo/vector-icons';
 import styles from "./styles";
 import ProdutoService from "../../services/produtoService";
-import colors from "../../variables";
+import {colors} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 
 const AdicionarProduto = ({route, navigation}) =>{

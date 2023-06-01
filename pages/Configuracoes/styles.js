@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import colors from "../../variables";
+import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
   container: { 
@@ -18,31 +18,44 @@ const styles = StyleSheet.create({
   containerImagem: { 
     alignItems: 'center', 
     justifyContent: 'center', 
-    marginBottom: 20 
+    marginBottom: 20
   },
   imgLogo: { 
-    width: 120, 
-    height: 120, 
-    resizeMode: 'contain'
+    width: 140, 
+    height: 140, 
+    resizeMode: 'contain',
+    marginBottom: 20
   },
   txtInput: { 
     backgroundColor: colors.white,
     color: colors.black,
-    borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     textAlignVertical: "top",
-    width: 350
+    width: 350,
+    borderRadius: 10,
+    textAlignVertical: 'center'
+  },
+  txtInputAviso:{
+    borderColor: colors.red,
+    borderWidth: 2,
+    marginBottom: 0,
   },
   aviso: {
     backgroundColor: colors.white,
-    color: '#f00', 
-    fontSize: 16, 
+    padding: 10,
+    borderRadius: 15,
+    justifyContent: 'space-between',
+    height: 250,
+    borderColor: colors.red,
+    borderWidth: 1
+  },
+  txtAviso:{
     textAlign: 'center',
-    marginBottom: 20, 
-    paddingHorizontal: 10, 
-    borderRadius: 2
+    color: colors.red, 
+    fontSize: 16, 
+    color: colors.red
   },
   botao: {
     backgroundColor: colors.green, 
@@ -51,8 +64,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+  botaoAlerta:{
+    width: 350,
+    marginBottom: 0,
+    backgroundColor: colors.red
+  },
   botaoTexto: {
-    color: colors.white, 
+    color: colors.white,
+    fontSize: 17
   },
 });
 

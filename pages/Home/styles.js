@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
-import colors from "../../variables";
+import { StyleSheet } from "react-native";
+import {colors, dimensions} from "../../variables";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
     textoBemVindo:{
         color: colors.white,
-        fontSize: 25
+        fontSize: 27
     },
     textoVendaRapida:{
         color: colors.white,
@@ -27,12 +27,18 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         padding: 10
     },
+    tituloLucro:{
+        fontSize: 18
+    },
+    valorLucro:{
+        fontSize: 25
+    },
     itemProduto:{  
         backgroundColor: colors.white,
         borderRadius: 15,
         paddingHorizontal: 10,
         paddingVertical: 10,
-        width: Dimensions.get('window').width * 0.9, 
+        width: dimensions.width * 0.9, 
         flexDirection: 'row', 
         justifyContent: 'space-between',
         marginRight: 7,
@@ -92,12 +98,31 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 5,
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        height: 60
     },
     iconeBotao:{
         marginRight: 10,
-        color: colors.darkGreen,
-        fontSize: 25
+        color: colors.white,
+        fontSize: 35
+    },
+    botaoProdutos:{
+        backgroundColor: colors.yellow,
+    },
+    botaoVendas:{
+        backgroundColor: colors.green,
+    },
+    botaoCompras:{
+        backgroundColor: colors.red,
+    },
+    botaoLucros:{
+        backgroundColor: colors.blue,
+    },
+    txtBotao:{
+        color: colors.white,
+        fontSize: 18,
+        marginLeft: 10,
+        fontFamily: "geo-light"
     },
     bold:{
         fontWeight: 'bold'

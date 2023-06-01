@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import colors from "../../variables";
+import {colors, dimensions} from "../../variables";
 
 const styles = StyleSheet.create({
     container:{ 
@@ -19,21 +19,36 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         marginBottom: 20 
     },
+    txtBemVindo:{
+        color: colors.white,
+        fontSize: 24
+    },
     imgLogo:{ 
-        width: 50, 
-        height: 50, 
+        width: dimensions.width * 0.7,
+        height: dimensions.width * 0.7, 
         resizeMode: 'contain'
     },
     txtInput:{ 
-        backgroundColor: '#FFF', 
-        color: '#000', 
+        backgroundColor: colors.white, 
+        color: colors.black, 
         width: '100%', 
         marginBottom: 20, 
         paddingHorizontal: 10, 
-        borderRadius: 2 
+        borderRadius: 15,
+        width: dimensions.width * 0.8,
+        height: 45 
     },
     botao: { 
-        width: '100%' 
+        backgroundColor: colors.green,
+        width: dimensions.width * 0.4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        borderRadius: 15
+    },
+    txtBotao:{
+        fontSize: 18,
+        color: colors.white
     }
 });
 

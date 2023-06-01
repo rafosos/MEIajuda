@@ -5,7 +5,7 @@ import CurrencyInput from "react-native-currency-input";
 import { FontAwesome5, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
 import ProdutoService from "../../services/produtoService";
-import colors from "../../variables";
+import {colors} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 import VendaService from "../../services/vendaService";
 import ProdutoVenda from "../../classes/produtoVenda";

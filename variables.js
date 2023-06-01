@@ -1,8 +1,12 @@
+import { Dimensions } from "react-native";
+
 const colors = {
     white: '#fff',
     green: '#3c9c03',
-    notSoDarkGreen: "#0E4D1E",
+    notSoDarkGreen: "#0E4D1e",
     darkGreen: "#0e201e",
+    yellow: '#ffa700',
+    blue: "#0047AB",
     red: '#f00',
     lighterGrey: '#efefef',
     lightGrey: '#dfdfdf',
@@ -20,4 +24,11 @@ const colors = {
     black7: "rgba(0,0,0,0.7)"
 }
 
-export default colors;
+const formataNumero = (num) => num.toLocaleString("pt-BR", {maximumFractionDigits:2});
+
+const dimensions = {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+}
+
+export {colors, formataNumero, dimensions};
