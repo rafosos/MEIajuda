@@ -68,7 +68,7 @@ Na versão atual, o aplicativo não faz exportação de dados por nenhum meio, o
 
 [react-native-community/datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker#readme)
 
-## Recursos de inseridos 🧰
+## Recursos inseridos 🧰
 
 📝 No estágio atual do projeto, as funções listadas já foram implementadas, faltando apenas a impementação de estilização.
 
