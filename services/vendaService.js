@@ -28,21 +28,24 @@ export default function VendaService(){
         if(observacoes) values.push(observacoes);
         
         const id = await db.addData(sql, values);
-
-        values = []
-        sql = `INSERT INTO produto_venda (id_venda, id_produto, quantidade) values `;
+        return await inserirProdutoVenda(id, produtos)
+    }
+    
+    const inserirProdutoVenda = async (idVenda, produtos) => {
+        let values = []
+        let sql = `INSERT INTO produto_venda (id_venda, id_produto, quantidade) values `;
         produtos.forEach((produto, i) => {
             sql += `((?), (?), (?))`;
-            values.push(id);
+            values.push(idVenda);
             values.push(produto.id);
             values.push(produto.quantidade);
             if((i+1) < produtos.length) sql += ",";
         });
-
+    
         return await db.addData(sql, values);
     }
 
-    const updateById = (id, data, valor, desconto, observacoes = null, produtos) => {
+    const updateById = async (id, data, valor, desconto, observacoes = null, produtos) => {
         let values = [(data.getTime() / 1000), (valor * 100), desconto];
         let columns = ["data", "valor", "desconto"];
         if(observacoes) {
@@ -50,7 +53,9 @@ export default function VendaService(){
             columns.push("observacoes");
         }
 
-        return db.updateById("vendas", id, columns, values);
+        await db.updateById("vendas", id, columns, values);
+        await db.deleteByColumn("produto_venda", "id_venda", id);
+        return await inserirProdutoVenda(id, produtos);
     }
 
     const getAll = async () => {
@@ -108,9 +113,9 @@ export default function VendaService(){
         return mapearVenda(await db.getCustom(sql))[0];
     }
 
-    const deleteByVenda = async (venda) => {
-        await db.deleteByColumn("produto_venda", "id_venda", venda.id);
-        return await db.deleteById("vendas", venda.id)
+    const deleteById = async (id) => {
+        await db.deleteByColumn("produto_venda", "id_venda", id);
+        return await db.deleteById("vendas", id);
     };
 
     const mapearVenda = (vendas) => {
@@ -119,7 +124,7 @@ export default function VendaService(){
             if(!vendasMapeadas[venda.id]){
                 vendasMapeadas[venda.id] = new Venda(venda.id, venda.valor, venda.desconto, venda.observacoes, venda.data);
             }
-            vendasMapeadas[venda.id].adicionarProduto(new ProdutoVenda(venda.prodVendaId, venda.nomeProd, venda.valorProd, venda.descricao, venda.quantidade));
+            vendasMapeadas[venda.id].adicionarProduto(new ProdutoVenda(venda.idProduto, venda.nomeProd, venda.valorProd, venda.descricao, venda.quantidade));
         });
         return Object.values(vendasMapeadas);
     }
@@ -128,7 +133,7 @@ export default function VendaService(){
         add,
         getAll,
         updateById,
-        deleteByVenda,
+        deleteById,
         getDatas,
         getById
     }

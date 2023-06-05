@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 10,
         marginVertical: 10,
-        height: 38,
         justifyContent: 'center'
     },
     textConsultar:{

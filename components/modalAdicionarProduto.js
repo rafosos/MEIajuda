@@ -1,6 +1,6 @@
 import { View, StyleSheet, Modal, Pressable, Text, ActivityIndicator } from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import {colors} from "../variables";
+import {colors, formataReal} from "../variables";
 import { useEffect, useState } from "react";
 import { TextInput } from "react-native";
 import { FlatList } from "react-native";
@@ -44,20 +44,19 @@ export default function ModalAdicionarProduto({
                     keyExtractor={item => item.id}
                     renderItem={({item})=> 
                         <Pressable style={styles.produto} onPress={() => produtoEscolhido(item)}>
-                            <View>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <Text style={styles.nome}>{item.nome}</Text>
-                                <Text style={styles.descricao} numberOfLines={2}>{item.descricao}</Text>
+                                <Text style={styles.preco}>{formataReal(item.preco)}</Text>
                             </View>
-
-                            <Text style={styles.preco}>R$ {item.preco}</Text>
+                            {item.descricao? <Text style={styles.descricao} numberOfLines={2}>{item.descricao}</Text>:null}
                         </Pressable>
                     }
                     ListFooterComponent={() => loading ?
                         <ActivityIndicator size="large" color={colors.green} />
-                        :null}
+                    :null}
                     ListEmptyComponent={() => termo != "" ? 
                         <Text style={styles.listEmptyText}>Não foram encontrados produtos para "{termo}".</Text>
-                        :null}
+                    :null}
                 />
             </Pressable>
             </View>
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
     textInput:{
         width: "100%",
     },
-        botoesModal:{
+    botoesModal:{
         marginTop: 15,
         flexDirection: "row",
         alignItems: 'center',
@@ -121,22 +120,22 @@ const styles = StyleSheet.create({
     },
     produto:{
         backgroundColor: colors.lighterGrey,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
         padding: 10,
         marginVertical: 5,
         borderRadius: 15
     },
     nome: {
-        fontWeight: 'bold',
-        fontSize: 20
+        fontFamily: 'geo-bold',
+        fontSize: 17,
+        flexWrap: 'wrap',
+        flex: 1,
+        marginRight: 5
     },
     descricao: {
         fontSize: 12,
     },
     preco:{
-        // fontWeight: 'bold'
-        fontSize: 15
+        fontFamily: 'geo-bold',
+        fontSize: 17
     }
 })

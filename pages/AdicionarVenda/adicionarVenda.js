@@ -83,7 +83,7 @@ const AdicionarVenda = ({route, navigation}) =>{
         produtoService.get(termo, ids).then(res => {
             setPesquisa(res);
         }).catch(err => {
-            Alert.alert("Erro ao buscar os produtos;")
+            Alert.alert("Erro", "Erro ao buscar os produtos");
             console.log(err);
         }).finally(() => setLoadingProduto(false));
     }
@@ -186,9 +186,9 @@ const AdicionarVenda = ({route, navigation}) =>{
             {produtos?.length? 
                 produtos.map(produto => 
                     <View key={produto.id} style={s.itemProduto}>
-                        <View>
+                        <View style={{flex: 1}}>
                             <Text style={s.nomeProduto}>{produto.nome}</Text>
-                            <Text>Valor (un): {formataReal(produto.precoProduto)}</Text>
+                            <Text>Un.: {formataReal(produto.precoProduto)}</Text>
                             <Text>Total: {formataReal(produto.precoFinal)}</Text>
                         </View>
                         <View style={s.quantidade}>

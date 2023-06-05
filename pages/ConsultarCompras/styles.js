@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     },
     textConsultar:{
         color: colors.white,
-        fontSize: 20
+        fontSize: 17
     },
     naoHaResultados: {
         color: colors.white,

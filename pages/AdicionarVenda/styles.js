@@ -25,7 +25,9 @@ const styles = StyleSheet.create({
     },
     nomeProduto:{
         fontWeight: 'bold',
-        fontSize: 18
+        fontSize: 18,
+        flexWrap: 'wrap',
+        flex: 1
     },
     quantidade:{
         flexDirection: 'row',

@@ -39,7 +39,7 @@ export default function DatabaseService() {
                 }), (sqlError) => {
                     console.log(sqlError);
                 }}, (txError) => {
-                console.log(txError);
+                    console.log(txError);
             }));
     }
 
@@ -71,6 +71,7 @@ export default function DatabaseService() {
     const getById = (table, id) => {
         return new Promise((resolve, reject) => db.transaction(tx => {
             tx.executeSql(`select * from ${table} where id=?`, [id], (_, { rows }) => {
+                console.log(rows._array)
                 resolve(rows._array)
             }), (sqlError) => {
                 console.log(sqlError);
@@ -85,7 +86,8 @@ export default function DatabaseService() {
                     console.log(`select * from ${table} ${where}`)
                     tx.executeSql(`select * from ${table} ${where}`, [], 
                         (_, { rows }) => {
-                        resolve(rows._array)
+                            console.log(rows._array)
+                            resolve(rows._array)
                     })
                     , (sqlError) => {console.log(sqlError);}
                 }, (txError) => {console.log(txError);}
@@ -97,6 +99,7 @@ export default function DatabaseService() {
             db.transaction(tx => {
                     console.log(sql);
                     tx.executeSql(sql, [], (_, { rows }) => {
+                        console.log(rows._array)
                         resolve(rows._array);
                     }),
                     (sqlError) => {console.log(sqlError)}

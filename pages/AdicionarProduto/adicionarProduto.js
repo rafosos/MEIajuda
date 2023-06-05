@@ -13,6 +13,8 @@ const AdicionarProduto = ({route, navigation}) =>{
     const [preco, setPreco] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
     const produto = useRef(route?.params?.produto).current;
+    const valorRef = useRef();
+    const descricaoRef = useRef();
     const produtoService = ProdutoService();
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const AdicionarProduto = ({route, navigation}) =>{
                 navigation.pop();
             })
             .catch(err => {
-                Alert.alert("Não foi possível editar o produto devido a um erro.");
+                Alert.alert("Erro", "Não foi possível editar o produto devido a um erro.");
                 console.log(err);
             });
         }else
@@ -42,7 +44,7 @@ const AdicionarProduto = ({route, navigation}) =>{
                 navigation.pop();
             })
             .catch(err => {
-                Alert.alert("Não foi possível adicionar o produto devido a um erro.");
+                Alert.alert("Erro", "Não foi possível adicionar o produto devido a um erro.");
                 console.log(err);
             });
     }
@@ -54,7 +56,7 @@ const AdicionarProduto = ({route, navigation}) =>{
                 navigation.pop();
             })
             .catch(err => {
-                Alert.alert("Não foi possível excluir o produto devido a um erro.");
+                Alert.alert("Erro", "Não foi possível excluir o produto devido a um erro.");
                 console.log(err);
             });
     }
@@ -67,6 +69,9 @@ const AdicionarProduto = ({route, navigation}) =>{
                 placeholder="EX.: Milkshake simples..."
                 numberOfLines={1}
                 multiline={false}
+                blurOnSubmit={false}
+                returnKeyType="next"
+                onSubmitEditing={() => valorRef.current.focus()}
                 onChangeText={(value) => setNome(value)}
                 style={styles.inputNome}
             />
@@ -75,6 +80,10 @@ const AdicionarProduto = ({route, navigation}) =>{
         <View style={styles.containers}>
             <Text style={styles.labels}>Valor do produto*</Text>
             <CurrencyInput
+                ref={valorRef}
+                returnKeyType="next"
+                onSubmitEditing={() => descricaoRef.current.focus()}
+                blurOnSubmit={false}
                 prefix="R$"
                 separator=","
                 delimter="."
@@ -96,6 +105,7 @@ const AdicionarProduto = ({route, navigation}) =>{
                 onChangeText={(value) => {setDescricao(value)}}
                 style={styles.inputObservacoes}
                 value={descricao}
+                ref={descricaoRef}
             />
         </View>
 
