@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, StyleSheet, Modal, Pressable, Text, FlatList } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-import {colors, formataNumero} from "../variables";
+import {colors, formataNumero, formataReal} from "../variables";
 
 export default function ModalVendaRapida({
   modalVisivel = false,
@@ -37,8 +37,8 @@ export default function ModalVendaRapida({
                             <View style={s.itemProduto}>
                                 <View>
                                     <Text style={s.nomeProduto}>{item.nome}</Text>
-                                    <Text>Valor (un): R$ {formataNumero(item.precoProduto)}</Text>
-                                    <Text>Total: R$ {formataNumero(item.precoFinal)}</Text>
+                                    <Text>Valor (un): {formataReal(item.precoProduto)}</Text>
+                                    <Text>Total: {formataReal(item.precoFinal)}</Text>
                                 </View>
                                 <View style={s.quantidade}>
                                     <Text onPress={() => menosUm(item.id)} style={s.maisMenos}>-</Text>
@@ -72,14 +72,14 @@ export default function ModalVendaRapida({
                     <View style={s.containerFilho}>
                         <Text style={s.labels}>Desconto</Text>
                         <View style={s.input}>
-                            <Text style={s.inputTxt}>R$ {formataNumero(desconto)}</Text>
+                            <Text style={s.inputTxt}>{formataReal(desconto)}</Text>
                         </View>
                     </View>
 
                     <View style={s.containerFilho}>
                         <Text style={s.labels}>Valor final</Text>
                         <View style={s.input}>
-                            <Text style={s.inputTxt}>R$ {formataNumero(valor)}</Text>
+                            <Text style={s.inputTxt}>{formataReal(valor)}</Text>
                         </View>
                     </View>
                 </View>

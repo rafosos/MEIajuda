@@ -3,7 +3,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
 import { useEffect, useState } from "react";
 import ProdutoService from "../../services/produtoService";
-import { formataNumero } from "../../variables";
+import { formataReal } from "../../variables";
 
 export default function MeusProdutos({navigation}){
     const [produtos, setProdutos] = useState();
@@ -37,9 +37,7 @@ export default function MeusProdutos({navigation}){
     const editarProduto = (produto) => navigation.navigate("AdicionarProduto", {produto});
 
     return (
-        <View 
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
-            style={s.scrollview}>
+        <View style={s.scrollview}>
             <View style={s.cabecalho}>
                 <View style={s.containerTitle}>
                     <Text style={s.title}>Meus produtos</Text>
@@ -50,17 +48,20 @@ export default function MeusProdutos({navigation}){
            <FlatList
                 data={produtos}
                 keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
                 renderItem={({item}) =>
-                <Pressable style={s.produto} onPress={() => editarProduto(item)}>
-                    <Text style={s.nomeProduto}>{item.nome}</Text>
-                    <Text style={s.precoProduto}>R${formataNumero(item.preco)}</Text>
-                    {item.descricao ? <Text style={s.descricaoProduto}>{item.descricao}</Text> : null}
-                </Pressable>
-            }
-                ListEmptyComponent={() => <Pressable style={s.containerSemProduto} onPress={adicionarProduto} >
-                    <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione um produto novo clicando aqui</Text>
-                    <MaterialIcons name="add-box" style={[s.iconeAdd, s.iconeSemProdutos]}/>
-                </Pressable>}
+                    <Pressable style={s.produto} onPress={() => editarProduto(item)}>
+                        <Text style={s.nomeProduto}>{item.nome}</Text>
+                        <Text style={s.precoProduto}>{formataReal(item.preco)}</Text>
+                        {item.descricao ? <Text style={s.descricaoProduto}>{item.descricao}</Text> : null}
+                    </Pressable>
+                }
+                ListEmptyComponent={() => 
+                    <Pressable style={s.containerSemProduto} onPress={adicionarProduto} >
+                        <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione um produto novo clicando aqui</Text>
+                        <MaterialIcons name="add-box" style={[s.iconeAdd, s.iconeSemProdutos]}/>
+                    </Pressable>
+                }
            />
         </View>
     );

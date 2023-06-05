@@ -15,6 +15,10 @@ export default function CompraService(){
         return db.addData(sql, values);
     }
 
+    const getById = async (id) => {
+        return mapearCompras(await db.getById('compras', id))[0];
+    }
+
     const getAll = async () => {
         return mapearCompras(await db.getAll("compras"));
     }
@@ -41,11 +45,11 @@ export default function CompraService(){
     }
 
     const mapearCompras = (compras) => 
-        compras.map(compra => new Compra(compra.id, compra.valor/100, compra.descricao, compra.data));
+        compras.map(compra => new Compra(compra.id, compra.valor, compra.descricao, compra.data));
 
     const deleteById = async (id) => {
         return await db.deleteById("compras", id);
     }
 
-    return {add, getAll, getDatas, deleteById}
+    return {add, getById, getAll, getDatas, deleteById}
 }

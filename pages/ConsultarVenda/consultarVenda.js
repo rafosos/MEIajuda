@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, Text, ToastAndroid, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, Pressable, RefreshControl, Text, ToastAndroid, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
-import {colors, dimensions} from "../../variables";
+import {colors, dimensions, formataNumero, formataReal} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 import VendaService from "../../services/vendaService";
 
 export default function ConsultarVendas({navigation}){
-    const [dataInicio, setDataInicio] = useState(new Date());
+    
+    const mesPassado = () => {
+        const data = new Date();
+        data.setMonth(data.getMonth()-1);
+        return data;
+    }
+
+    const [dataInicio, setDataInicio] = useState(mesPassado());
     const [dataFim, setDataFim] = useState(new Date());
     const [refreshing, setRefreshing] = useState(false);
     const [vendas, setVendas] = useState(null);
@@ -157,128 +164,129 @@ export default function ConsultarVendas({navigation}){
         get();
     }
 
-    const editarVenda = (venda) => navigation.navigate("AdicionarVenda", {id: venda.id});
+    const editarVenda = (id) => navigation.navigate("AdicionarVenda", {id});
 
     return (
-        <ScrollView 
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
-            style={s.scrollview}
-        >
-        <View style={{paddingBottom: 10}}>
-            <View style={s.cabecalho}>
-                <View style={s.containerTitle}>
-                    <Text style={s.title}>Consultar vendas</Text>
-                    <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarVenda} />
-                </View>
-
-                <View style={s.containerDataLabel}>
-                    <Text style={s.labelFiltro}>Data inicial:</Text>
-                    <View style={s.linhaDataHora}>
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirDataInicio} style={s.datas}>
-                                <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
-                            </Pressable>
+        <View style={s.scrollview}>
+            <FlatList 
+                data={vendas}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+                keyExtractor={(item) => item.id}
+                ListHeaderComponent={() => <>
+                    <View style={s.cabecalho}>
+                        <View style={s.containerTitle}>
+                            <Text style={s.title}>Consultar vendas</Text>
+                            <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarVenda} />
                         </View>
 
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraInicio} style={s.datas}>
-                                <Text style={s.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
+                        <View style={s.containerDataLabel}>
+                            <Text style={s.labelFiltro}>Data inicial:</Text>
+                            <View style={s.linhaDataHora}>
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirDataInicio} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
+                                    </Pressable>
+                                </View>
+
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirHoraInicio} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={s.containerDataLabel}>
+                            <Text style={s.labelFiltro}>Data final:</Text>
+                            <View style={s.linhaDataHora}>
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirDataFim} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
+                                    </Pressable>
+                                </View>
+
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirHoraFim} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={s.containerBotaoConsultar}>
+                            <Pressable onPress={() => get()} style={s.botaoConsultar}>
+                                <Text style={s.textConsultar}>CONSULTAR</Text>
                             </Pressable>
                         </View>
                     </View>
-                </View>
 
-                <View style={s.containerDataLabel}>
-                    <Text style={s.labelFiltro}>Data final:</Text>
-                    <View style={s.linhaDataHora}>
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirDataFim} style={s.datas}>
-                                <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
-                            </Pressable>
+                    {data ? 
+                        <View style={{alignItems: 'center', marginVertical: 5}}>
+                            <LineChart
+                                data={data}
+                                yAxisLabel="R$ "
+                                width={dimensions.width * 0.95}
+                                height={256}
+                                verticalLabelRotation={30}
+                                style={s.grafico}
+                                chartConfig={{
+                                    backgroundColor: colors.white,
+                                    backgroundGradientFrom: colors.white,
+                                    backgroundGradientTo: colors.white,
+                                    decimalPlaces: 2,
+                                    color: colors.charts.green,
+                                    labelColor: colors.charts.black,
+                                    propsForDots: {
+                                        r: "8",
+                                        strokeWidth: "2"
+                                    }
+                                }}
+                                bezier
+                            />
                         </View>
+                    :null}
 
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraFim} style={s.datas}>
-                                <Text style={s.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={s.containerBotaoConsultar}>
-                    <Pressable onPress={() => get()} style={s.botaoConsultar}>
-                        <Text style={s.textConsultar}>Consultar</Text>
-                    </Pressable>
-                </View>
-            </View>
-
-            {data ? 
-                <View style={{alignItems: 'center', marginVertical: 5}}>
-                    <LineChart
-                        data={data}
-                        yAxisLabel="R$ "
-                        width={dimensions.width * 0.95}
-                        height={256}
-                        verticalLabelRotation={30}
-                        style={s.grafico}
-                        chartConfig={{
-                            backgroundColor: colors.white,
-                            backgroundGradientFrom: colors.white,
-                            backgroundGradientTo: colors.white,
-                            decimalPlaces: 2,
-                            color: colors.charts.green,
-                            labelColor: colors.charts.black,
-                            propsForDots: {
-                                r: "6",
-                                strokeWidth: "2",
-                                stroke: colors.charts.darkGreen
-                            }
-                        }}
-                        bezier
-                    />
-                </View>
-            :null}
-
-            {vendas ? 
-                vendas.length ? <>
-                    <Text style={s.labelResultados}>Compras no período selecionado:</Text>
-                    {vendas.map(venda => {
-                        return (
-                            <Pressable key={venda.id} style={s.itemCompra} onPress={() => editarVenda(venda)}>
+                    <Text style={s.labelResultados}>Vendas no período selecionado:</Text>
+                
+                
+                </>}
+                renderItem={({item}) => 
+                            <Pressable key={item.id} style={s.itemCompra} onPress={() => editarVenda(item.id)}>
                                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                     <View>
-                                        <Text>Id da venda: {venda.id}</Text>
-                                        <Text>Valor: R$ {venda.valor}</Text>
-                                        <Text>Observações: {venda.observacoes}</Text>
+                                        <Text style={s.valorVenda}>{formataReal(item.valor)}</Text>
                                     </View>
-                                    <MaterialIcons name="delete" size={20} color={colors.red} onPress={() => abrirModal(venda)}/>
+                                    <MaterialIcons name="delete" size={20} color={colors.red} onPress={() => abrirModal(item)}/>
                                 </View>
                                 <Text>
-                                    Data: {venda.data.getDate()}/
-                                    {venda.data.getMonth()+1}/
-                                    {venda.data.getFullYear() + " "}
-                                    {venda.data.getHours()}:{venda.data.getMinutes()}
+                                    {item.data.getDate()}/
+                                    {item.data.getMonth()+1}/
+                                    {item.data.getFullYear() + " "}
+                                    {item.data.getHours()}:{formataNumero(item.data.getMinutes())}
                                 </Text>
-                                <Text>Produtos: {venda.produtos.map((produto, index) => `${produto.nome} `)}</Text>
+                                {item.produtos.map((produto, index) => 
+                                    <View key={produto.id} style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                        <Text>({produto.quantidade}) {produto.nome}</Text>
+                                        <Text>{formataReal(produto.precoFinal)}</Text>
+                                    </View>
+                                )}
+                                {item.desconto? <Text style={s.desconto}>Desconto: {formataReal(item.desconto)}</Text>:null}
+                                {item.observacoes? <Text style={s.observacoes}>{item.observacoes}</Text> : null}
                             </Pressable>
-                        )
-                    })}
-                    </>:
-                    <Text style={s.naoHaResultados}>Não há vendas para o período pesquisado.</Text>
-            : null}
+                }
+                ListFooterComponent={() => loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
+                ListEmptyComponent={() => <Text style={s.naoHaResultados}>Não há vendas para o período pesquisado.</Text>}
+            />
 
             <ModalSimples
                 modalVisivel={modalVisivel}
                 setModalVisivel={setModalVisivel}
                 onPressConfirmar={() => deletarRegistro()}
             />
-               
-            {loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
-            </View>
-        </ScrollView>
+        </View>
     );
 }

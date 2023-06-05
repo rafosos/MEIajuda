@@ -1,61 +1,97 @@
-import { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Pressable, Text, TextInput, ToastAndroid, View } from "react-native";
 import CurrencyInput from "react-native-currency-input";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import styles from "./styles";
+import { MaterialIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import s from "./styles";
 import CompraService from "../../services/compraService";
+import { formataNumero } from "../../variables";
+import ModalSimples from "../../components/modalSimples";
 
-const AdicionarCompra = ({navigation}) =>{
+const AdicionarCompra = ({route, navigation}) =>{
     const [preco, setPreco] = useState(0);
     const [descricao, setDescricao] = useState('');
     const [data, setData] = useState(new Date());
-    const [hora, setHora] = useState(new Date());
+    const [modalExcluirVisible, setModalExcluirVisible] = useState(false);
+    const id = useRef(route?.params?.id).current;
     const compraService = CompraService();
 
-    const salvar = () => {
-        const dataHora = new Date(data);
-        dataHora.setHours(hora.getHours());
-        dataHora.setMinutes(hora.getMinutes());
+    useEffect(() => {
+        if(id){
+            navigation.setOptions({title: "Editar compra"});
+            getById();
+        }
+    }, [])
 
-        compraService.add(preco, descricao, dataHora)
+    const getById = () => {
+        compraService.getById(id).then(res => {
+            setPreco(res.valor);
+            setDescricao(res.descricao);
+            setData(res.data);
+        })
+    }
+
+    const salvar = () => {
+        compraService.add(preco, descricao, data)
             .then(res => {
                 navigation.pop();
+                ToastAndroid.show("Compra salva com sucesso", ToastAndroid.SHORT);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                Alert.alert("Erro", "Não foi possivel adicionar a compra devido a um erro.");
+            });
+    }
+
+    const excluir = () => {
+        compraService.deleteById(id)
+            .then(res => {
+                ToastAndroid.show("Compra excluida com sucesso.", ToastAndroid.SHORT);
+                navigation.pop();
+            })
+            .catch(err => { 
+                Alert.alert("Não foi possível excluir a compra devido a um erro.");
+                console.log(err);
+            });
     }
 
     const onChangeData = (event, selectedDate) => {
         if(event.type != "set") return;
-        setData(selectedDate);
-        abrirHora();
+        let dia = new Date(data);
+        dia.setDate(selectedDate.getDate());
+        dia.setMonth(selectedDate.getMonth());
+        dia.setFullYear(selectedDate.getFullYear());
+        setData(dia);
     }
 
     const onChangeHora = (event, selectedTime) => {
-        setHora(selectedTime);
+        if(event.type != "set") return;
+        let hora = new Date(data);
+        hora.setHours(selectedTime.getHours());
+        hora.setMinutes(selectedTime.getMinutes());
+        setData(hora);
     }
 
     const abrirData = () => {
-        modalDataHora("date", onChangeData, data);
+        modalDataHora("date", onChangeData);
     }
 
     const abrirHora = () => {
-        modalDataHora("time", onChangeHora, hora);
+        modalDataHora("time", onChangeHora);
     }
 
-    const modalDataHora = (modo, onChange, value) =>{
+    const modalDataHora = (modo, onChange) =>{
         DateTimePickerAndroid.open({
-            value: value ?? new Date(),
+            value: data, 
             onChange,
             mode: modo,
             is24Hour: true
         });
     }
 
-    const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
-
-    return(<View style={styles.tudo}>
-        <View style={styles.containers}>
-            <Text style={styles.nomeInput}>
+    return(<View style={s.tudo}>
+        <View style={s.containers}>
+            <Text style={s.nomeInput}>
                 Valor da compra*
             </Text>
             <CurrencyInput
@@ -66,27 +102,29 @@ const AdicionarCompra = ({navigation}) =>{
                 minValue={0}
                 value={preco}
                 keyboardType="numeric"
-                style={styles.inputValor}
+                style={s.inputValor}
                 onChangeValue={setPreco}
             />
         </View>
 
-        <View style={styles.containers}>
-            <Text style={styles.nomeInput}>
-                Data da compra
-            </Text>
-            <View style={styles.containerData}>
-                <Pressable onPress={abrirData}>
-                    <Text style={styles.data}>
-                        {data.getDate()}/{data.getMonth() + 1}/{data.getFullYear() + " "}
-                        {formataDezena(hora.getHours())}:{formataDezena(hora.getMinutes())}
-                    </Text>
+        <View style={s.containerDataHora}>
+            <View style={s.containerData}>
+                <MaterialIcons name="date-range" onPress={abrirData} style={s.iconesDataHora} />
+                <Pressable onPress={abrirData} style={s.inputDataHora}>
+                    <Text style={s.data}>{data.getDate()}/{data.getMonth() + 1}/{data.getFullYear()}</Text>
+                </Pressable>
+            </View>
+    
+            <View style={s.containerData}>
+                <MaterialIcons name="alarm" onPress={abrirHora} style={s.iconesDataHora}/>
+                <Pressable onPress={abrirHora} style={s.inputDataHora}>
+                    <Text style={s.data}>{formataNumero(data.getHours())}:{formataNumero(data.getMinutes())}</Text>
                 </Pressable>
             </View>
         </View>
 
-        <View style={styles.containers}>
-            <Text style={styles.nomeInput}>
+        <View style={s.containers}>
+            <Text style={s.nomeInput}>
                 Observações
             </Text>
             <TextInput
@@ -94,16 +132,35 @@ const AdicionarCompra = ({navigation}) =>{
                 numberOfLines={5}
                 multiline={true}
                 onChangeText={(value) => {setDescricao(value)}}
-                style={styles.inputObservacoes}
+                style={s.inputObservacoes}
             />
         </View>
+        
+        <View style={s.botoesContainer}>
+            {id?
+                <Pressable 
+                    style={[s.botoes, s.botaoExcluir]}
+                    onPress={() => setModalExcluirVisible(true)}
+                >
+                    <AntDesign name="delete" style={s.iconeBotao} />
+                    <Text style={s.textBotao}>EXCLUIR</Text>
+                </Pressable>
+            :null}
 
-        <Pressable 
-            style={styles.botaoSalvar}
-            onPress={() => salvar()}
-        >
-            <Text style={styles.textSalvar}>SALVAR</Text>
-        </Pressable>
+            <Pressable 
+                style={[s.botoes, s.botaoSalvar]}
+                onPress={() => salvar()}
+            >
+                <FontAwesome5 name="save" style={s.iconeBotao} />
+                <Text style={s.textBotao}>SALVAR</Text>
+            </Pressable>
+        </View>
+
+        <ModalSimples
+            modalVisivel={modalExcluirVisible}
+            setModalVisivel={setModalExcluirVisible}
+            onPressConfirmar={() => excluir()}
+        />
 
     </View>)
 }

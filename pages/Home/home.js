@@ -3,7 +3,7 @@ import { Alert, Pressable, Text, View, FlatList, ToastAndroid } from "react-nati
 import CurrencyInput from "react-native-currency-input";
 import { Ionicons, FontAwesome5, Octicons, AntDesign } from '@expo/vector-icons';
 import s from "./styles";
-import {colors, formataNumero} from "../../variables";
+import {colors, formataReal} from "../../variables";
 import { useUser } from "../../storage/userContext";
 import LucroService from "../../services/lucroService";
 import ProdutoService from "../../services/produtoService";
@@ -128,8 +128,8 @@ export default function Home({navigation}){
                 <Text style={[s.valorLucro, {
                     color: total > 0 ? colors.green : 
                            total < 0 ? colors.red : colors.black
-                    }]}>R$ {formataNumero(total)}</Text>
-                <Text style={s.lucroMensal}>Seu lucro mensal é de R$ {formataNumero(mensal)}</Text>
+                    }]}>{formataReal(total)}</Text>
+                <Text style={s.lucroMensal}>Seu lucro mensal é de {formataReal(mensal)}</Text>
             </View>
 
             <View style={{marginVertical: 40}}>
@@ -143,8 +143,8 @@ export default function Home({navigation}){
                         <View style={s.itemProduto}>
                             <View>
                                 <Text style={s.nomeProd}>{item.nome}</Text>
-                                <Text><Text style={s.bold}>Un.:</Text> R$: {formataNumero(item.precoProduto)}</Text>
-                                <Text><Text style={s.bold}>Total:</Text> R$ {formataNumero(item.precoFinal)}</Text>
+                                <Text><Text style={s.bold}>Un.:</Text> {formataReal(item.precoProduto)}</Text>
+                                <Text><Text style={s.bold}>Total:</Text> {formataReal(item.precoFinal)}</Text>
                             </View>
 
                             <View style={s.quantidade}>

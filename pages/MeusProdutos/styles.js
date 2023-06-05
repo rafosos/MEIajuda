@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     iconeSemProdutos:{
-        fontSize: 40,
+        fontSize: 60,
         textAlign: 'center',
         padding: 10
     }

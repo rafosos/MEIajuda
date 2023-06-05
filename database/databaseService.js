@@ -71,7 +71,7 @@ export default function DatabaseService() {
     const getById = (table, id) => {
         return new Promise((resolve, reject) => db.transaction(tx => {
             tx.executeSql(`select * from ${table} where id=?`, [id], (_, { rows }) => {
-                resolve(rows)
+                resolve(rows._array)
             }), (sqlError) => {
                 console.log(sqlError);
             }}, (txError) => {

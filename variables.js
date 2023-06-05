@@ -6,8 +6,10 @@ const colors = {
     notSoDarkGreen: "#0E4D1e",
     darkGreen: "#0e201e",
     yellow: '#ffa700',
+    yellowLogo: '#fcd770',
     blue: "#0047AB",
     red: '#f00',
+    darkRed: 'rgb(195,0,0)',
     lighterGrey: '#efefef',
     lightGrey: '#dfdfdf',
     grey: '#cfcfcf',
@@ -16,19 +18,22 @@ const colors = {
 
     charts: {
         noOpacityBlack: (opacity = 1) => `rgba(0, 0, 0, 1)`,
-        black: (opacity = 1) => `rgba(0, 0, 0, 0.4)`,
-        green: (opacity = 1) => `rgba(0, 128 , 0, ${opacity})`,
+        black: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        green: (opacity = 1) => `rgba(0, 128, 0, ${opacity})`,
+        red: (opacity = 1) => `rgba(128, 0, 0, ${opacity})`,
         darkGreen: "#006400"
     },
 
-    black7: "rgba(0,0,0,0.7)"
+    black7: "rgba(0,0,0,0.7)",
+    red5: 'rgba(255,0,0,0.5)'
 }
 
-const formataNumero = (num) => num.toLocaleString("pt-BR", {maximumFractionDigits:2});
+const formataReal = (num) => new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(num);
+const formataNumero = (num = 0) => num.toString().padStart(2, '0');
 
 const dimensions = {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height
 }
 
-export {colors, formataNumero, dimensions};
+export {colors, formataReal, formataNumero, dimensions};

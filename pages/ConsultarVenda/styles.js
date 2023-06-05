@@ -3,7 +3,8 @@ import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
     scrollview:{
-        backgroundColor: colors.darkGreen
+        backgroundColor: colors.darkGreen,
+        flex:1
     },
     cabecalho:{
         justifyContent:"space-around"
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
     labelResultados:{
         color: colors.white,
         fontSize: 15,
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        textAlign: 'center'
     },
     itemCompra:{
         backgroundColor: colors.white,
@@ -75,20 +77,36 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         padding: 10
     },
+    valorVenda:{
+        fontSize: 20,
+        fontFamily: 'geo-bold',
+        color: colors.green
+    },
+    desconto:{
+        fontSize: 12,
+        textAlign: 'right',
+        color: colors.red5,
+    },
+    observacoes:{
+        color: colors.darkGrey,
+        fontSize: 13
+    },
     containerBotaoConsultar: {
         alignItems: "center"
     },
     botaoConsultar: {
         alignItems: "center",
-        backgroundColor: colors.green,
+        backgroundColor: colors.yellow,
         paddingHorizontal: 15,
         paddingVertical: 5,
         borderRadius: 10,
-        marginVertical: 10
+        marginVertical: 10,
+        height: 38,
+        justifyContent: 'center'
     },
     textConsultar:{
         color: colors.white,
-        fontSize: 20
+        fontSize: 17
     },
     naoHaResultados: {
         color: colors.white,

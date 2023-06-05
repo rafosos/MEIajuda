@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
-import styles from "./styles";
+import s from "./styles";
 import CompraService from "../../services/compraService";
-import {colors, dimensions} from "../../variables";
+import {colors, dimensions, formataNumero, formataReal} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 
 export default function ConsultarCompras({navigation}){
-    const [dataInicio, setDataInicio] = useState(new Date());
+
+    const mesPassado = () => {
+        const data = new Date();
+        data.setMonth(data.getMonth()-1);
+        return data;
+    }
+
+    const [dataInicio, setDataInicio] = useState(mesPassado());
     const [dataFim, setDataFim] = useState(new Date());
     const [compras, setCompras] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -38,7 +45,7 @@ export default function ConsultarCompras({navigation}){
                 let somas = {};
                 let calendario = {};
                 res.forEach(compra => {
-                    const mes = compra.data.toLocaleString('default', { month: 'long' })
+                    const mes = compra.data.toLocaleString('default', { month: 'long' });
                     if(somas[mes])
                         somas[mes] += compra.valor;
                     else{
@@ -128,9 +135,8 @@ export default function ConsultarCompras({navigation}){
         });
     }
 
-    const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
-
     const adicionarCompra = () => navigation.navigate("AdicionarCompra");
+    const editarCompra = (id) => navigation.navigate("AdicionarCompra", {id}) 
 
     const abrirModal = (id) => {
         setSelectedId(id);
@@ -149,121 +155,113 @@ export default function ConsultarCompras({navigation}){
     }
 
     return (
-        <ScrollView style={styles.scrollview}>
-        <View style={{paddingBottom: 10}}>
-            <View style={styles.cabecalho}>
-                <View style={styles.containerTitle}>
-                    <Text style={styles.title}>Consultar compras</Text>
-                    <MaterialIcons name="add-box" style={styles.iconeAdd} onPress={adicionarCompra} />
-                </View>
-
-                <View style={styles.containerDataLabel}>
-                    <Text style={styles.labelFiltro}>Data inicial:</Text>
-                    <View style={styles.linhaDataHora}>
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataInicio} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirDataInicio} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
-                            </Pressable>
+        <View style={s.scrollview}>
+            <FlatList
+                data={compras}
+                keyExtractor={(item) => item.id}
+                ListHeaderComponent={() => <>
+                    <View style={s.cabecalho}>
+                        <View style={s.containerTitle}>
+                            <Text style={s.title}>Consultar compras</Text>
+                            <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarCompra} />
                         </View>
 
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraInicio} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.containerDataLabel}>
-                    <Text style={styles.labelFiltro}>Data final:</Text>
-                    <View style={styles.linhaDataHora}>
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataFim} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirDataFim} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
-                            </Pressable>
-                        </View>
-
-                        <View style={styles.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraFim} style={styles.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraFim} style={styles.datas}>
-                                <Text style={styles.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.containerBotaoConsultar}>
-                    <Pressable onPress={() => get()} style={styles.botaoConsultar}>
-                        <Text style={styles.textConsultar}>Consultar</Text>
-                    </Pressable>
-                </View>
-            </View>
-
-            {data ? 
-                <View style={{alignItems: 'center', marginVertical: 5}}>
-                    <LineChart
-                        data={data}
-                        yAxisLabel="R$ "
-                        width={dimensions.width * 0.95}
-                        height={256}
-                        verticalLabelRotation={30}
-                        style={styles.grafico}
-                        chartConfig={{
-                            backgroundColor: colors.white,
-                            backgroundGradientFrom: colors.white,
-                            backgroundGradientTo: colors.white,
-                            decimalPlaces: 2,
-                            color: colors.charts.green,
-                            labelColor: colors.charts.black,
-                            propsForDots: {
-                                r: "6",
-                                strokeWidth: "2",
-                                stroke: colors.charts.darkGreen
-                            }
-                        }}
-                        bezier
-                    />
-                </View>
-            :null}
-
-            {compras ? 
-                compras.length ? <>
-                    <Text style={styles.labelResultados}>Compras no período selecionado:</Text>
-                    {compras.map(compra => {
-                        return (
-                            <View key={compra.id} style={styles.itemCompra}>
-                                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                                    <View>
-                                        <Text>Id da compra: {compra.id}</Text>
-                                        <Text>Valor: R$ {compra.valor/100}</Text>
-                                        <Text>Descrição: {compra.descricao}</Text>
-                                    </View>
-                                    <MaterialIcons name="delete" size={20} color={colors.red} onPress={() => abrirModal(compra.id)}/>
+                        <View style={s.containerDataLabel}>
+                            <Text style={s.labelFiltro}>Data inicial:</Text>
+                            <View style={s.linhaDataHora}>
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirDataInicio} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
+                                    </Pressable>
                                 </View>
-                                <Text>
-                                    Data: {compra.data.getDate()}/
-                                    {compra.data.getMonth()+1}/
-                                    {compra.data.getFullYear() + " "}
-                                    {compra.data.getHours()}:{compra.data.getMinutes()}
-                                </Text>
-                            </View>
-                        )
-                    })}
-                    </>:
-                    <Text style={styles.naoHaResultados}>Não há compras para o período pesquisado.</Text>
-            : null}
 
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirHoraInicio} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{formataNumero(dataInicio.getHours())}:{formataNumero(dataInicio.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={s.containerDataLabel}>
+                            <Text style={s.labelFiltro}>Data final:</Text>
+                            <View style={s.linhaDataHora}>
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirDataFim} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
+                                    </Pressable>
+                                </View>
+
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirHoraFim} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{formataNumero(dataFim.getHours())}:{formataNumero(dataFim.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={s.containerBotaoConsultar}>
+                            <Pressable onPress={() => get()} style={s.botaoConsultar}>
+                                <Text style={s.textConsultar}>CONSULTAR</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+
+                    {data ? 
+                        <View style={{alignItems: 'center', marginVertical: 5}}>
+                            <LineChart
+                                data={data}
+                                yAxisLabel="R$ "
+                                width={dimensions.width * 0.95}
+                                height={256}
+                                verticalLabelRotation={30}
+                                style={s.grafico}
+                                chartConfig={{
+                                    backgroundColor: colors.white,
+                                    backgroundGradientFrom: colors.white,
+                                    backgroundGradientTo: colors.white,
+                                    decimalPlaces: 2,
+                                    color: colors.charts.red,
+                                    labelColor: colors.charts.black,
+                                    propsForDots: {
+                                        r: "8",
+                                        strokeWidth: "2"
+                                    }
+                                }}
+                                bezier
+                            />
+                        </View>
+                    :null}        
+                    <Text style={s.labelResultados}>Compras no período selecionado:</Text>
+                </>}
+                renderItem={({item}) =>
+                    <Pressable key={item.id} style={s.itemCompra} onPress={() => editarCompra(item.id)}>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                            <Text style={s.valorCompra}>{formataReal(item.valor)}</Text>
+                            <MaterialIcons name="delete" size={20} color={colors.red} onPress={() => abrirModal(item.id)}/>
+                        </View>
+                        <Text>
+                            {item.data.getDate()}/
+                            {item.data.getMonth()+1}/
+                            {item.data.getFullYear() + " "}
+                            {item.data.getHours()}:{formataNumero(item.data.getMinutes())}
+                        </Text>
+                        {item.descricao? <Text style={s.descricao}>{item.descricao}</Text>:null}
+                    </Pressable>
+                }
+                ListFooterComponent={() => loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
+                ListEmptyComponent={() => <Text style={s.naoHaResultados}>Não há compras para o período pesquisado.</Text>}
+            />
+    
             <ModalSimples
                 modalVisivel={modalVisivel}
                 setModalVisivel={setModalVisivel}
                 onPressConfirmar={() => deletarRegistro()}
             />
-               
-            {loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
-            </View>
-        </ScrollView>
+        </View>
     );
 }

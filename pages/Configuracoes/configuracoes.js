@@ -5,6 +5,7 @@ import { AsyncStorageService } from '../../storage/asyncStorageService';
 import { useUser } from '../../storage/userContext';
 import styles from './styles';
 import TudoService from '../../services/tudoService';
+import { colors } from '../../variables';
 
 const Configuracoes = ({navigation}) => {
   const userContext = useUser();
@@ -58,7 +59,7 @@ const Configuracoes = ({navigation}) => {
             />
           
           <Text style={styles.txtAviso}>
-          <FontAwesome name="warning" size={30} color="red" />
+          <FontAwesome name="warning" size={30} color={colors.red} />
           {"\n"}ATENÇÃO: Ao remover os dados, todas as informações armazenadas serão apagadas e não poderão ser recuperadas.
           </Text>
           

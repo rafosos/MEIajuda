@@ -5,12 +5,11 @@ import CurrencyInput from "react-native-currency-input";
 import { FontAwesome5, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
 import ProdutoService from "../../services/produtoService";
-import {colors} from "../../variables";
+import {colors, formataNumero, formataReal} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
 import VendaService from "../../services/vendaService";
 import ProdutoVenda from "../../classes/produtoVenda";
 import ModalAdicionarProduto from "../../components/modalAdicionarProduto";
-
 
 const AdicionarVenda = ({route, navigation}) =>{
     const [produtos, setProdutos] = useState([]);
@@ -23,6 +22,8 @@ const AdicionarVenda = ({route, navigation}) =>{
     const [modalProdutoVisivel, setModalProdutoVisivel] = useState(false);
     const [loadingProduto, setLoadingProduto] = useState(false);
     const id = useRef(route?.params?.id).current;
+    const refValorFinal = useRef();
+    const refObservacoes = useRef();
     const produtoService = ProdutoService();
     const vendaService = VendaService();
 
@@ -178,8 +179,6 @@ const AdicionarVenda = ({route, navigation}) =>{
         });
     }
 
-    const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
-
     return(<ScrollView style={s.tudo}>
 
         <Text style={s.labels}>Produtos</Text>
@@ -189,8 +188,8 @@ const AdicionarVenda = ({route, navigation}) =>{
                     <View key={produto.id} style={s.itemProduto}>
                         <View>
                             <Text style={s.nomeProduto}>{produto.nome}</Text>
-                            <Text>Valor (un): R${produto.precoProduto}</Text>
-                            <Text>Total: R${produto.precoFinal}</Text>
+                            <Text>Valor (un): {formataReal(produto.precoProduto)}</Text>
+                            <Text>Total: {formataReal(produto.precoFinal)}</Text>
                         </View>
                         <View style={s.quantidade}>
                             <Text onPress={() => menosUm(produto.id)} style={s.maisMenos}>-</Text>
@@ -214,20 +213,16 @@ const AdicionarVenda = ({route, navigation}) =>{
         <View style={s.containerDataHora}>
             <View style={s.itemDataHora}>
                 <MaterialIcons name="date-range" onPress={abrirData} style={[s.labels, s.icones]} />
-                <View style={s.inputDataHora}>
-                    <Pressable onPress={abrirData}>
-                        <Text style={s.data}>{data.getDate()}/{data.getMonth() + 1}/{data.getFullYear()}</Text>
-                    </Pressable>
-                </View>
+                <Pressable onPress={abrirData} style={s.inputDataHora}>
+                    <Text style={s.data}>{data.getDate()}/{data.getMonth() + 1}/{data.getFullYear()}</Text>
+                </Pressable>
             </View>
     
             <View style={s.itemDataHora}>
                 <MaterialIcons name="alarm" onPress={abrirHora} style={[s.labels, s.icones]}/>
-                <View style={s.inputDataHora}>
-                    <Pressable onPress={abrirHora}>
-                        <Text style={s.data}>{formataDezena(data.getHours())}:{formataDezena(data.getMinutes())}</Text>
-                    </Pressable>
-                </View>
+                <Pressable onPress={abrirHora} style={s.inputDataHora}>
+                    <Text style={s.data}>{formataNumero(data.getHours())}:{formataNumero(data.getMinutes())}</Text>
+                </Pressable>
             </View>
         </View>
 
@@ -241,6 +236,9 @@ const AdicionarVenda = ({route, navigation}) =>{
                 minValue={0}
                 value={desconto}
                 keyboardType="numeric"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => refValorFinal.current.focus()}
                 style={s.inputValor}
                 onChangeValue={setDesconto}
             />
@@ -256,8 +254,12 @@ const AdicionarVenda = ({route, navigation}) =>{
                 minValue={0}
                 value={valorFinal}
                 keyboardType="numeric"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => refObservacoes.current.focus()}
                 style={s.inputValor}
                 onChangeValue={setValorFinal}
+                ref={refValorFinal}
             />
         </View>
 
@@ -268,6 +270,7 @@ const AdicionarVenda = ({route, navigation}) =>{
                 numberOfLines={5}
                 multiline={true}
                 onChangeText={(value) => {setObservacoes(value)}}
+                ref={refObservacoes}
                 style={s.inputObservacoes}
                 value={observacoes}
             />
