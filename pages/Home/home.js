@@ -157,31 +157,31 @@ export default function Home({navigation}){
                             </View>
                         </View>
                     }
-                    ListFooterComponent={produtos.length ?    
-                        <View style={s.containerValorSalvar}>
-                            <CurrencyInput
-                                prefix="R$"
-                                separator=","
-                                delimter="."
-                                precision={2}
-                                minValue={0}
-                                value={valor}
-                                keyboardType="numeric"
-                                style={s.campoValor}
-                                onChangeValue={(value) => mudarValor(value)}
-                                />
-                            <Pressable style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
-                                <Text style={s.txtBotaoSalvar}>SALVAR</Text>
-                            </Pressable>
-                        </View>
-                        :null}
                     ListEmptyComponent={
                         <Pressable style={s.containerSemProduto} onPress={adicionarProduto}>
                             <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione produtos para começar a cadastrar suas vendas!</Text>
                             <MaterialIcons name="add-box" style={s.iconeSemProdutos}/>
                         </Pressable>
                     }
-                    />
+                />
+                {produtos.length ?    
+                    <View style={s.containerValorSalvar}>
+                        <CurrencyInput
+                            prefix="R$"
+                            separator=","
+                            delimter="."
+                            precision={2}
+                            minValue={0}
+                            value={valor}
+                            keyboardType="numeric"
+                            style={s.campoValor}
+                            onChangeValue={(value) => mudarValor(value)}
+                            />
+                        <Pressable style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
+                            <Text style={s.txtBotaoSalvar}>SALVAR</Text>
+                        </Pressable>
+                    </View>
+                :null}
             </View>
 
             <View style={s.linhaBotao}>

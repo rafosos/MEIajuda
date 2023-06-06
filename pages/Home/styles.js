@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         paddingHorizontal: 10,
         paddingVertical: 10,
+        paddingTop: 5,
         width: dimensions.width * 0.9, 
         flexDirection: 'row', 
         justifyContent: 'space-between',
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     nomeProd:{
-        fontWeight: "bold",
+        fontFamily: 'geo-bold',
         fontSize: 20
     },
     quantidade:{
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
         fontFamily: "geo-light"
     },
     bold:{
-        fontWeight: 'bold'
+        fontFamily: 'geo-bold'
     }
 });
 
