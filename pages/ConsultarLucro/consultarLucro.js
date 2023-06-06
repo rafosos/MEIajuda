@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
+import { Picker } from "@react-native-picker/picker";
 import s from "./styles";
 import {colors, dimensions} from "../../variables";
 import LucroService from "../../services/lucroService";
-import { Picker } from "@react-native-picker/picker";
 
 export default function ConsultarLucro({navigation}){
     const [dataInicio, setDataInicio] = useState(new Date());
@@ -23,14 +23,22 @@ export default function ConsultarLucro({navigation}){
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-          getTotal();
+          get();
         });
         return unsubscribe;
     }, [navigation]);
 
+    const get = () => {
+        switch(selectedTipo){
+            case tipos.total:{
+                getTotal();
+                break;
+            }
+        }
+    }
+
     const getTotal = () =>{
         setLoading(true);
-        
         lucroService.getTudoPorMes().then(res => {
             setLucros(res);
             if(res.length){
@@ -150,8 +158,6 @@ export default function ConsultarLucro({navigation}){
         });
     }
 
-    const formataDezena = (num) => num.toLocaleString(undefined, {minimumIntegerDigits: 2});
-
     return (
         <ScrollView style={s.scrollview}>
         <View style={{paddingBottom: 10}}>
@@ -167,11 +173,9 @@ export default function ConsultarLucro({navigation}){
                         mode={'dropdown'}
                     >
                         <Picker.Item label="Selecionar periodicidade"/>
-                        {
-                            Object.keys(tipos).map((tipo, i) =>
+                        {Object.keys(tipos).map((tipo, i) =>
                             <Picker.Item label={tipos[tipo]} value={tipos[tipo]} key={i}/>
-                            )
-                        }
+                        )}
                     </Picker>
                 </View>
 
@@ -219,7 +223,7 @@ export default function ConsultarLucro({navigation}){
 
                 <View style={s.containerBotaoConsultar}>
                     <Pressable onPress={() => getTotal()} style={s.botaoConsultar} disabled={!selectedTipo}>
-                        <Text style={s.textConsultar}>Consultar</Text>
+                        <Text style={s.textConsultar}>CONSULTAR</Text>
                     </Pressable>
                 </View>
             </View>

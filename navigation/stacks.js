@@ -161,6 +161,7 @@ export function TabStack(){
                 options={{
                     tabBarShowLabel: false,
                     tabBarIcon: () => <Octicons name="graph" size={24} color={colors.white} />,
+                    unmountOnBlur: true
                 }}
                 component={LucroStack}
             />

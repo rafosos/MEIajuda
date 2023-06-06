@@ -3,7 +3,8 @@ import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
     scrollview:{
-        backgroundColor: colors.darkGreen
+        backgroundColor: colors.darkGreen,
+        paddingHorizontal: 10
     },
     cabecalho:{
         justifyContent:"space-around"
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
     containerTitle:{
         justifyContent: 'space-between',
         flexDirection: 'row',
-        marginHorizontal: 20,
+        marginHorizontal: 5,
         marginVertical: 10,
         alignItems: 'center'
     },
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     },
     botaoConsultar: {
         alignItems: "center",
-        backgroundColor: colors.green,
+        backgroundColor: colors.yellow,
         paddingHorizontal: 15,
         paddingVertical: 5,
         borderRadius: 10,
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     },
     textConsultar:{
         color: colors.white,
-        fontSize: 20
+        fontSize: 17
     },
     naoHaResultados: {
         color: colors.white,

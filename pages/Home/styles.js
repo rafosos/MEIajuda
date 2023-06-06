@@ -85,6 +85,26 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontSize: 17
     },
+    containerSemProduto:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: dimensions.width *0.95,
+        backgroundColor: colors.white,
+        backgroundColor: colors.white,
+        borderRadius: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        marginVertical: 5
+    },
+    txtSemProdutos:{
+        textAlign: 'center',
+        fontSize: 15
+    },
+    iconeSemProdutos:{
+        fontSize: 50,
+        textAlign: 'center',
+        padding: 5
+    },
     linhaBotao:{
         display: 'flex',
         flexDirection: 'row',

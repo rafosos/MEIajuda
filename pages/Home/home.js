@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, Pressable, Text, View, FlatList, ToastAndroid } from "react-native";
 import CurrencyInput from "react-native-currency-input";
-import { Ionicons, FontAwesome5, Octicons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Octicons, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
 import {colors, formataReal} from "../../variables";
 import { useUser } from "../../storage/userContext";
@@ -115,6 +115,7 @@ export default function Home({navigation}){
     const irParaConsultarLucro  = () => navigation.navigate("ConsultarLucro");
     const irParaMeusProdutos    = () => navigation.navigate("MeusProdutos");
     const irParaAdicionarVenda  = () => navigation.navigate("AdicionarVenda");
+    const adicionarProduto = () => navigation.navigate("AdicionarProduto");
 
     return (
         <View style={s.container}>
@@ -156,23 +157,31 @@ export default function Home({navigation}){
                             </View>
                         </View>
                     }
-                />
-                <View style={s.containerValorSalvar}>
-                    <CurrencyInput
-                        prefix="R$"
-                        separator=","
-                        delimter="."
-                        precision={2}
-                        minValue={0}
-                        value={valor}
-                        keyboardType="numeric"
-                        style={s.campoValor}
-                        onChangeValue={(value) => mudarValor(value)}
-                        />
-                    <Pressable style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
-                        <Text style={s.txtBotaoSalvar}>SALVAR</Text>
-                    </Pressable>
-                </View>
+                    ListFooterComponent={produtos.length ?    
+                        <View style={s.containerValorSalvar}>
+                            <CurrencyInput
+                                prefix="R$"
+                                separator=","
+                                delimter="."
+                                precision={2}
+                                minValue={0}
+                                value={valor}
+                                keyboardType="numeric"
+                                style={s.campoValor}
+                                onChangeValue={(value) => mudarValor(value)}
+                                />
+                            <Pressable style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
+                                <Text style={s.txtBotaoSalvar}>SALVAR</Text>
+                            </Pressable>
+                        </View>
+                        :null}
+                    ListEmptyComponent={
+                        <Pressable style={s.containerSemProduto} onPress={adicionarProduto}>
+                            <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione produtos para começar a cadastrar suas vendas!</Text>
+                            <MaterialIcons name="add-box" style={s.iconeSemProdutos}/>
+                        </Pressable>
+                    }
+                    />
             </View>
 
             <View style={s.linhaBotao}>
