@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
-import { Picker } from "@react-native-picker/picker";
 import s from "./styles";
 import {colors, dimensions} from "../../variables";
 import LucroService from "../../services/lucroService";
@@ -167,7 +166,7 @@ export default function ConsultarLucro({navigation}){
                 </View>
 
                 <View style={s.picker}>
-                    <Picker
+                    {/* <Picker
                         selectedValue={selectedTipo}
                         onValueChange={(item,i) => setSelectedTipo(item)}
                         mode={'dropdown'}
@@ -176,7 +175,7 @@ export default function ConsultarLucro({navigation}){
                         {Object.keys(tipos).map((tipo, i) =>
                             <Picker.Item label={tipos[tipo]} value={tipos[tipo]} key={i}/>
                         )}
-                    </Picker>
+                    </Picker> */}
                 </View>
 
                 {/* {selectedTipo == tipos.total ? null :

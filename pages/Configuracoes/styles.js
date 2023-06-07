@@ -2,18 +2,11 @@ import { StyleSheet } from "react-native";
 import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    alignItems: 'center', 
+  container: {
     justifyContent: 'center', 
     backgroundColor: colors.darkGreen,
     flexDirection: 'column', 
-  },
-  containerTudo: { 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    flex: 1,
-    paddingHorizontal: 20, 
+    padding: 20, 
   },
   containerImagem: { 
     alignItems: 'center', 
@@ -26,17 +19,43 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginBottom: 20
   },
+  label:{
+    color: colors.white
+  },
+  picker:{
+      borderRadius: 15,
+      zIndex: 99,
+      marginBottom: 10
+  },
+  placeholder:{
+      color: colors.grey,
+      zIndex: 99
+  },
   txtInput: { 
     backgroundColor: colors.white,
-    color: colors.black,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginBottom: 10,
-    textAlignVertical: "top",
-    width: 350,
-    borderRadius: 10,
-    textAlignVertical: 'center'
+    borderRadius: 15,
+    textAlignVertical: 'center',
   },
+  txtInputDisabled:{
+    backgroundColor: colors.darkGreen,
+    borderWidth: 2,
+    borderColor: colors.white
+  },
+  boasVindas:{
+    borderWidth: 2, 
+    borderColor: colors.white,
+    borderRadius: 15,
+    textAlignVertical: 'center',
+    paddingLeft: 10,
+    color: colors.white,
+    fontSize: 15,
+    marginHorizontal: 0,
+    marginTop: 1,
+    marginBottom: 15
+},
   txtInputAviso:{
     borderColor: colors.red,
     borderWidth: 2,

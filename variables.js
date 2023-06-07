@@ -28,6 +28,8 @@ const colors = {
     red5: 'rgba(255,0,0,0.5)'
 }
 
+const saudacoes = {1: 'Bem vindo, ', 2: 'Bem vinda, '};
+
 const formataReal = (num) => new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(num);
 const formataNumero = (num = 0) => num.toString().padStart(2, '0');
 
@@ -36,4 +38,4 @@ const dimensions = {
     height: Dimensions.get('window').height
 }
 
-export {colors, formataReal, formataNumero, dimensions};
+export {colors, formataReal, formataNumero, dimensions, saudacoes};

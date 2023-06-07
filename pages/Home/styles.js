@@ -12,11 +12,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center',
-        marginVertical: 15
+        marginVertical: 15,
     },
     textoBemVindo:{
         color: colors.white,
-        fontSize: 27
+        fontSize: 27,
+        flexWrap: 'wrap',
+        flex: 1
     },
     textoVendaRapida:{
         color: colors.white,

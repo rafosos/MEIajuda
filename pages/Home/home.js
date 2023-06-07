@@ -12,7 +12,7 @@ import ProdutoVenda from "../../classes/produtoVenda";
 import ModalVendaRapida from "../../components/modalVendaRapida";
 
 export default function Home({navigation}){
-    const {nome} = useUser();
+    const {nome, saudacao} = useUser();
     const [total, setTotal] = useState(0);
     const [mensal, setMensal] = useState(0.00);
     const [produtos, setProdutos] = useState([]);
@@ -120,7 +120,7 @@ export default function Home({navigation}){
     return (
         <View style={s.container}>
             <View style={s.headerBemVindo}>
-                <Text style={s.textoBemVindo}>Bem vindo(a), {nome}</Text>
+                <Text style={s.textoBemVindo}>{saudacao}{nome}</Text>
                 <Ionicons onPress={() => irParaConfiguracoes()} name="settings-outline" size={24} color="#fff" />
             </View>
 
