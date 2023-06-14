@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Alert, TouchableOpacity, Text, View, FlatList, ToastAndroid } from "react-native";
-import CurrencyInput from "react-native-currency-input";
+import { FakeCurrencyInput } from "react-native-currency-input";
 import { Ionicons, FontAwesome5, Octicons, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
 import {colors, formataReal} from "../../variables";
@@ -86,11 +86,15 @@ export default function Home({navigation}){
     }
 
     const mudarValor = (valorNovo) => {
-        setDesconto(valor - valorNovo);
+        setDesconto(valorNovo - valor);
         setValor(valorNovo);
     }
 
     const salvarVenda = (dataVenda, valorVenda, descontoVenda, produtosVenda) => {
+        if(!produtosVenda.length){
+            Alert.alert("Erro", "Não é possível adicionar uma venda sem produtos.");
+            return;
+        }
         vendaService.add(dataVenda, valorVenda, descontoVenda, null, produtosVenda).then(res => {
             limparVenda();
             setModalVendaRapida(false);
@@ -109,6 +113,14 @@ export default function Home({navigation}){
 
     const copiaArrayProdutos = () => 
         JSON.parse(JSON.stringify(produtos)).map(item => new ProdutoVenda(item.id, item.nome, item.precoProduto*100, item.descricao, item.quantidade));
+
+    const abrirVendaRapida = () => {
+        if(produtos.filter(prod => prod.quantidade).length){
+            setModalVendaRapida(true);
+        }else{
+            Alert.alert("Erro", "Não é possível adicionar uma venda sem produtos.");
+        }
+    }
 
     const irParaConfiguracoes   = () => navigation.navigate("Configuracoes");
     const irParaAdicionarCompra = () => navigation.navigate("AdicionarCompra");
@@ -164,9 +176,9 @@ export default function Home({navigation}){
                         </TouchableOpacity>
                     }
                 />
-                {produtos.length ?    
+                {produtos.length ?
                     <View style={s.containerValorSalvar}>
-                        <CurrencyInput
+                        <FakeCurrencyInput
                             prefix="R$"
                             separator=","
                             delimter="."
@@ -174,10 +186,11 @@ export default function Home({navigation}){
                             minValue={0}
                             value={valor}
                             keyboardType="numeric"
+                            containerStyle={s.containerCampoValor}
                             style={s.campoValor}
-                            onChangeValue={(value) => mudarValor(value)}
-                            />
-                        <TouchableOpacity style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
+                            onChangeValue={(value) => mudarValor(value || 0)}
+                        />
+                        <TouchableOpacity style={s.botaoSalvar} onPress={() => abrirVendaRapida()}>
                             <Text style={s.txtBotaoSalvar}>SALVAR</Text>
                         </TouchableOpacity>
                     </View>

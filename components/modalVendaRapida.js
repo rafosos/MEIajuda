@@ -18,7 +18,7 @@ export default function ModalVendaRapida({
 
     useEffect(()=>{
         setData(new Date());
-    },[])
+    },[modalVisivel])
 
     return (
     <Modal
@@ -73,7 +73,7 @@ export default function ModalVendaRapida({
 
                 <View style={s.containers}>
                     <View style={s.containerFilho}>
-                        <Text style={s.labels}>Desconto</Text>
+                        <Text style={s.labels}>Desconto/acréscimo</Text>
                         <View style={s.input}>
                             <Text style={s.inputTxt}>{formataReal(desconto)}</Text>
                         </View>

@@ -68,14 +68,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 35
     },
-    campoValor:{
+    containerCampoValor:{
         backgroundColor: colors.white,
         borderRadius: 15,
         flex:2,
-        padding:5,
         paddingLeft: 15,
         marginRight: 5,
         justifyContent: 'center'
+    },
+    campoValor:{
+        lineHeight: 30
     },
     botaoSalvar:{
         backgroundColor: colors.green,
