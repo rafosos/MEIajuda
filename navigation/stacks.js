@@ -19,7 +19,7 @@ const Tab = createBottomTabNavigator();
 const headerOptionsPadrao = {
     headerShown: true,
     headerStyle: {
-        backgroundColor: colors.darkGreen,
+        backgroundColor: colors.darkGreen3,
     },
     headerTintColor: colors.white,
     headerShadowVisible: false
@@ -140,9 +140,9 @@ export function TabStack(){
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveBackgroundColor: colors.notSoDarkGreen,
+                tabBarActiveBackgroundColor: colors.darkGreen2,
                 tabBarStyle: {
-                    backgroundColor: colors.darkGreen,
+                    backgroundColor: colors.darkGreen3,
                 },
                 tabBarItemStyle: {
                     borderTopWidth: 2,

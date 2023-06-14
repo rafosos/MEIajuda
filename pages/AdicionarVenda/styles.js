@@ -3,13 +3,13 @@ import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
     tudo:{
-        backgroundColor: colors.darkGreen,
+        backgroundColor: colors.darkGreen3,
         flex: 1,
         paddingHorizontal: 10
     },
     titleCollapse:{
         fontSize: 30,
-        color: "#fff"
+        color: colors.white
     },
     containerProdutos:{
         margin: 5
@@ -70,11 +70,13 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingHorizontal: 10
     },
-    inputValor:{
+    containerInputValor:{
         backgroundColor: colors.white,
         borderRadius: 15,
         height: 40,
         paddingHorizontal: 10
+    },
+    inputValor:{
     },
     inputObservacoes:{
         backgroundColor: colors.white,

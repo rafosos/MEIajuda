@@ -3,7 +3,7 @@ import {colors} from "../../variables";
 
 const styles = StyleSheet.create({
     tudo:{
-        backgroundColor: colors.darkGreen,
+        backgroundColor: colors.darkGreen3,
         flex: 1,
         paddingHorizontal: 20
     },
@@ -15,12 +15,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 5
     },
-    inputValor:{
+    containerInputValor:{
         backgroundColor: colors.white,
-        color: colors.black,
         height: 50,
-        borderRadius: 10,
-        padding: 10,
+        borderRadius: 15,
+        paddingHorizontal: 10,
+    },
+    inputValor:{
         fontSize: 20
     },
     containerDataHora:{

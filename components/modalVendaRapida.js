@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { View, StyleSheet, Modal, Pressable, Text, FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { View, StyleSheet, Modal, TouchableOpacity, Text, FlatList, Pressable } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import {colors, formataNumero, formataReal} from "../variables";
 
@@ -16,6 +16,10 @@ export default function ModalVendaRapida({
 
     const [data, setData] = useState(new Date());
 
+    useEffect(()=>{
+        setData(new Date());
+    },[])
+
     return (
     <Modal
         animationType="slide"
@@ -24,8 +28,7 @@ export default function ModalVendaRapida({
         onRequestClose={() => {setModalVisivel(false)}}
     >
         <Pressable onPress={() => setModalVisivel(false)} style={s.centeredView}>
-            <View style={s.modalView}>
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={() => {}} style={s.modalView}>
                 <Text style={s.headingModal}>Venda rápida</Text>
 
                 <Text style={s.labelProdutos}>Produtos</Text>
@@ -85,19 +88,18 @@ export default function ModalVendaRapida({
                 </View>
             
                 <View style={s.botoesModal}>
-                    <Pressable onPress={() => setModalVisivel(false)}>
+                    <TouchableOpacity onPress={() => setModalVisivel(false)}>
                         <Text style={s.textCancelarModal}>CANCELAR VENDA</Text>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable
+                    <TouchableOpacity
                         style={s.botaoFinalizarVenda}
                         onPress={() => onPressConfirmar(data, valor, desconto, produtos)}
                     >
                         <Text style={s.textBotaoModal}>FINALIZAR VENDA</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             </Pressable>
-            </View>
         </Pressable>
     </Modal>
     )

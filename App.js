@@ -42,8 +42,8 @@ export default function App() {
   return fontsLoaded ?(
     <NavigationContainer>
       <UserProvider>
-        <SafeAreaView onLayout={onLayoutRootView} style={{flex:1, backgroundColor: colors.darkGreen}}>
-          <StatusBar backgroundColor={colors.darkGreen} style='light' />
+        <SafeAreaView onLayout={onLayoutRootView} style={{flex:1, backgroundColor: colors.darkGreen3}}>
+          <StatusBar backgroundColor={colors.darkGreen3} style='light' />
           <Routes/>
         </SafeAreaView>
       </UserProvider>

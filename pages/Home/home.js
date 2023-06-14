@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Pressable, Text, View, FlatList, ToastAndroid } from "react-native";
+import { Alert, TouchableOpacity, Text, View, FlatList, ToastAndroid } from "react-native";
 import CurrencyInput from "react-native-currency-input";
 import { Ionicons, FontAwesome5, Octicons, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
@@ -158,10 +158,10 @@ export default function Home({navigation}){
                         </View>
                     }
                     ListEmptyComponent={
-                        <Pressable style={s.containerSemProduto} onPress={adicionarProduto}>
+                        <TouchableOpacity style={s.containerSemProduto} onPress={adicionarProduto}>
                             <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione produtos para começar a cadastrar suas vendas!</Text>
                             <MaterialIcons name="add-box" style={s.iconeSemProdutos}/>
-                        </Pressable>
+                        </TouchableOpacity>
                     }
                 />
                 {produtos.length ?    
@@ -177,51 +177,51 @@ export default function Home({navigation}){
                             style={s.campoValor}
                             onChangeValue={(value) => mudarValor(value)}
                             />
-                        <Pressable style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
+                        <TouchableOpacity style={s.botaoSalvar} onPress={() => setModalVendaRapida(true)}>
                             <Text style={s.txtBotaoSalvar}>SALVAR</Text>
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                 :null}
             </View>
 
             <View style={s.linhaBotao}>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => irParaMeusProdutos()}
                     style={[s.botao, s.botaoProdutos]}
                 >
                     <AntDesign name="tags" style={s.iconeBotao} />
                     <Text style={s.txtBotao}>Meus produtos</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
 
             <View style={s.linhaBotao}>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => irParaAdicionarVenda()}
                     style={[s.botao, s.botaoVendas]}
                     >
                     <FontAwesome5 name="hand-holding-usd" style={s.iconeBotao} />
                     <Text style={s.txtBotao}>Adicionar venda</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
 
             <View style={s.linhaBotao}>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => irParaAdicionarCompra()}
                     style={[s.botao, s.botaoCompras]}
                 >
                     <FontAwesome5 name="shopping-cart" style={s.iconeBotao} />
                     <Text style={s.txtBotao}>Adicionar compra</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
             
             <View style={s.linhaBotao}>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => irParaConsultarLucro()}
                     style={[s.botao, s.botaoLucros]}
                 >
                     <Octicons name="graph" style={s.iconeBotao} />
                     <Text style={s.txtBotao}>Histórico de lucros</Text>
-                    </Pressable>
+                    </TouchableOpacity>
             </View>
 
             <ModalVendaRapida 

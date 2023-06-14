@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Pressable, RefreshControl, Text, ToastAndroid, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, TouchableOpacity, RefreshControl, Text, ToastAndroid, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -184,16 +184,16 @@ export default function ConsultarVendas({navigation}){
                             <View style={s.linhaDataHora}>
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirDataInicio} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirDataInicio} style={s.datas}>
                                         <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
 
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirHoraInicio} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirHoraInicio} style={s.datas}>
                                         <Text style={s.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -203,24 +203,24 @@ export default function ConsultarVendas({navigation}){
                             <View style={s.linhaDataHora}>
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirDataFim} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirDataFim} style={s.datas}>
                                         <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
 
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirHoraFim} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirHoraFim} style={s.datas}>
                                         <Text style={s.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
 
                         <View style={s.containerBotaoConsultar}>
-                            <Pressable onPress={() => get()} style={s.botaoConsultar}>
+                            <TouchableOpacity onPress={() => get()} style={s.botaoConsultar}>
                                 <Text style={s.textConsultar}>CONSULTAR</Text>
-                            </Pressable>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
@@ -255,7 +255,7 @@ export default function ConsultarVendas({navigation}){
                 
                 </>}
                 renderItem={({item}) => 
-                            <Pressable key={item.id} style={s.itemCompra} onPress={() => editarVenda(item.id)}>
+                            <TouchableOpacity key={item.id} style={s.itemCompra} onPress={() => editarVenda(item.id)}>
                                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                     <View>
                                         <Text style={s.valorVenda}>{formataReal(item.valor)}</Text>
@@ -276,7 +276,7 @@ export default function ConsultarVendas({navigation}){
                                 )}
                                 {item.desconto? <Text style={s.desconto}>Desconto: {formataReal(item.desconto)}</Text>:null}
                                 {item.observacoes? <Text style={s.observacoes}>{item.observacoes}</Text> : null}
-                            </Pressable>
+                            </TouchableOpacity>
                 }
                 ListFooterComponent={() => loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
                 ListEmptyComponent={() => <Text style={s.naoHaResultados}>Não há vendas para o período pesquisado.</Text>}

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Pressable, Text, TextInput, ToastAndroid, View } from "react-native";
-import CurrencyInput from "react-native-currency-input";
+import { Alert, TouchableOpacity, Text, TextInput, ToastAndroid, View } from "react-native";
+import { FakeCurrencyInput } from "react-native-currency-input";
 import { FontAwesome5, AntDesign } from '@expo/vector-icons';
-import styles from "./styles";
+import s from "./styles";
 import ProdutoService from "../../services/produtoService";
 import {colors} from "../../variables";
 import ModalSimples from "../../components/modalSimples";
@@ -27,6 +27,14 @@ const AdicionarProduto = ({route, navigation}) =>{
     },[])
 
     const salvar = () => {
+        if(nome == ""){
+            Alert.alert("Campos obrigatórios", "O nome é obrigatório.");
+            return;
+        }else if(preco == null){
+            Alert.alert("Campos obriaatórios", "O preço é obrigatório.");
+            return;
+        }
+
         if(produto){
             produtoService.updateById(produto.id, nome, preco, descricao)
             .then(res => {
@@ -51,19 +59,20 @@ const AdicionarProduto = ({route, navigation}) =>{
 
     const excluir = () => {
         produtoService.deleteById(produto.id)
-            .then(res => {
-                ToastAndroid.show("Produto excluido com sucesso.", ToastAndroid.SHORT);
-                navigation.pop();
-            })
-            .catch(err => {
-                Alert.alert("Erro", "Não foi possível excluir o produto devido a um erro.");
-                console.log(err);
-            });
+        .then(res => {
+            ToastAndroid.show("Produto excluido com sucesso.", ToastAndroid.SHORT);
+            navigation.pop();
+        })
+        .catch(err => {
+            ToastAndroid.show("Não foi possível excluir o produto devido a um erro.", ToastAndroid.SHORT);
+            console.log(err);
+        })
+        .finally(() => setModalVisible(false));
     }
 
-    return(<View style={styles.tudo}>
-        <View style={styles.containers}>
-            <Text style={styles.labels}>Nome*</Text>
+    return(<View style={s.tudo}>
+        <View style={s.containers}>
+            <Text style={s.labels}>Nome*</Text>
             <TextInput
                 value={nome}
                 placeholder="EX.: Milkshake simples..."
@@ -73,13 +82,13 @@ const AdicionarProduto = ({route, navigation}) =>{
                 returnKeyType="next"
                 onSubmitEditing={() => valorRef.current.focus()}
                 onChangeText={(value) => setNome(value)}
-                style={styles.inputNome}
+                style={s.inputNome}
             />
         </View>
 
-        <View style={styles.containers}>
-            <Text style={styles.labels}>Valor do produto*</Text>
-            <CurrencyInput
+        <View style={s.containers}>
+            <Text style={s.labels}>Valor do produto</Text>
+            <FakeCurrencyInput
                 ref={valorRef}
                 returnKeyType="next"
                 onSubmitEditing={() => descricaoRef.current.focus()}
@@ -91,48 +100,49 @@ const AdicionarProduto = ({route, navigation}) =>{
                 minValue={0}
                 value={preco}
                 keyboardType="numeric"
-                style={styles.inputValor}
-                onChangeValue={setPreco}
+                containerStyle={s.containerInputValor}
+                style={s.inputValor}
+                onChangeValue={(value) => setPreco(value || 0)}
             />
         </View>
 
-        <View style={styles.containers}>
-            <Text style={styles.labels}>Descrição</Text>
+        <View style={s.containers}>
+            <Text style={s.labels}>Descrição</Text>
             <TextInput
                 placeholder="Milkshake com duas colheres de sorvete..."
                 numberOfLines={5}
                 multiline={true}
                 onChangeText={(value) => {setDescricao(value)}}
-                style={styles.inputObservacoes}
+                style={s.inputObservacoes}
                 value={descricao}
                 ref={descricaoRef}
             />
         </View>
 
-        <View style={styles.botoesContainer}>
+        <View style={s.botoesContainer}>
             {produto?
-                <Pressable 
-                    style={[styles.botoes, styles.botaoExcluir]}
+                <TouchableOpacity 
+                    style={[s.botoes, s.botaoExcluir]}
                     onPress={() => setModalVisible(true)}
                 >
                     <AntDesign name="delete" size={24} color={colors.white} />
-                    <Text style={styles.textBotao}>EXCLUIR</Text>
-                </Pressable>
+                    <Text style={s.textBotao}>EXCLUIR</Text>
+                </TouchableOpacity>
             :null}
 
-            <Pressable 
-                style={[styles.botoes, styles.botaoSalvar]}
+            <TouchableOpacity 
+                style={[s.botoes, s.botaoSalvar]}
                 onPress={() => salvar()}
             >
                 <FontAwesome5 name="save" size={24} color={colors.white} />
-                <Text style={styles.textBotao}>SALVAR</Text>
-            </Pressable>
+                <Text style={s.textBotao}>SALVAR</Text>
+            </TouchableOpacity>
         </View>
 
         <ModalSimples 
             modalVisivel={modalVisible}
             setModalVisivel={setModalVisible}
-            onPressConfirmar={() => excluir()}
+            onPressConfirmar={excluir}
         />
     </View>)
 }

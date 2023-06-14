@@ -4,7 +4,7 @@ import {colors} from "../../variables";
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center', 
-    backgroundColor: colors.darkGreen,
+    backgroundColor: colors.darkGreen3,
     flexDirection: 'column', 
     padding: 20, 
   },
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   txtInputDisabled:{
-    backgroundColor: colors.darkGreen,
+    backgroundColor: colors.darkGreen3,
     borderWidth: 2,
     borderColor: colors.white
   },

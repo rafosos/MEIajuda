@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Pressable, Text, TextInput, ToastAndroid, View } from "react-native";
-import CurrencyInput from "react-native-currency-input";
+import { Alert, TouchableOpacity, Text, TextInput, ToastAndroid, View } from "react-native";
+import { FakeCurrencyInput } from "react-native-currency-input";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { MaterialIcons, AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import s from "./styles";
@@ -92,9 +92,9 @@ const AdicionarCompra = ({route, navigation}) =>{
     return(<View style={s.tudo}>
         <View style={s.containers}>
             <Text style={s.nomeInput}>
-                Valor da compra*
+                Valor da compra
             </Text>
-            <CurrencyInput
+            <FakeCurrencyInput
                 prefix="R$"
                 separator=","
                 delimter="."
@@ -102,24 +102,25 @@ const AdicionarCompra = ({route, navigation}) =>{
                 minValue={0}
                 value={preco}
                 keyboardType="numeric"
+                containerStyle={s.containerInputValor}
                 style={s.inputValor}
-                onChangeValue={setPreco}
+                onChangeValue={(value) => setPreco(value || 0)}
             />
         </View>
 
         <View style={s.containerDataHora}>
             <View style={s.containerData}>
                 <MaterialIcons name="date-range" onPress={abrirData} style={s.iconesDataHora} />
-                <Pressable onPress={abrirData} style={s.inputDataHora}>
+                <TouchableOpacity onPress={abrirData} style={s.inputDataHora}>
                     <Text style={s.data}>{data.getDate()}/{data.getMonth() + 1}/{data.getFullYear()}</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
     
             <View style={s.containerData}>
                 <MaterialIcons name="alarm" onPress={abrirHora} style={s.iconesDataHora}/>
-                <Pressable onPress={abrirHora} style={s.inputDataHora}>
+                <TouchableOpacity onPress={abrirHora} style={s.inputDataHora}>
                     <Text style={s.data}>{formataNumero(data.getHours())}:{formataNumero(data.getMinutes())}</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
         </View>
 
@@ -138,22 +139,22 @@ const AdicionarCompra = ({route, navigation}) =>{
         
         <View style={s.botoesContainer}>
             {id?
-                <Pressable 
+                <TouchableOpacity 
                     style={[s.botoes, s.botaoExcluir]}
                     onPress={() => setModalExcluirVisible(true)}
                 >
                     <AntDesign name="delete" style={s.iconeBotao} />
                     <Text style={s.textBotao}>EXCLUIR</Text>
-                </Pressable>
+                </TouchableOpacity>
             :null}
 
-            <Pressable 
+            <TouchableOpacity 
                 style={[s.botoes, s.botaoSalvar]}
                 onPress={() => salvar()}
             >
                 <FontAwesome5 name="save" style={s.iconeBotao} />
                 <Text style={s.textBotao}>SALVAR</Text>
-            </Pressable>
+            </TouchableOpacity>
         </View>
 
         <ModalSimples

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Image, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { View, TextInput, Image, TouchableOpacity, Text, Keyboard, Alert } from 'react-native';
 import { AsyncStorageService } from '../../storage/asyncStorageService';
 import { useUser } from '../../storage/userContext';
 import s from "./styles";
@@ -26,6 +26,17 @@ const Login = () => {
   }, [pickerAberto])
 
   const salvar = () => {
+    if(!nome && !genero){
+      Alert.alert("Erro", "Os campos Nome fantasia e Gênero são obrigatórios!");
+      return;
+    }else if(!nome){
+      Alert.alert("Erro", "O campo Nome fantasia é obrigatório!");
+      return;
+    }else if(!genero){
+      Alert.alert("Erro", "O campo Gênero é obrigatório!");
+      return;
+    }
+
     storageService.salvarDadosPessoais(nome, genero, semSaudacao, saudacao).then(() => {
       userContext.setInformacoesPessoais(nome,genero,semSaudacao,saudacao);
     }).catch(err => console.log(err));
@@ -81,13 +92,13 @@ const Login = () => {
             onValueChange={(value) => {
               setSemSaudacao(value);
               if(genero <= 2) setSaudacao(saudacoes[genero]);
-              if(value) setSaudacao('null');
+              if(value) setSaudacao('');
             }}
           />
           <Text style={s.label}>Sem saudação</Text>
         </View>
 
-        {!semSaudacao && genero == 2 && nome ?
+        {!semSaudacao && genero == 3 && nome ?
         <View>
           <Text style={s.label}>Mensagem de boas vindas</Text>
           <TextInput

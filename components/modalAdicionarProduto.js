@@ -1,4 +1,4 @@
-import { View, StyleSheet, Modal, Pressable, Text, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Modal, TouchableOpacity, Text, ActivityIndicator, Pressable } from "react-native";
 import { Entypo } from '@expo/vector-icons';
 import {colors, formataReal} from "../variables";
 import { useEffect, useState } from "react";
@@ -43,13 +43,13 @@ export default function ModalAdicionarProduto({
                     data={resultados}
                     keyExtractor={item => item.id}
                     renderItem={({item})=> 
-                        <Pressable style={styles.produto} onPress={() => produtoEscolhido(item)}>
+                        <TouchableOpacity style={styles.produto} onPress={() => produtoEscolhido(item)}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <Text style={styles.nome}>{item.nome}</Text>
                                 <Text style={styles.preco}>{formataReal(item.preco)}</Text>
                             </View>
                             {item.descricao? <Text style={styles.descricao} numberOfLines={2}>{item.descricao}</Text>:null}
-                        </Pressable>
+                        </TouchableOpacity>
                     }
                     ListFooterComponent={() => loading ?
                         <ActivityIndicator size="large" color={colors.green} />

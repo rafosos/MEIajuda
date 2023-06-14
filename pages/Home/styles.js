@@ -4,7 +4,7 @@ import {colors, dimensions} from "../../variables";
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.darkGreen,
+      backgroundColor: colors.darkGreen3,
       padding: '2.5%'
     },
     headerBemVindo:{

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Pressable, ScrollView, Text, ToastAndroid, View, TextInput } from "react-native";
+import { Alert, TouchableOpacity, ScrollView, Text, ToastAndroid, View, TextInput } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import CurrencyInput from "react-native-currency-input";
+import { FakeCurrencyInput } from "react-native-currency-input";
 import { FontAwesome5, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
 import ProdutoService from "../../services/produtoService";
@@ -54,6 +54,11 @@ const AdicionarVenda = ({route, navigation}) =>{
     }
 
     const salvar = () => {
+        if(!produtos.length){
+            Alert.alert("Sem produtos", "É necessário cadastrar ao menos um produto para salvar a venda!");
+            return;
+        }
+
         if(id){
             vendaService.updateById(id, data, valorFinal, desconto, observacoes, produtos)
             .then(res => {
@@ -130,14 +135,14 @@ const AdicionarVenda = ({route, navigation}) =>{
         let valorProd = 0;
         if(produtos?.length)
             valorProd = produtos.reduce((total, current) => total + current.calcularPrecoFinal(), 0);
-        setValorFinal(valorProd - desconto);
+        setValorFinal(valorProd + desconto);
     }
 
     const calcularDesconto = () => {
         let valorProd = 0;
         if(produtos?.length)
             valorProd = produtos.reduce((total, current) => total + current.calcularPrecoFinal(), 0);
-        setDesconto(valorProd - valorFinal);
+        setDesconto(valorFinal - valorProd);
     }
 
     const abrirModalProduto = () => {
@@ -181,7 +186,7 @@ const AdicionarVenda = ({route, navigation}) =>{
 
     return(<ScrollView style={s.tudo}>
 
-        <Text style={s.labels}>Produtos</Text>
+        <Text style={s.labels}>Produtos*</Text>
         <View style={s.containerProdutos}>
             {produtos?.length? 
                 produtos.map(produto => 
@@ -203,50 +208,51 @@ const AdicionarVenda = ({route, navigation}) =>{
             :null}
 
             <View style={s.containerBotaoAdd}>
-                <Pressable style={s.botaoAddProduto} onPress={abrirModalProduto}>
+                <TouchableOpacity style={s.botaoAddProduto} onPress={abrirModalProduto}>
                     <MaterialIcons name="add-box" style={s.iconeAdd} />
                     <Text style={s.textBotaoAdd}>Adicionar produto</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
         </View>
 
         <View style={s.containerDataHora}>
             <View style={s.itemDataHora}>
                 <MaterialIcons name="date-range" onPress={abrirData} style={[s.labels, s.icones]} />
-                <Pressable onPress={abrirData} style={s.inputDataHora}>
+                <TouchableOpacity onPress={abrirData} style={s.inputDataHora}>
                     <Text style={s.data}>{data.getDate()}/{data.getMonth() + 1}/{data.getFullYear()}</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
     
             <View style={s.itemDataHora}>
                 <MaterialIcons name="alarm" onPress={abrirHora} style={[s.labels, s.icones]}/>
-                <Pressable onPress={abrirHora} style={s.inputDataHora}>
+                <TouchableOpacity onPress={abrirHora} style={s.inputDataHora}>
                     <Text style={s.data}>{formataNumero(data.getHours())}:{formataNumero(data.getMinutes())}</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
         </View>
 
         <View style={s.containers}>
-            <Text style={s.labels}>Desconto</Text>
-            <CurrencyInput
+            <Text style={s.labels}>Desconto/acréscimo</Text>
+            <FakeCurrencyInput
                 prefix="R$"
                 separator=","
                 delimter="."
                 precision={2}
-                minValue={0}
+                showPositiveSign={desconto < 0}
                 value={desconto}
                 keyboardType="numeric"
                 returnKeyType="next"
                 blurOnSubmit={false}
                 onSubmitEditing={() => refValorFinal.current.focus()}
+                containerStyle={s.containerInputValor}
                 style={s.inputValor}
-                onChangeValue={setDesconto}
+                onChangeValue={(value) => setDesconto(value || 0)}
             />
         </View>
 
         <View style={s.containers}>
             <Text style={s.labels}>Valor final</Text>
-            <CurrencyInput
+            <FakeCurrencyInput
                 prefix="R$"
                 separator=","
                 delimter="."
@@ -257,8 +263,9 @@ const AdicionarVenda = ({route, navigation}) =>{
                 returnKeyType="next"
                 blurOnSubmit={false}
                 onSubmitEditing={() => refObservacoes.current.focus()}
+                containerStyle={s.containerInputValor}
                 style={s.inputValor}
-                onChangeValue={setValorFinal}
+                onChangeValue={(value) => setValorFinal(value || 0)}
                 ref={refValorFinal}
             />
         </View>
@@ -278,22 +285,22 @@ const AdicionarVenda = ({route, navigation}) =>{
 
         <View style={s.botoesContainer}>
             {id?
-                <Pressable 
+                <TouchableOpacity 
                     style={[s.botoes, s.botaoExcluir]}
                     onPress={() => setModalExcluirVisible(true)}
                 >
                     <AntDesign name="delete" size={24} color={colors.white} />
                     <Text style={s.textBotao}>EXCLUIR</Text>
-                </Pressable>
+                </TouchableOpacity>
             :null}
 
-            <Pressable 
+            <TouchableOpacity 
                 style={[s.botoes, s.botaoSalvar]}
                 onPress={() => salvar()}
             >
                 <FontAwesome5 name="save" size={24} color={colors.white} />
                 <Text style={s.textBotao}>SALVAR</Text>
-            </Pressable>
+            </TouchableOpacity>
         </View>
 
         <ModalSimples 

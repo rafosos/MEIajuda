@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, FlatList, Pressable, RefreshControl, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, TouchableOpacity, RefreshControl, Text, TextInput, View } from "react-native";
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import s from "./styles";
 import { useEffect, useState } from "react";
@@ -72,21 +72,20 @@ export default function MeusProdutos({navigation}){
                 }
 
                 renderItem={({item}) =>
-                    <Pressable style={s.produto} onPress={() => editarProduto(item)}>
+                    <TouchableOpacity style={s.produto} onPress={() => editarProduto(item)}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <Text style={s.nomeProduto}>{item.nome}</Text>
                             <Text style={s.precoProduto}>{formataReal(item.preco)}</Text>
                         </View>
                         {item.descricao ? <Text style={s.descricaoProduto}>{item.descricao}</Text> : null}
-                    </Pressable>
+                    </TouchableOpacity>
                 }
 
-
-                ListEmptyComponent={loading?
-                    <Pressable style={s.containerSemProduto} onPress={adicionarProduto} >
+                ListEmptyComponent={!loading?
+                    <TouchableOpacity style={s.containerSemProduto} onPress={adicionarProduto} >
                         <Text style={s.txtSemProdutos}>Não foram encontrados produtos...{"\n"}Adicione um produto novo clicando aqui</Text>
                         <MaterialIcons name="add-box" style={[s.iconeAdd, s.iconeSemProdutos]}/>
-                    </Pressable>
+                    </TouchableOpacity>
                 :null}
 
                 ListFooterComponent={

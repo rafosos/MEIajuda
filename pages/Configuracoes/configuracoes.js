@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Checkbox from 'expo-checkbox';
@@ -26,6 +26,11 @@ const Configuracoes = ({navigation}) => {
   const tudoService = TudoService();
 
   const salvar = () => {
+    if(!nome){
+      Alert.alert("Erro", "É obrigatório ter algum Nome Fantasia.");
+      return;
+    }
+
     storageService.salvarDadosPessoais(nome,genero, semSaudacao, saudacao).then(() => {
       user.setInformacoesPessoais(nome, genero, semSaudacao, saudacao);
       navigation.navigate("Home");

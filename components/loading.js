@@ -10,7 +10,7 @@ export default function Loading(){
         />
         <ActivityIndicator
           size={"large"} 
-          color={"#fff"} 
+          color={colors.white} 
         />
       </View>
     )
@@ -18,7 +18,7 @@ export default function Loading(){
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: colors.darkGreen, 
+        backgroundColor: colors.darkGreen3, 
         flex: 1, 
         flexDirection: 'column',
         justifyContent: 'center',

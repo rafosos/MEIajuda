@@ -3,7 +3,7 @@ import {colors, dimensions} from "../../variables";
 
 const styles = StyleSheet.create({
     scrollview:{
-        backgroundColor: colors.darkGreen,
+        backgroundColor: colors.darkGreen3,
         flex:1,
         paddingHorizontal: 10
     },

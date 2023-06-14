@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, TouchableOpacity, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { MaterialIcons } from '@expo/vector-icons';
 import { LineChart } from "react-native-chart-kit";
@@ -179,16 +179,16 @@ export default function ConsultarLucro({navigation}){
                             <View style={s.linhaDataHora}>
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirDataInicio} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirDataInicio} style={s.datas}>
                                         <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
 
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirHoraInicio} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirHoraInicio} style={s.datas}>
                                         <Text style={s.textoDataHora}>{formataNumero(dataInicio.getHours())}:{formataNumero(dataInicio.getMinutes())}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -198,25 +198,25 @@ export default function ConsultarLucro({navigation}){
                             <View style={s.linhaDataHora}>
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirDataFim} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirDataFim} style={s.datas}>
                                         <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
 
                                 <View style={s.filtroDatas}>
                                     <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
-                                    <Pressable onPress={abrirHoraFim} style={s.datas}>
+                                    <TouchableOpacity onPress={abrirHoraFim} style={s.datas}>
                                         <Text style={s.textoDataHora}>{formataNumero(dataFim.getHours())}:{formataNumero(dataFim.getMinutes())}</Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
                     </>:null}
 
                     <View style={s.containerBotaoConsultar}>
-                        <Pressable onPress={() => get()} style={s.botaoConsultar} disabled={!selectedTipo}>
+                        <TouchableOpacity onPress={() => get()} style={s.botaoConsultar} disabled={!selectedTipo}>
                             <Text style={s.textConsultar}>CONSULTAR</Text>
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -227,8 +227,8 @@ export default function ConsultarLucro({navigation}){
                         <LineChart
                             data={data}
                             yAxisLabel="R$ "
-                            width={dimensions.width * 0.87}
-                            height={dimensions.width * 0.70}
+                            width={dimensions.width * 0.85}
+                            height={dimensions.width * 0.60}
                             verticalLabelRotation={30}
                             withShadow={true}
                             getDotColor={(dataPoint, index) => dataPoint == 0 ? colors.darkGrey 
@@ -242,9 +242,11 @@ export default function ConsultarLucro({navigation}){
                                 color: colors.charts.black,
                                 labelColor: colors.charts.noOpacityBlack,
                                 propsForDots: {
-                                    r: "7"
+                                    r: "7",
+                                    strokeWidth: '2'
                                 }
                             }}
+                            bezier
                             fromZero={true}
                         />
                     </View>
