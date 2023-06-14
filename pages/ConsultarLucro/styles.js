@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     cabecalho:{
-        justifyContent:"space-around"
+        justifyContent:"space-around",
+        zIndex: 99
     },
     containerTitle:{
         justifyContent: 'space-between',
@@ -29,9 +30,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 5
     },
     picker:{
-        backgroundColor: colors.white,
         borderRadius: 15,
-        marginHorizontal: 5
+        zIndex: 99
     },
     labelFiltro:{
         fontSize: 15,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: colors.white,
         padding: 15,
-        paddingTop: 20,
+        paddingTop: 20
     },
     labelResultados:{
         color: colors.white,
@@ -99,9 +99,36 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontSize: 17
     },
+    resultados: {
+        flex: 1
+    },
     naoHaResultados: {
         color: colors.white,
         textAlign:'center'
+    },
+    produto:{
+        backgroundColor: colors.white,
+        justifyContent: 'center',
+        marginVertical: 5,
+        borderRadius: 15,
+        padding: 10
+    },
+    mes:{
+        fontSize: 19,
+        fontFamily: 'geo-bold'
+    },
+    lucro:{
+        fontFamily: 'geo-bold',
+        fontSize: 19
+    },
+    bold:{
+        fontFamily: 'geo-bold'
+    },
+    compras:{
+        color: colors.red
+    },
+    vendas: {
+        color: colors.green
     }
 });
 

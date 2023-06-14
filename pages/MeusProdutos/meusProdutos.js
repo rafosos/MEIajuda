@@ -74,7 +74,6 @@ export default function MeusProdutos({navigation}){
                 renderItem={({item}) =>
                     <Pressable style={s.produto} onPress={() => editarProduto(item)}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text>{item.id}</Text>
                             <Text style={s.nomeProduto}>{item.nome}</Text>
                             <Text style={s.precoProduto}>{formataReal(item.preco)}</Text>
                         </View>

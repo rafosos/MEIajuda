@@ -18,14 +18,13 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const db = DatabaseInit();
   const [fontsLoaded] = useFonts({
-    'bahnschrift-400': require('./assets/fonts/Bahnschrift400.ttf'),
     'geo-thin': require('./assets/fonts/Geologica-Thin.ttf'),
     'geo-light': require('./assets/fonts/Geologica-Light.ttf'),
     'geo-medium': require('./assets/fonts/Geologica-Medium.ttf'),
     'geo-reg': require('./assets/fonts/Geologica-Regular.ttf'),
     'geo-semibold': require('./assets/fonts/Geologica-SemiBold.ttf'),
     'geo-bold': require('./assets/fonts/Geologica-Bold.ttf'),
-    'geo-black': require('./assets/fonts/Geologica-Black.ttf'),
+    'geo-black': require('./assets/fonts/Geologica-Black.ttf')
   });
   
   const onLayoutRootView = useCallback(async () => {

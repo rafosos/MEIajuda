@@ -1,36 +1,39 @@
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Pressable, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { MaterialIcons } from '@expo/vector-icons';
 import { LineChart } from "react-native-chart-kit";
+import DropDownPicker from "react-native-dropdown-picker";
 import s from "./styles";
-import {colors, dimensions} from "../../variables";
+import {colors, dimensions, formataReal} from "../../variables";
 import LucroService from "../../services/lucroService";
+import { formataNumero } from "../../variables";
 
 export default function ConsultarLucro({navigation}){
     const [dataInicio, setDataInicio] = useState(new Date());
     const [dataFim, setDataFim] = useState(new Date());
     const [loading, setLoading] = useState(false);
-    const [lucros, setLucros] = useState();
     const [selectedTipo, setSelectedTipo] = useState();
     const [data, setData] = useState();
+    const [pickerAberto, setPickerAberto] = useState(false);
+    const [pesquisaFeita, setPesquisaFeita] = useState(false);
+    const [lucros, setLucros] = useState([]);
 
     const tipos = {
         total: "Total",
+        periodo: "Por período"
     }
     
     const lucroService = LucroService();
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-          get();
-        });
-        return unsubscribe;
-    }, [navigation]);
 
     const get = () => {
         switch(selectedTipo){
             case tipos.total:{
                 getTotal();
+                break;
+            }
+            case tipos.periodo:{
+                getData();
                 break;
             }
         }
@@ -39,14 +42,15 @@ export default function ConsultarLucro({navigation}){
     const getTotal = () =>{
         setLoading(true);
         lucroService.getTudoPorMes().then(res => {
+            setPesquisaFeita(true);
             setLucros(res);
             if(res.length){
-            setData({
-                labels: res.map((mes) => mes.mes),
-                datasets:[{
-                    data: res.map((mes) => mes.valor),
-                }]
-            });
+                setData({
+                    labels: res.map((mes) => mes.mes),
+                    datasets:[{
+                        data: res.map((mes) => mes.valor),
+                    }]
+                });
             }else{
                 setData(null);
             }
@@ -57,43 +61,28 @@ export default function ConsultarLucro({navigation}){
     }
 
     const getData = () => {
-// var secInicial = (dataInicio.getTime() / 1000) | 0;
-        // var secFinal = (dataFim.getTime() / 1000) | 0;
+        var secInicial = (dataInicio.getTime() / 1000) | 0;
+        var secFinal = (dataFim.getTime() / 1000) | 0;
 
-        // comprasService.getDatas(secInicial, secFinal).then((res) => {
-        //     setCompras(res);
-            
-        //     if(res.length){
-        //         let somas = {};
-        //         let calendario = {};
-        //         res.forEach(compra => {
-        //             const mes = compra.data.toLocaleString('default', { month: 'long' })
-        //             if(somas[mes])
-        //                 somas[mes] += compra.valor;
-        //             else{
-        //                 somas[mes] = compra.valor;
-        //                 calendario[mes] = compra.data.getMonth();
-        //             }
-        //         });
-
-        //         let meses = Object.keys(somas);
-        //         meses.sort((a, b) => calendario[a] - calendario[b]);
-
-        //         setData({
-        //             labels: meses,
-        //             datasets:[{data: Object.values(somas)}],
-        //             legend: ["Mêses com compras registradas no período selecionado"]
-        //         });
-        //     }
-        //     else{
-        //         setData(null);
-        //     }
-        // }) 
-        // .catch(err => {
-        //     console.log(err);
-        //     Alert.alert("Não foi possível buscar os registros devido a um erro.");
-        // })
-        // .finally(() => setLoading(false));
+        lucroService.getDatas(secInicial, secFinal).then((res) => {            
+            setPesquisaFeita(true);
+            setLucros(res);
+            if(res.length){
+                setData({
+                    labels: res.map((mes) => mes.mes),
+                    datasets:[{
+                        data: res.map((mes) => mes.valor),
+                    }]
+                });
+            }else{
+                setData(null);
+            }
+        }) 
+        .catch(err => {
+            console.log(err);
+            Alert.alert("Erro", "Não foi possível buscar os registros devido a um erro.");
+        })
+        .finally(() => setLoading(false));
     }
 
     const onChangeDataInicio = (event, selectedDate) => {
@@ -158,106 +147,128 @@ export default function ConsultarLucro({navigation}){
     }
 
     return (
-        <ScrollView style={s.scrollview}>
-        <View style={{paddingBottom: 10}}>
-            <View style={s.cabecalho}>
-                <View style={s.containerTitle}>
-                    <Text style={s.title}>Lucros</Text>
-                </View>
-
-                <View style={s.picker}>
-                    {/* <Picker
-                        selectedValue={selectedTipo}
-                        onValueChange={(item,i) => setSelectedTipo(item)}
-                        mode={'dropdown'}
-                    >
-                        <Picker.Item label="Selecionar periodicidade"/>
-                        {Object.keys(tipos).map((tipo, i) =>
-                            <Picker.Item label={tipos[tipo]} value={tipos[tipo]} key={i}/>
-                        )}
-                    </Picker> */}
-                </View>
-
-                {/* {selectedTipo == tipos.total ? null :
-                <>
-                <View style={s.containerDataLabel}>
-                    <Text style={s.labelFiltro}>Data inicial:</Text>
-                    <View style={s.linhaDataHora}>
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirDataInicio} style={s.datas}>
-                                <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
-                            </Pressable>
-                        </View>
-
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraInicio} style={s.datas}>
-                                <Text style={s.textoDataHora}>{formataDezena(dataInicio.getHours())}:{formataDezena(dataInicio.getMinutes())}</Text>
-                            </Pressable>
-                        </View>
+        <FlatList
+            style={s.scrollview}
+            contentContainerStyle={lucros.length ? null : {flex:1}}
+            data={lucros}
+            ListHeaderComponent={<>
+                <View style={s.cabecalho}>
+                    <View style={s.containerTitle}>
+                        <Text style={s.title}>Lucros</Text>
                     </View>
-                </View>
 
-                <View style={s.containerDataLabel}>
-                    <Text style={s.labelFiltro}>Data final:</Text>
-                    <View style={s.linhaDataHora}>
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirDataFim} style={s.datas}>
-                                <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
-                            </Pressable>
-                        </View>
-
-                        <View style={s.filtroDatas}>
-                            <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
-                            <Pressable onPress={abrirHoraFim} style={s.datas}>
-                                <Text style={s.textoDataHora}>{formataDezena(dataFim.getHours())}:{formataDezena(dataFim.getMinutes())}</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </View>
-                </>
-                } */}
-
-                <View style={s.containerBotaoConsultar}>
-                    <Pressable onPress={() => getTotal()} style={s.botaoConsultar} disabled={!selectedTipo}>
-                        <Text style={s.textConsultar}>CONSULTAR</Text>
-                    </Pressable>
-                </View>
-            </View>
-
-            {data ? 
-                <View style={[{alignItems: 'center', marginVertical: 5}, s.grafico]}>
-                    <Text>Lucro por mês</Text>
-                    <LineChart
-                        data={data}
-                        yAxisLabel="R$ "
-                        width={dimensions.width * 0.87}
-                        height={dimensions.width * 0.70}
-                        verticalLabelRotation={30}
-                        withShadow={true}
-                        getDotColor={(dataPoint, index) => dataPoint == 0 ? colors.darkGrey 
-                            : dataPoint > 0 ? colors.green : colors.red}
-                        chartConfig={{
-                            backgroundColor: colors.white,
-                            backgroundGradientFrom: colors.white,
-                            backgroundGradientTo: colors.white,
-                            decimalPlaces: 2,
-                            strokeWidth: 2,
-                            color: colors.charts.black,
-                            labelColor: colors.charts.noOpacityBlack,
-                            propsForDots: {
-                                r: "7"
-                            }
-                        }}
-                        fromZero={true}
+                    <DropDownPicker
+                        style={s.picker}
+                        containerStyle={s.picker}
+                        open={pickerAberto}
+                        setOpen={setPickerAberto}
+                        value={selectedTipo}
+                        items={Object.keys(tipos).map((tipo, i) => {
+                            const value = tipos[tipo];
+                            return {label: value, value}
+                        })}
+                        setValue={setSelectedTipo}
+                        onChangeValue={(valor) => setSelectedTipo(valor)}
+                        placeholderStyle={s.placeholder}
+                        placeholder="Selecione a periodicidade"
                     />
+
+                    {selectedTipo == tipos.periodo ? <>
+                        <View style={s.containerDataLabel}>
+                            <Text style={s.labelFiltro}>Data inicial:</Text>
+                            <View style={s.linhaDataHora}>
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="date-range" onPress={abrirDataInicio} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirDataInicio} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{dataInicio.getDate()}/{dataInicio.getMonth() + 1}/{dataInicio.getFullYear() + " "}</Text>
+                                    </Pressable>
+                                </View>
+
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="alarm" onPress={abrirHoraInicio} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirHoraInicio} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{formataNumero(dataInicio.getHours())}:{formataNumero(dataInicio.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={s.containerDataLabel}>
+                            <Text style={s.labelFiltro}>Data final:</Text>
+                            <View style={s.linhaDataHora}>
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="date-range" onPress={abrirDataFim} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirDataFim} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{dataFim.getDate()}/{dataFim.getMonth() + 1}/{dataFim.getFullYear() + " "}</Text>
+                                    </Pressable>
+                                </View>
+
+                                <View style={s.filtroDatas}>
+                                    <MaterialIcons name="alarm" onPress={abrirHoraFim} style={s.iconeCalendario}/>
+                                    <Pressable onPress={abrirHoraFim} style={s.datas}>
+                                        <Text style={s.textoDataHora}>{formataNumero(dataFim.getHours())}:{formataNumero(dataFim.getMinutes())}</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </View>
+                    </>:null}
+
+                    <View style={s.containerBotaoConsultar}>
+                        <Pressable onPress={() => get()} style={s.botaoConsultar} disabled={!selectedTipo}>
+                            <Text style={s.textConsultar}>CONSULTAR</Text>
+                        </Pressable>
+                    </View>
                 </View>
-            :null}
-               
-            {loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
+
+                <View style={s.resultados}>
+                {data ? 
+                    <View style={[{alignItems: 'center', marginVertical: 5}, s.grafico]}>
+                        <Text>Lucro por mês</Text>
+                        <LineChart
+                            data={data}
+                            yAxisLabel="R$ "
+                            width={dimensions.width * 0.87}
+                            height={dimensions.width * 0.70}
+                            verticalLabelRotation={30}
+                            withShadow={true}
+                            getDotColor={(dataPoint, index) => dataPoint == 0 ? colors.darkGrey 
+                                : dataPoint > 0 ? colors.green : colors.red}
+                            chartConfig={{
+                                backgroundColor: colors.white,
+                                backgroundGradientFrom: colors.white,
+                                backgroundGradientTo: colors.white,
+                                decimalPlaces: 2,
+                                strokeWidth: 2,
+                                color: colors.charts.black,
+                                labelColor: colors.charts.noOpacityBlack,
+                                propsForDots: {
+                                    r: "7"
+                                }
+                            }}
+                            fromZero={true}
+                        />
+                    </View>
+                :null}
+  
             </View>
-        </ScrollView>
+            </>}
+            keyExtractor={(item) => item.mes}
+            renderItem={({item}) =>
+                <View style={s.produto}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={[s.lucro, {
+                            color: item.valor == 0 ? colors.black 
+                                  : item.valor > 0 ? colors.green
+                                                   : colors.red
+                            }]}>{formataReal(item.valor)}</Text>
+                        <Text style={s.mes}>{item.mes}</Text>
+                    </View>
+                    <Text style={s.bold}>Compras: <Text style={s.compras}>{formataReal(item.compras)}</Text></Text>
+                    <Text style={s.bold}>Vendas: <Text style={s.vendas}>{formataReal(item.vendas)}</Text></Text>
+                </View>
+            }
+            ListEmptyComponent={pesquisaFeita? <Text style={s.naoHaResultados}>Não foram encontrados registros para a pesquisa.</Text> : null}
+            ListFooterComponent={loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
+        />
     );
 }

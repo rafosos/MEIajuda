@@ -58,7 +58,7 @@ export default function Home({navigation}){
         const inicio = new Date();
         inicio.setDate(1);
         const fim = new Date();
-        lucroService.getDatas(inicio.getTime()/1000, fim.getTime()/1000).then(res => {
+        lucroService.getTotalPorPeriodo(inicio.getTime()/1000, fim.getTime()/1000).then(res => {
             setMensal(res[0].lucro/100);
         }).catch(err => {
             Alert.alert("Erro", "Não foi possivel retornar o lucro mensal devido a um erro.");
