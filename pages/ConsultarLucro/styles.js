@@ -11,15 +11,15 @@ const styles = StyleSheet.create({
         zIndex: 99
     },
     containerTitle:{
-        justifyContent: 'space-between',
         flexDirection: 'row',
         marginHorizontal: 5,
         marginVertical: 10,
         alignItems: 'center'
     },
-    iconeAdd:{
+    iconeVoltar:{
+        fontSize: 25,
         color: colors.white,
-        fontSize: 24
+        marginRight: 15
     },
     title: {
         color: colors.white,

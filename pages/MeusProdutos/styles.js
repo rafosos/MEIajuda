@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignItems: 'center'
     },
+    iconeVoltar:{
+        fontSize: 25,
+        color: colors.white,
+        marginRight: 15
+    },
     title: {
         color: colors.white,
         fontSize: 25, 
@@ -23,7 +28,8 @@ const styles = StyleSheet.create({
     },
     iconeAdd:{
         color: colors.white,
-        fontSize: 24
+        fontSize: 24,
+        marginRight: 10
     },
     textInputContainer:{
         backgroundColor: colors.white,

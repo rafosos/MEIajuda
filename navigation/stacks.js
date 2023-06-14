@@ -12,16 +12,13 @@ import MeusProdutos from '../pages/MeusProdutos/meusProdutos';
 import AdicionarVenda from '../pages/AdicionarVenda/adicionarVenda';
 import ConsultarVendas from '../pages/ConsultarVenda/consultarVenda';
 import ConsultarLucro from '../pages/ConsultarLucro/consultarLucro';
+import Header from '../components/header';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const headerOptionsPadrao = {
     headerShown: true,
-    headerStyle: {
-        backgroundColor: colors.darkGreen3,
-    },
-    headerTintColor: colors.white,
     headerShadowVisible: false
 }
 
@@ -36,7 +33,8 @@ function MainStack(){
                 name="Configuracoes" 
                 component={Configuracoes}
                 options={{...headerOptionsPadrao,
-                    title: "Configurações"
+                    header: ({navigation, options}) => 
+                        <Header title={options.title ?? "Configurações"} navigation={navigation}/>
                 }}
             />
             {telasProdutosStack()}
@@ -74,9 +72,10 @@ function ConsultarStack(){
 const telasConsultarStack = () => <>
     <Stack.Screen name="ConsultarCompras" component={ConsultarCompras} />
     <Stack.Screen name="AdicionarCompra" 
-        component={AdicionarCompra} 
+        component={AdicionarCompra}
         options={{...headerOptionsPadrao,
-            title: "Adicionar compra"
+            header: ({navigation, options}) => 
+                <Header title={options.title ?? "Adicionar compra"} navigation={navigation}/>
         }}
     />
 </>
@@ -95,9 +94,10 @@ function ProdutosStack(){
 const telasProdutosStack = () =><>
     <Stack.Screen name="MeusProdutos" component={MeusProdutos} />
     <Stack.Screen name="AdicionarProduto"
-        component={AdicionarProduto} 
+        component={AdicionarProduto}
         options={{...headerOptionsPadrao,
-            title: "Adicionar produto"
+            header: ({navigation, options}) => 
+                <Header title={options.title ?? "Adicionar produto"} navigation={navigation}/>
         }}
     />
 </>
@@ -118,7 +118,8 @@ const telasVendasStack = () => <>
     <Stack.Screen name="AdicionarVenda"
         component={AdicionarVenda}
         options={{...headerOptionsPadrao,
-            title: "Adicionar venda"
+            header: ({navigation, options}) => 
+                <Header title={options.title ?? "Adicionar venda"} navigation={navigation}/>
         }}
     />
 </>

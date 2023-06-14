@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ActivityIndicator, Alert, FlatList, TouchableOpacity, Text, View } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { useNavigationState } from "@react-navigation/native";
 import { LineChart } from "react-native-chart-kit";
 import DropDownPicker from "react-native-dropdown-picker";
 import s from "./styles";
@@ -18,6 +19,7 @@ export default function ConsultarLucro({navigation}){
     const [pickerAberto, setPickerAberto] = useState(false);
     const [pesquisaFeita, setPesquisaFeita] = useState(false);
     const [lucros, setLucros] = useState([]);
+    const routeIndex = useNavigationState(state => state.index);
 
     const tipos = {
         total: "Total",
@@ -154,6 +156,7 @@ export default function ConsultarLucro({navigation}){
             ListHeaderComponent={<>
                 <View style={s.cabecalho}>
                     <View style={s.containerTitle}>
+                        {routeIndex ? <Ionicons name="arrow-back" style={s.iconeVoltar} onPress={() => navigation.pop()}/> : null}
                         <Text style={s.title}>Lucros</Text>
                     </View>
 

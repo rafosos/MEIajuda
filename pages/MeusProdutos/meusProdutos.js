@@ -1,7 +1,8 @@
-import { ActivityIndicator, Alert, FlatList, TouchableOpacity, RefreshControl, Text, TextInput, View } from "react-native";
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import s from "./styles";
 import { useEffect, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, TouchableOpacity, RefreshControl, Text, TextInput, View } from "react-native";
+import { MaterialIcons, Entypo, Ionicons } from '@expo/vector-icons';
+import { useNavigationState } from "@react-navigation/native";
+import s from "./styles";
 import ProdutoService from "../../services/produtoService";
 import { colors, formataReal } from "../../variables";
 
@@ -11,6 +12,8 @@ export default function MeusProdutos({navigation}){
     const [termo, setTermo] = useState("");
     const [loading, setLoading] = useState(false);
     const produtoService = ProdutoService();
+
+    const routeIndex = useNavigationState(state => state.index);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -49,7 +52,10 @@ export default function MeusProdutos({navigation}){
         <View style={s.scrollview}>
             <View style={s.cabecalho}>
                 <View style={s.containerTitle}>
-                    <Text style={s.title}>Meus produtos</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        {routeIndex ? <Ionicons name="arrow-back" style={s.iconeVoltar} onPress={() => navigation.pop()}/> : null}
+                        <Text style={s.title}>Meus produtos</Text>
+                    </View>
                     <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarProduto} />
                 </View>
            </View>
