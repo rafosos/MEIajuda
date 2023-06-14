@@ -1,6 +1,6 @@
 # MEIajuda
 ## Versão: 1.0 
-## Status do Projeto: 🛠 Em construção
+## Status do Projeto: ✅ Concluído
 
 ## Descrição do projeto
 Aplicativo voltado para auxiliar vendedores autônomos (com ou sem MEI) a terem um controle financeiro melhor, ou seja, ajudar no cálculo dos gastos da empresa, de forma a descobrir quanto de lucro efetivamente o negócio está retornando.
@@ -12,9 +12,7 @@ Aplicativo desenvolvido para a disciplina de Fábrica de Projetos III, do curso 
 
 ✔️ Cadastrar produtos;
 
-✔️ Geração de gráficos de produtos mais vendidos por período de tempo;
-
-✔️ Gráficos de dias com mais vendas por período de tempo.
+✔️ Geração de gráficos de lucro por período de tempo;
 
 ## Distribuição
 Ainda não há versão disponível para teste.
