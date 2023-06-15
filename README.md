@@ -1,6 +1,6 @@
 # MEIajuda
 ## Versão: 1.0 
-## Status do Projeto: 🛠 Em construção
+## Status do Projeto: ✅ Concluído
 
 ## Descrição do projeto
 Aplicativo voltado para auxiliar vendedores autônomos (com ou sem MEI) a terem um controle financeiro melhor, ou seja, ajudar no cálculo dos gastos da empresa, de forma a descobrir quanto de lucro efetivamente o negócio está retornando.
@@ -12,9 +12,7 @@ Aplicativo desenvolvido para a disciplina de Fábrica de Projetos III, do curso 
 
 ✔️ Cadastrar produtos;
 
-✔️ Geração de gráficos de produtos mais vendidos por período de tempo;
-
-✔️ Gráficos de dias com mais vendas por período de tempo.
+✔️ Geração de gráficos de lucro por período de tempo;
 
 ## Distribuição
 Ainda não há versão disponível para teste.
@@ -43,7 +41,7 @@ O aplicativo utiliza como ferramenta de banco de dados o SQLite, que é a ferram
 Na versão atual, o aplicativo não faz exportação de dados por nenhum meio, ocasionando assim a perda total dos dados em caso de deleção da aplicação.
 
 
-## Linguagens, dependencias e libs utilizadas 📚
+## Linguagens, dependências e libs utilizadas 📚
 [React Native](https://reactnative.dev/)
 
 [react-navigation/bottom-tabs](https://reactnavigation.org/docs/bottom-tab-navigator/)
@@ -68,9 +66,24 @@ Na versão atual, o aplicativo não faz exportação de dados por nenhum meio, o
 
 [react-native-community/datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker#readme)
 
-## Recursos inseridos 🧰
+[expo-checkbox](https://docs.expo.dev/versions/latest/sdk/checkbox/)
 
-📝 No estágio atual do projeto, as funções listadas já foram implementadas, faltando apenas a impementação de estilização.
+[expo-font](https://docs.expo.dev/versions/latest/sdk/font/)
+
+[expo-splash-screen](https://docs.expo.dev/versions/latest/sdk/splash-screen/)
+
+[react-native-chart-kit](https://github.com/indiespirit/react-native-chart-kit)
+
+[react-native-currency-input](https://github.com/CaioQuirinoMedeiros/react-native-currency-input)
+
+[react-native-dropdown-picker](https://github.com/hossein-zare/react-native-dropdown-picker)
+
+[react-native-simple-default-props](https://github.com/dioi2000/react-native-simple-default-props)
+
+[react-native-svg](https://github.com/software-mansion/react-native-svg)
+
+## Recursos inseridos 🧰
+📝 No estágio atual do projeto, todas as funções listadas já foram implementadas.
 
 ## Desenvolvedores/Contribuintes:
 [albertberger](https://github.com/albertberger)
