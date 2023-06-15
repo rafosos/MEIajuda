@@ -25,48 +25,52 @@ export default function ModalAdicionarProduto({
         transparent={true}
         visible={modalVisivel}
         onRequestClose={() => {setModalVisivel(false)}}>
-        <View style={styles.centeredView}>
-            <Pressable onPress={() => setModalVisivel(false)}>
-            <View style={styles.modalView}>
-            <Pressable onPress={() => {}}>
-                <View style={styles.textInputContainer}>
-                    <Entypo name="magnifying-glass" style={styles.iconLupa} />
-                    <TextInput
-                        value={termo}
-                        onChangeText={setTermo}
-                        placeholder="Pesquisar produto"
-                        style={styles.textInput}
-                    />
-                </View>
-                
-                <FlatList
-                    data={resultados}
-                    keyExtractor={item => item.id}
-                    renderItem={({item})=> 
-                        <TouchableOpacity style={styles.produto} onPress={() => produtoEscolhido(item)}>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                <Text style={styles.nome}>{item.nome}</Text>
-                                <Text style={styles.preco}>{formataReal(item.preco)}</Text>
-                            </View>
-                            {item.descricao? <Text style={styles.descricao} numberOfLines={2}>{item.descricao}</Text>:null}
-                        </TouchableOpacity>
-                    }
-                    ListFooterComponent={() => loading ?
-                        <ActivityIndicator size="large" color={colors.green} />
-                    :null}
-                    ListEmptyComponent={() => termo != "" ? 
-                        <Text style={styles.listEmptyText}>Não foram encontrados produtos para "{termo}".</Text>
-                    :null}
+        <Pressable onPress={() => setModalVisivel(false)} style={s.centeredView}>
+        <Pressable onPress={() => {}} style={s.modalView}>
+            <Text style={s.titulo}>ADICIONE UM PRODUTO PARA A VENDA</Text>
+
+            <View style={s.textInputContainer}>
+                <Entypo name="magnifying-glass" style={s.iconLupa} />
+                <TextInput
+                    value={termo}
+                    onChangeText={setTermo}
+                    placeholder="Pesquisar produto"
+                    style={s.textInput}
                 />
-            </Pressable>
             </View>
-            </Pressable>
-        </View>
+            
+            <FlatList
+                data={resultados}
+                keyExtractor={item => item.id}
+                renderItem={({item})=> 
+                    <TouchableOpacity style={s.produto} onPress={() => produtoEscolhido(item)}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Text style={s.nome}>{item.nome}</Text>
+                            <Text style={s.preco}>{formataReal(item.precoProduto)}</Text>
+                        </View>
+                        {item.descricao? <Text style={s.descricao} numberOfLines={2}>{item.descricao}</Text>:null}
+                    </TouchableOpacity>
+                }
+                ListFooterComponent={() => loading ?
+                    <ActivityIndicator size="large" color={colors.green} />
+                :null}
+                ListEmptyComponent={() => termo != "" ? 
+                    <Text style={s.listEmptyText}>Não foram encontrados produtos para "{termo}".</Text>
+                :null}
+            />
+        </Pressable>
+        </Pressable>
     </Modal>
     )
 }
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
+    titulo:{
+        fontSize: 15,
+        fontFamily: 'geo-bold',
+        marginBottom: 10,
+        textAlign: 'center'
+    },
     centeredView:{
         flex: 1,
         justifyContent: 'center',
@@ -77,9 +81,8 @@ const styles = StyleSheet.create({
         marginHorizontal: '5%',
         backgroundColor: colors.white,
         borderRadius: 20,
-        paddingHorizontal: 25,
+        paddingHorizontal: 15,
         paddingVertical: 15,
-        alignItems: 'center',
         shadowColor: colors.black,
         shadowOffset: {
             width: 0,

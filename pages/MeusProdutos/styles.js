@@ -50,6 +50,18 @@ const styles = StyleSheet.create({
     textInput:{
         width: "100%",
     },
+    containerGrafico:{
+        alignItems: 'center',
+        backgroundColor: colors.white,
+        borderRadius: 15,
+        paddingTop: 5,
+        marginBottom: 5
+    },
+    tituloGrafico:{
+        fontSize: 15,
+        fontFamily: 'geo-bold',
+        color: colors.pieChart[1]
+    },
     produto:{
         backgroundColor: colors.white,
         justifyContent: 'center',

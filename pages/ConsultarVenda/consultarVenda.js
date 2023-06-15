@@ -149,7 +149,7 @@ export default function ConsultarVendas({navigation}){
 
     const deletarRegistro = () => {
         setModalVisivel(false);
-        vendaService.deleteByVenda(selectedVenda).then(res => {
+        vendaService.deleteById(selectedVenda.id).then(res => {
             console.log("Registro deletado com sucesso.");
             ToastAndroid.show("Resgitro deletado com sucesso.", ToastAndroid.SHORT);
             get();

@@ -1,10 +1,11 @@
 export default class ProdutoVenda{
-    constructor(id, nome, preco, descricao, quantidade = 0){
+    constructor(id, nome, preco, descricao, quantidade = 0, quantidadeVendida = 0){
         this.id = id;
         this.nome = nome;
         this.precoProduto = preco / 100;
         this.descricao = descricao;
         this.quantidade = quantidade;
+        this.quantidadeVendida = quantidadeVendida;
         this.calcularPrecoFinal();
     }
 

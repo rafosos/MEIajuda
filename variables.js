@@ -25,6 +25,14 @@ const colors = {
         darkGreen: "#006400"
     },
 
+    pieChart:[
+        "#187B00",
+        "#0e4900",
+        "#8fce00",
+        "#0f0",
+        "#28ce00",
+    ],
+
     black7: "rgba(0,0,0,0.7)",
     red5: 'rgba(255,0,0,0.5)'
 }

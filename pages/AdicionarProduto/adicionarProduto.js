@@ -22,7 +22,7 @@ const AdicionarProduto = ({route, navigation}) =>{
             navigation.setOptions({title: "Editar produto"});
             setNome(produto.nome);
             setDescricao(produto.descricao);
-            setPreco(produto.preco);
+            setPreco(produto.precoProduto);
         }
     },[])
 

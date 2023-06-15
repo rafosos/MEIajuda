@@ -31,6 +31,8 @@ const AdicionarVenda = ({route, navigation}) =>{
         if(id){
             navigation.setOptions({title: "Editar venda"});
             getById();
+        }else if (!produtos.length){
+            setModalProdutoVisivel(true);
         }
     },[])
 
@@ -108,7 +110,7 @@ const AdicionarVenda = ({route, navigation}) =>{
     const adicionarProduto = (produto) => {
         setModalProdutoVisivel(false);
         let produtosNova = produtos;
-        produtosNova.push(new ProdutoVenda(produto.id,produto.nome, produto.preco*100, produto.descricao, 1));
+        produtosNova.push(new ProdutoVenda(produto.id,produto.nome, produto.precoProduto*100, produto.descricao, 1));
         setProdutos(produtosNova);
         calcularValor();
     }
@@ -186,8 +188,8 @@ const AdicionarVenda = ({route, navigation}) =>{
 
     return(<ScrollView style={s.tudo}>
 
-        <Text style={s.labels}>Produtos*</Text>
-        <View style={s.containerProdutos}>
+        <View style={[s.containerProdutos, s.containers]}>
+            <Text style={s.labels}>Produtos*</Text>
             {produtos?.length? 
                 produtos.map(produto => 
                     <View key={produto.id} style={s.itemProduto}>
@@ -197,11 +199,15 @@ const AdicionarVenda = ({route, navigation}) =>{
                             <Text>Total: {formataReal(produto.precoFinal)}</Text>
                         </View>
                         <View style={s.quantidade}>
-                            <Text onPress={() => menosUm(produto.id)} style={s.maisMenos}>-</Text>
+                            <TouchableOpacity onPress={() => menosUm(produto.id)} >
+                                <Text style={s.maisMenos}>-</Text>
+                            </TouchableOpacity>
 
                             <Text>{produto.quantidade}</Text>
                         
-                            <Text onPress={() => maisUm(produto.id)} style={s.maisMenos}>+</Text>
+                            <TouchableOpacity onPress={() => maisUm(produto.id)}>
+                                <Text style={s.maisMenos}>+</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 )
@@ -215,7 +221,7 @@ const AdicionarVenda = ({route, navigation}) =>{
             </View>
         </View>
 
-        <View style={s.containerDataHora}>
+        <View style={[s.containerDataHora, s.containers]}>
             <View style={s.itemDataHora}>
                 <MaterialIcons name="date-range" onPress={abrirData} style={[s.labels, s.icones]} />
                 <TouchableOpacity onPress={abrirData} style={s.inputDataHora}>
@@ -232,7 +238,20 @@ const AdicionarVenda = ({route, navigation}) =>{
         </View>
 
         <View style={s.containers}>
-            <Text style={s.labels}>Desconto/acréscimo</Text>
+            <Text style={s.labels}>Observações</Text>
+            <TextInput
+                placeholder="Insira aqui as observações da venda..."
+                numberOfLines={5}
+                multiline={true}
+                onChangeText={(value) => {setObservacoes(value)}}
+                ref={refObservacoes}
+                style={s.inputObservacoes}
+                value={observacoes}
+            />
+        </View>
+        
+        <View style={s.containerInputValor}>
+            <Text style={[s.labels, s.labelDesconto]}>Desconto/{"\n"}acréscimo:</Text>
             <FakeCurrencyInput
                 prefix="R$"
                 separator=","
@@ -249,9 +268,10 @@ const AdicionarVenda = ({route, navigation}) =>{
                 onChangeValue={(value) => setDesconto(value || 0)}
             />
         </View>
+        <Text style={s.dica}>ADICIONAR SINAL DE MENOS (-) PARA DESCONTO</Text>
 
-        <View style={s.containers}>
-            <Text style={s.labels}>Valor final</Text>
+        <View style={s.containerInputValor}>
+            <Text style={[s.labels, s.labelValor]}>TOTAL:</Text>
             <FakeCurrencyInput
                 prefix="R$"
                 separator=","
@@ -267,20 +287,7 @@ const AdicionarVenda = ({route, navigation}) =>{
                 style={s.inputValor}
                 onChangeValue={(value) => setValorFinal(value || 0)}
                 ref={refValorFinal}
-            />
-        </View>
-
-        <View style={s.containers}>
-            <Text style={s.labels}>Observações</Text>
-            <TextInput
-                placeholder="Insira aqui as observações da venda..."
-                numberOfLines={5}
-                multiline={true}
-                onChangeText={(value) => {setObservacoes(value)}}
-                ref={refObservacoes}
-                style={s.inputObservacoes}
-                value={observacoes}
-            />
+                />
         </View>
 
         <View style={s.botoesContainer}>

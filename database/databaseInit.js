@@ -35,7 +35,8 @@ export default function DatabaseInit(){
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT,
                 descricao TEXT,
-                valor INTEGER
+                valor INTEGER,
+                ativo INTEGER DEFAULT 1
             );`,
 
             `CREATE TABLE IF NOT EXISTS produto_venda (

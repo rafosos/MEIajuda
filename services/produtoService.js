@@ -27,14 +27,23 @@ export default function ProdutoService(){
     }
 
     const getAll = async () => {
-        return mapearProdutos(await db.getAll("produtos"));
+        return mapearProdutos(await db.getAll("produtos", "WHERE ativo = 1"));
     }
 
     const get = async (termo, escolhidos) => {
-        return mapearProdutos(await db.getAll("produtos", 
-            `WHERE id NOT IN (${escolhidos}) AND
-                (nome LIKE '%${termo}%' OR 
-                descricao LIKE '%${termo}%');`));
+        return mapearProdutoVenda(await db.getCustom(`SELECT produtos.id,
+            produtos.nome,
+            produtos.descricao,
+            produtos.valor,
+            SUM(produto_venda.quantidade) AS quantidade
+        FROM produtos
+        LEFT JOIN produto_venda ON produtos.id = produto_venda.id_produto
+        WHERE (ativo = 1) AND (
+            produtos.id NOT IN (${escolhidos}) AND
+            (nome LIKE '%${termo}%' OR
+            descricao LIKE '%${termo}%'))
+        GROUP BY produtos.id
+        ORDER BY quantidade DESC`));
     }
 
     const getMaisVendidos = async (quantidade) => {
@@ -42,23 +51,24 @@ export default function ProdutoService(){
             produtos.nome,
             produtos.descricao,
             produtos.valor,
-            COUNT(produto_venda.id_produto) AS counts
+            SUM(produto_venda.quantidade) AS quantidadeVendida
         FROM produtos
         LEFT JOIN produto_venda ON produtos.id = produto_venda.id_produto
+        WHERE ativo = 1
         GROUP BY produtos.id
-        ORDER BY counts DESC
+        ORDER BY quantidade DESC
         LIMIT ${quantidade};`;
         return mapearProdutoVenda(await db.getCustom(sql));
     }
 
-    const deleteById = (id) => db.deleteById("produtos", id);
+    const deleteById = (id) => db.updateById("produtos", id, ["ativo"], 0);
 
     const mapearProdutos = (produtos) => 
         produtos.map(produto => new Produto(produto.id, produto.nome, produto.valor, produto.descricao));
 
 
     const mapearProdutoVenda = (produtos) =>
-        produtos.map(produto => new ProdutoVenda(produto.id, produto.nome, produto.valor, produto.descricao, produto.quantidade));
+        produtos.map(produto => new ProdutoVenda(produto.id, produto.nome, produto.valor, produto.descricao, produto.quantidade, produto.quantidadeVendida));
     
     return{
         add,

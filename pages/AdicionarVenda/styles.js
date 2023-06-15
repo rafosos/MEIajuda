@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     labels:{
         color: colors.white,
-        fontSize: 20
+        fontSize: 20,
     },
     inputNome:{
         backgroundColor: colors.white,
@@ -71,12 +71,32 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     containerInputValor:{
-        backgroundColor: colors.white,
-        borderRadius: 15,
-        height: 40,
-        paddingHorizontal: 10
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 5,
+        flex:1
+    },
+    labelValor:{
+        fontFamily: 'geo-bold',
+        marginRight: 5
+    },
+    labelDesconto:{
+        fontSize: 15,
+        marginRight: 5
     },
     inputValor:{
+        height: 35,
+        paddingHorizontal: 10,
+        backgroundColor: colors.white,
+        borderRadius: 15,
+        lineHeight: 30,
+        flex:1
+    },
+    dica:{
+        fontSize: 11,
+        color: colors.white,
+        marginBottom: 10,
+        textAlign: "right"
     },
     inputObservacoes:{
         backgroundColor: colors.white,
@@ -110,6 +130,9 @@ const styles = StyleSheet.create({
     },
     data:{
         fontSize: 17
+    },
+    containers:{
+        marginVertical: 10
     },
     botoesContainer:{
         flexDirection: 'row',
