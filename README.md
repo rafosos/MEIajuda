@@ -43,32 +43,28 @@ Na versão atual, o aplicativo não faz exportação de dados por nenhum meio, o
 
 ## Linguagens, dependencias e libs utilizadas 📚
 [React Native](https://reactnative.dev/)
-
 [react-navigation/bottom-tabs](https://reactnavigation.org/docs/bottom-tab-navigator/)
-
 [react-navigation/native](https://reactnavigation.org/)
-
 [react-navigation/native-stack](https://reactnavigation.org/docs/native-stack-navigator/)
-
 [expo](https://expo.dev/)
-
 [expo-status-bar](https://docs.expo.dev/versions/latest/sdk/status-bar/)
-
 [react](https://react.dev/)
-
 [react-native-safe-area-context](https://github.com/th3rdwave/react-native-safe-area-context#readme)
-
 [react-native-screens](https://github.com/software-mansion/react-native-screens#readme)
-
 [react-native-async-storage/async-storage](https://github.com/react-native-async-storage/async-storage)
-
 [expo-sqlite](https://docs.expo.dev/versions/latest/sdk/sqlite/)
-
 [react-native-community/datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker#readme)
+[expo-checkbox](https://docs.expo.dev/versions/latest/sdk/checkbox/)
+[expo-font](https://docs.expo.dev/versions/latest/sdk/font/)
+[expo-splash-screen](https://docs.expo.dev/versions/latest/sdk/splash-screen/)
+[react-native-chart-kit](https://github.com/indiespirit/react-native-chart-kit)
+[react-native-currency-input](https://github.com/CaioQuirinoMedeiros/react-native-currency-input)
+[react-native-dropdown-picker](https://github.com/hossein-zare/react-native-dropdown-picker)
+[react-native-simple-default-props](https://github.com/dioi2000/react-native-simple-default-props)
+[react-native-svg](https://github.com/software-mansion/react-native-svg)
 
 ## Recursos inseridos 🧰
-
-📝 No estágio atual do projeto, as funções listadas já foram implementadas, faltando apenas a impementação de estilização.
+📝 No estágio atual do projeto, todas as funções listadas já foram implementadas.
 
 ## Desenvolvedores/Contribuintes:
 [albertberger](https://github.com/albertberger)
