@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, TouchableOpacity, Text, View, FlatList, ToastAndroid } from "react-native";
+import { Alert, TouchableOpacity, Text, View, FlatList, ToastAndroid, ScrollView } from "react-native";
 import { FakeCurrencyInput } from "react-native-currency-input";
 import { Ionicons, FontAwesome5, Octicons, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import s from "./styles";
@@ -130,7 +130,7 @@ export default function Home({navigation}){
     const adicionarProduto = () => navigation.navigate("AdicionarProduto");
 
     return (
-        <View style={s.container}>
+        <ScrollView style={s.container}>
             <View style={s.headerBemVindo}>
                 <Text style={s.textoBemVindo}>{saudacao}{nome}</Text>
                 <Ionicons onPress={() => irParaConfiguracoes()} name="settings-outline" size={24} color="#fff" />
@@ -223,7 +223,7 @@ export default function Home({navigation}){
                     style={[s.botao, s.botaoCompras]}
                 >
                     <FontAwesome5 name="shopping-cart" style={s.iconeBotao} />
-                    <Text style={s.txtBotao}>Adicionar compra</Text>
+                    <Text style={s.txtBotao}>Adicionar gasto</Text>
                 </TouchableOpacity>
             </View>
             
@@ -247,7 +247,7 @@ export default function Home({navigation}){
                 valor={valor}
                 desconto={desconto}
             />
-        </View>
+        </ScrollView>
     );
 }
   

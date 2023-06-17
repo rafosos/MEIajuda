@@ -18,7 +18,7 @@ const AdicionarCompra = ({route, navigation}) =>{
 
     useEffect(() => {
         if(id){
-            navigation.setOptions({title: "Editar compra"});
+            navigation.setOptions({title: "Editar gasto"});
             getById();
         }
     }, [])

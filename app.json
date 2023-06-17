@@ -19,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/logomeiajuda.png",
+        "backgroundColor": "#0e201e"
       },
       "package": "com.primosricos.MEIajuda"
     },

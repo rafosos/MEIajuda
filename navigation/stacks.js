@@ -75,7 +75,7 @@ const telasConsultarStack = () => <>
         component={AdicionarCompra}
         options={{...headerOptionsPadrao,
             header: ({navigation, options}) => 
-                <Header title={options.title ?? "Adicionar compra"} navigation={navigation}/>
+                <Header title={options.title ?? "Adicionar gasto"} navigation={navigation}/>
         }}
     />
 </>

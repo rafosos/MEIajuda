@@ -60,7 +60,7 @@ export default function ConsultarCompras({navigation}){
                 setData({
                     labels: meses,
                     datasets:[{data: Object.values(somas)}],
-                    legend: ["Mêses com compras registradas no período selecionado"]
+                    legend: ["Mêses com gastos registrados no período selecionado"]
                 });
             }
             else{
@@ -162,7 +162,7 @@ export default function ConsultarCompras({navigation}){
                 ListHeaderComponent={() => <>
                     <View style={s.cabecalho}>
                         <View style={s.containerTitle}>
-                            <Text style={s.title}>Consultar compras</Text>
+                            <Text style={s.title}>Consultar gastos</Text>
                             <MaterialIcons name="add-box" style={s.iconeAdd} onPress={adicionarCompra} />
                         </View>
 
@@ -236,7 +236,7 @@ export default function ConsultarCompras({navigation}){
                             />
                         </View>
                     :null}        
-                    <Text style={s.labelResultados}>Compras no período selecionado:</Text>
+                    <Text style={s.labelResultados}>Gastos no período selecionado:</Text>
                 </>}
                 renderItem={({item}) =>
                     <TouchableOpacity key={item.id} style={s.itemCompra} onPress={() => editarCompra(item.id)}>
@@ -254,7 +254,7 @@ export default function ConsultarCompras({navigation}){
                     </TouchableOpacity>
                 }
                 ListFooterComponent={() => loading ? <ActivityIndicator size={"large"} color={colors.white}/> : null}
-                ListEmptyComponent={() => <Text style={s.naoHaResultados}>Não há compras para o período pesquisado.</Text>}
+                ListEmptyComponent={() => <Text style={s.naoHaResultados}>Não há gastos para o período pesquisado.</Text>}
             />
     
             <ModalSimples
